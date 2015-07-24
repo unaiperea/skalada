@@ -55,7 +55,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<%=Constantes.VIEW_BACK_INDEX%>">Backoffice</a>
+                <a class="navbar-brand" href="<%=Constantes.ROOT_APP+Constantes.VIEW_BACK_INDEX%>">Backoffice</a>
                 
                 <a class="navbar-brand" href="<%=Constantes.VIEW_PUBLIC_INDEX%>">Web Publica</a>
             </div>
