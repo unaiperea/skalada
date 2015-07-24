@@ -1,7 +1,11 @@
+<%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
+	<base href="<%=Constantes.ROOT_APP%>">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

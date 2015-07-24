@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.skalada.Constantes;
+
 /**
  * Servlet implementation class LoginController
  */
@@ -15,6 +17,7 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private RequestDispatcher dispatcher = null;
+	
 		
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,7 +42,10 @@ public class LoginController extends HttpServlet {
 		//email
 		//password
 		
-		dispatcher = request.getRequestDispatcher("index_back.jsp");
+		//String PATH = request.getRequestURI();
+				
+		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_INDEX);
+		
 		
 		
 		dispatcher.forward(request, response);
