@@ -14,10 +14,13 @@ import com.ipartek.formacion.skalada.Constantes;
  * Servlet implementation class LoginController
  */
 public class LoginController extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
        
 	private RequestDispatcher dispatcher = null;
 	
+	private String pEmail;
+	private String pPassword;
 		
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,20 +42,40 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//email
-		//password
-		
-		//TODO implementar login
+		//recoger parametros del formulario
+		getParameters(request);
 		
 		
-		//String PATH = request.getRequestURI();
-				
-		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_INDEX);
+		//validar los datos
+
+		//comprobamos con la BBDD	
+		String email = "admin@admin.com";
+		String pass = "admin";
 		
-		
+		if(email.equals(pEmail)&&pass.equals(pPassword)){		
+			//Ir a => index_back.jsp		
+			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+		} else {
+			//Ir a => login.jsp
+			request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
+			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+		}
 		
 		dispatcher.forward(request, response);
 		
 	}
 
+	/**
+	* Recoger los parametros enviados
+	* @param request
+	*/
+	private void getParameters(HttpServletRequest request) {
+	
+		pEmail = request.getParameter("email");
+		pPassword = request.getParameter("password");
+	}
+	
 }
+
+
+

@@ -239,10 +239,12 @@
                             <!-- /input-group -->
                         </li>
                         <li>
+
                             <a href="<%=Constantes.VIEW_BACK_INDEX%>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="<%=Constantes.CONTROLLER_VIAS%>"><i class="fa fa-bar-chart-o fa-fw"></i> Vias</a>
+
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

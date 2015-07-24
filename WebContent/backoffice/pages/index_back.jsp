@@ -1,7 +1,7 @@
 <jsp:include page="includes/head.jsp"></jsp:include>
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
-       
+
 
         <div id="page-wrapper">
         
@@ -550,3 +550,4 @@
 
 <jsp:include page="includes/foot.jsp"></jsp:include>
    
+
