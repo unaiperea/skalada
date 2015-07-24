@@ -42,6 +42,9 @@ public class LoginController extends HttpServlet {
 		//email
 		//password
 		
+		//TODO implementar login
+		
+		
 		//String PATH = request.getRequestURI();
 				
 		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_INDEX);
