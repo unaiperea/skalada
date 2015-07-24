@@ -1,5 +1,19 @@
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
+<%
+	//comprobar que se ha pasado por Login
+	String user = (String)session.getAttribute("user");
+	//TODO comprobar contra BBDD
+	if ( user == null ){
+		request.setAttribute("msg", "No seas listillo y logeate" );
+		//request.getRequestDispatcher( Constantes.CONTROLLER_LOGIN ).forward(request, response);
+		response.setHeader("Location", Constantes.CONTROLLER_LOGIN  ); 
+		
+	}
+
+%>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

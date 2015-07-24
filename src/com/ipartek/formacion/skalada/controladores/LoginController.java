@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.skalada.Constantes;
 
@@ -16,7 +17,12 @@ import com.ipartek.formacion.skalada.Constantes;
 public class LoginController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-       
+     
+	//comprobamos con la BBDD	
+	private final String EMAIL = "admin@admin.com";
+	private final String PASS  = "admin";
+	
+	HttpSession session; 
 	private RequestDispatcher dispatcher = null;
 	
 	private String pEmail;
@@ -42,26 +48,43 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//recoger parametros del formulario
-		getParameters(request);
+		session = request.getSession();
 		
+		String usuario = (String)session.getAttribute("user");
 		
-		//validar los datos
-
-		//comprobamos con la BBDD	
-		String email = "admin@admin.com";
-		String pass = "admin";
-		
-		if(email.equals(pEmail)&&pass.equals(pPassword)){		
-			//Ir a => index_back.jsp		
+		//Usuario Logeado
+		if ( usuario != null && !"".equals(usuario) ){		
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
-		} else {
-			//Ir a => login.jsp
-			request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
-			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+		//Usuario NO Logeado o caducada session	
+		}else{
+			//recoger parametros del formulario
+			getParameters(request);		
+			
+			//validar los datos		
+			if(EMAIL.equals(pEmail)&&PASS.equals(pPassword)){
+				
+				saveSession(request);
+				
+				//Ir a => index_back.jsp		
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+			} else {
+				//Ir a => login.jsp
+				request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			}
+			
 		}
 		
+		
 		dispatcher.forward(request, response);
+		
+	}
+
+	private void saveSession(HttpServletRequest request) {
+
+		
+		session.setAttribute("user", pEmail );
+		
 		
 	}
 

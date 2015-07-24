@@ -8,7 +8,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<%=Constantes.ROOT_APP + Constantes.VIEW_BACK_INDEX%>">Backoffice</a>
+                <a class="navbar-brand" href="<%=Constantes.CONTROLLER_LOGIN%>">
+                	Backoffice [<%=session.getAttribute("user")%>]
+                </a>
                 
                 <a class="navbar-brand" href="<%=Constantes.VIEW_PUBLIC_INDEX%>">Web Publica</a>
             </div>
@@ -215,7 +217,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="<%=Constantes.CONTROLLER_LOGOUT%>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
