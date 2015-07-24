@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<%=Constantes.VIEW_BACK_INDEX%>">Backoffice</a>
+                <a class="navbar-brand" href="<%=Constantes.ROOT_APP + Constantes.VIEW_BACK_INDEX%>">Backoffice</a>
                 
                 <a class="navbar-brand" href="<%=Constantes.VIEW_PUBLIC_INDEX%>">Web Publica</a>
             </div>
@@ -239,7 +239,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<%=Constantes.VIEW_BACK_INDEX%>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="<%=Constantes.CONTROLLER_VIAS%>"><i class="fa fa-bar-chart-o fa-fw"></i> Vias</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

@@ -13,9 +13,12 @@ public class Constantes {
 	public static final String VIEW_BACK_LOGIN = "backoffice/pages/login.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
 	
+	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
+	
 	
 	//controladores
 	public static final String CONTROLLER_LOGIN = ROOT_APP + "login";
+	public static final String CONTROLLER_VIAS = ROOT_APP + "vias";
 	
 	
 }
