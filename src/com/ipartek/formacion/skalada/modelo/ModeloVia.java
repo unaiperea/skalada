@@ -33,6 +33,12 @@ public class ModeloVia implements Persistable{
 	 */
 	public ModeloVia() { //Constructor ModeloVia
 		super();
+		
+		file fIndex = new File(PATH_INDEX);
+		if (fIndex!=null){
+			
+		}
+		
 		getIndex();
 		
 	}
@@ -141,5 +147,11 @@ public class ModeloVia implements Persistable{
 		return indice;
 	}
 	
+	/**
+	 * Crea fichero
+	 */
+	private void createIndex(){
+		
+	}
 
 }
