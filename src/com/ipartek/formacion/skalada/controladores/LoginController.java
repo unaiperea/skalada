@@ -22,6 +22,9 @@ public class LoginController extends HttpServlet {
 	private final String EMAIL = "admin@admin.com";
 	private final String PASS  = "admin";
 	
+	//Key para guardar el usuario en session
+	public final static String KEY_SESSION_USER = "ss_user";
+	
 	HttpSession session; 
 	private RequestDispatcher dispatcher = null;
 	
@@ -32,8 +35,7 @@ public class LoginController extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public LoginController() {
-        super();
-        // TODO Auto-generated constructor stub
+        super();       
     }
 
 	/**
@@ -50,7 +52,7 @@ public class LoginController extends HttpServlet {
 
 		session = request.getSession();
 		
-		String usuario = (String)session.getAttribute("user");
+		String usuario = (String)session.getAttribute(KEY_SESSION_USER);
 		
 		//Usuario Logeado
 		if ( usuario != null && !"".equals(usuario) ){		
@@ -63,7 +65,8 @@ public class LoginController extends HttpServlet {
 			//validar los datos		
 			if(EMAIL.equals(pEmail)&&PASS.equals(pPassword)){
 				
-				saveSession(request);
+				//salver session
+				session.setAttribute(KEY_SESSION_USER, pEmail );
 				
 				//Ir a => index_back.jsp		
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
@@ -80,13 +83,7 @@ public class LoginController extends HttpServlet {
 		
 	}
 
-	private void saveSession(HttpServletRequest request) {
-
-		
-		session.setAttribute("user", pEmail );
-		
-		
-	}
+	
 
 	/**
 	* Recoger los parametros enviados
