@@ -93,25 +93,54 @@ public class ModeloVia implements Persistable {
 
 	@Override
 	public boolean update(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		File f = null;
+		boolean resul = false;
+		
+		try{
+		f = new File(PATH_DATA);
+		
+		if (f.isDirectory()){ //Comprobar el índice del Objeto que sea igual al número que contiene el fichero
+			f.getName();
+		}
+		
+		
+		}catch(Exception e){
+			e.getStackTrace();
+		}
+		
+		return resul;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}	
+		
+		boolean resul = false;
+		File f = null;
+		
+		try{
+			f = new File(PATH_DATA + id + FILE_EXTENSION);
 	
+			if (f.isFile() && f.exists()){
+				resul = f.delete();
+			}else{
+				resul = false;
+			}
+		}catch(Exception e){
+			e.getStackTrace();
+			resul = false;
+		}
+		return resul;
+	}	
+
 	/**
 	 * Recupera el indice actual del fichero de texto {@code PATH_INDEX}
 	 * @return indice actual, valor inicial 0
 	 */
 	private int getIndex(){
-		DataInputStream fr = null;		
+		DataInputStream fr = null; //Lee un fichero de enteros
 		try {
 			fr = new DataInputStream(new FileInputStream(PATH_INDEX));			
-			indice = fr.readInt();			
+			indice = fr.readInt(); //que lea el primer dato numérico	
 		} catch ( Exception e) {			
 			e.printStackTrace();
 		}finally{			
