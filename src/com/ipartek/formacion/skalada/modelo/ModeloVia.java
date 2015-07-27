@@ -1,6 +1,13 @@
 package com.ipartek.formacion.skalada.modelo;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,39 +18,37 @@ import java.util.ArrayList;
 import com.ipartek.formacion.skalada.bean.Via;
 
 /**
- * Clase encargada de persistir los objetos de tipo Via {@code Via} en ficheros
- * serializando y des-serializando
- * @author Curso
+ * Clase encargada de persistir los objetos de tipo {@code Via} 
+ * en ficheros serializando y des-serializando
+ * @author ur00
  *
  */
-
-
-public class ModeloVia implements Persistable{
+public class ModeloVia implements Persistable {
 	
-	private static final String PATH_DATA = "data/via/"; //Creamos la carpeta a mano, luego será una tabla de la bbdd
-	private static final String PATH_INDEX = "data/via/index.txt"; //Fichero con el último índice guardado
-	private static final String FILE_EXTENSION = ".dat"; //extensión de ficheros a utilizar
+	private static final String PATH_DATA      = "data/via/";
+	private static final String PATH_INDEX      = "data/via/index.dat";
+	private static final String FILE_EXTENSION = ".dat";
 	
 	/**
-	 * Indentificador con el último objeto creado, valor inicial 0
+	 * Identificador del ultimo objeto creado, valor inicial 0
 	 */
-	private static int indice;
+	private static int indice; 
 	
+
 	/**
-	 * Actualiza el índice
+	 * Actualiza el indice
 	 */
-	public ModeloVia() { //Constructor ModeloVia
+	public ModeloVia() {
 		super();
-		File fIndex = new File(PATH_INDEX);
-		if (fIndex!=null){
-			
-		}
 		
+		File findex = new File(PATH_INDEX);
+		if ( !findex.exists()){
+			createIndex();
+		}		
 		getIndex();
-
 	}
+	
 
-	//Menú Source --> Override/Implements Methods
 	@Override
 	public int save(Object o) {
 		
@@ -51,8 +56,7 @@ public class ModeloVia implements Persistable{
 		int resul = -1;
 		
 		try{
-			Via v  = (Via)o; //Casteamos el objeto tipo Object para que contenga el objeto tipo Via
-
+			Via v  = (Via)o;		
 			String file = PATH_DATA + (indice+1) + FILE_EXTENSION;			
 			oos = new ObjectOutputStream(new FileOutputStream( file ));
 			//guardar objeto
@@ -83,8 +87,8 @@ public class ModeloVia implements Persistable{
 	@Override
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
-		//TODO Implementar
-		return null;
+		//TODO implementar
+		return resul;
 	}
 
 	@Override
@@ -97,63 +101,74 @@ public class ModeloVia implements Persistable{
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
+	}	
+	
 	/**
-	 * Recupera el índice actual del fichero de texto {@code PATH_INDEX}
-	 * @return índice actual, valor inicial 0
+	 * Recupera el indice actual del fichero de texto {@code PATH_INDEX}
+	 * @return indice actual, valor inicial 0
 	 */
 	private int getIndex(){
-		FileReader fr = null;
-		
+		DataInputStream fr = null;		
 		try {
-			fr = new FileReader(new File(PATH_INDEX));
-			indice = Character.getNumericValue(fr.read()); //que lea el primer caracter numérico
-		} catch (Exception e) {
+			fr = new DataInputStream(new FileInputStream(PATH_INDEX));			
+			indice = fr.readInt();			
+		} catch ( Exception e) {			
 			e.printStackTrace();
-		}finally{
-			if (fr != null){
-				try{
-					fr.close();
-				}catch(IOException e){
-					e.printStackTrace();
-				}
+		}finally{			
+			
+			if ( fr != null ){
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
 			}
-		}
+			
+		}	
+		System.out.println("getIndex: " + indice );
 		return indice;
 	}
 	
 	/**
-	 * Incrementa en 1 el índice actual del fichero de texto {@code PATH_INDEX}
-	 * @return el índice incrementado
+	 * Incrementa en 1 el indice actual del fichero de texto {@code PATH_INDEX}
+	 * @return indice incrementado
 	 */
 	private int updateIndex(){
-
-		FileWriter fw = null;
-		indice++;
+		System.out.println("updateIndex entrar: " + indice );
+		DataOutputStream fr = null;		
 		
+		indice++;
 		try {
-			fw = new FileWriter(new File(PATH_INDEX));
-			fw.write(indice);
-		} catch (Exception e) {
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));		
+			fr.writeInt(indice);	
+		} catch ( Exception e) {			
 			e.printStackTrace();
 		}finally{
-			if (fw != null){
-				try{
-					fw.close();
-				}catch(IOException e){
-					e.printStackTrace();
-				}
+		
+			if ( fr != null ){
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
 			}
-		}
-		return indice;
+		}	
+		System.out.println("updateIndex salir: " + indice );
+		return indice;		
 	}
 	
 	/**
-	 * Crea fichero
+	 * Crea fichero de indice
 	 */
 	private void createIndex(){
 		
+		System.out.println("createIndex");
+		DataOutputStream fr = null;		
+		indice=0;
+		try {
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));			
+			fr.writeInt(indice);	
+		} catch ( Exception e) {			
+			e.printStackTrace();
+		}finally{						
+			if ( fr != null ){
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
+			}
+			
+		}	
+		
 	}
-
+	
 }
