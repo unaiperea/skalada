@@ -21,6 +21,7 @@ public class TestModeloVia {
 	public static void setUpBeforeClass() throws Exception {
 			
 		modelo = new ModeloVia();
+			
 	}
 
 	@AfterClass
@@ -44,10 +45,19 @@ public class TestModeloVia {
 		v1.setGrado(Grado.DIFICIL);
 		v1.setDescripcion(LOREM_IPSUM_1);
 		
+		//Guardar Objeto
+		int id = modelo.save(v1);		
+		assertTrue ("No se ha podido guardar", -1 < id);
 		
-		assertTrue ("No se ha podido guardar", -1 < modelo.save(v1) );
+		//recuperar por su ID y comprobar que sea igual
+		Via v2 = (Via)modelo.getById(id);
+		assertEquals( "agarra lo que puedas", v2.getNombre() );
+		assertEquals( 30 , v2.getLongitud() );
+		assertEquals( Grado.DIFICIL, v2.getGrado() );
+		assertEquals( LOREM_IPSUM_1, v2.getDescripcion() );
 		
-		
+		//eliminar
+		assertTrue("No se ha podido eliminar", modelo.delete(id));
 		
 	}
 

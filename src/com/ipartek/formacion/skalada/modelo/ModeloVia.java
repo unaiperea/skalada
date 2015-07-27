@@ -1,5 +1,12 @@
 package com.ipartek.formacion.skalada.modelo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.skalada.bean.Via;
@@ -13,7 +20,7 @@ import com.ipartek.formacion.skalada.bean.Via;
 public class ModeloVia implements Persistable {
 	
 	private static final String PATH_DATA      = "data/via/";
-	private static final String PATH_INDEX      = "data/via/index.txt";
+	private static final String PATH_INDEX      = "data/via/index.dat";
 	private static final String FILE_EXTENSION = ".dat";
 	
 	/**
@@ -27,14 +34,37 @@ public class ModeloVia implements Persistable {
 	 */
 	public ModeloVia() {
 		super();
-		
+		getIndex();
 	}
 	
 
 	@Override
 	public int save(Object o) {
-		// TODO Auto-generated method stub
-		return -1;
+		
+		ObjectOutputStream oos = null;
+		int resul = -1;
+		
+		try{
+			Via v  = (Via)o;		
+			String file = PATH_DATA + (indice+1) + FILE_EXTENSION;			
+			oos = new ObjectOutputStream(new FileOutputStream( file ));
+			//guardar objeto
+			oos.writeObject(v);
+			//actualizar indice
+			resul = updateIndex();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if ( oos != null ){
+				try {
+					oos.close();
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
+			}		
+			
+		}			
+		return resul;
 	}
 
 	@Override
@@ -67,6 +97,21 @@ public class ModeloVia implements Persistable {
 	 * @return indice actual, valor inicial 0
 	 */
 	private int getIndex(){
+		FileReader fr = null;
+		try {
+			fr = new FileReader(new File(PATH_INDEX));
+			indice = Character.getNumericValue( fr.read() );			
+		} catch ( Exception e) {			
+			e.printStackTrace();
+		}finally{
+			if ( fr != null ){
+				try {
+					fr.close();
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
+			}
+		}			
 		return indice;
 	}
 	
@@ -75,6 +120,22 @@ public class ModeloVia implements Persistable {
 	 * @return indice incrementado
 	 */
 	private int updateIndex(){
-		return indice;
+		FileWriter fr = null;
+		indice++;
+		try {
+			fr = new FileWriter(new File(PATH_INDEX));
+			fr.write(indice);	
+		} catch ( Exception e) {			
+			e.printStackTrace();
+		}finally{
+			if ( fr != null ){
+				try {
+					fr.close();
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
+			}
+		}		
+		return indice;		
 	}
 }
