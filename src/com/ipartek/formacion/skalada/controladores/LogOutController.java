@@ -20,8 +20,7 @@ public class LogOutController extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public LogOutController() {
-        super();
-        // TODO Auto-generated constructor stub
+        super();       
     }
 
 	/**
@@ -36,6 +35,8 @@ public class LogOutController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("Logout....");
 		request.getSession().invalidate();
 		request.getRequestDispatcher("index.jsp").forward(request, response);		
 	}

@@ -49,16 +49,20 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		System.out.println("Login entrando...");
+		
 		session = request.getSession();
 		
 		String usuario = (String)session.getAttribute(KEY_SESSION_USER);
 		
 		//Usuario Logeado
-		if ( usuario != null && !"".equals(usuario) ){		
+		if ( usuario != null && !"".equals(usuario) ){	
+			System.out.println("    usuario YA logeado");
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
 		//Usuario NO Logeado o caducada session	
 		}else{
+			System.out.println("    usuario NO logeado");
 			//recoger parametros del formulario
 			getParameters(request);		
 			
@@ -78,7 +82,7 @@ public class LoginController extends HttpServlet {
 			
 		}
 		
-		
+		System.out.println("Login forward o saliendo");
 		dispatcher.forward(request, response);
 		
 	}
