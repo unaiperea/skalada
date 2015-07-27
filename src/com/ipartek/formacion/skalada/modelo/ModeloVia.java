@@ -1,6 +1,12 @@
 package com.ipartek.formacion.skalada.modelo;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -34,6 +40,11 @@ public class ModeloVia implements Persistable {
 	 */
 	public ModeloVia() {
 		super();
+		
+		File findex = new File(PATH_INDEX);
+		if ( !findex.exists()){
+			createIndex();
+		}		
 		getIndex();
 	}
 	
@@ -97,21 +108,20 @@ public class ModeloVia implements Persistable {
 	 * @return indice actual, valor inicial 0
 	 */
 	private int getIndex(){
-		FileReader fr = null;
+		DataInputStream fr = null;		
 		try {
-			fr = new FileReader(new File(PATH_INDEX));
-			indice = Character.getNumericValue( fr.read() );			
+			fr = new DataInputStream(new FileInputStream(PATH_INDEX));			
+			indice = fr.readInt();			
 		} catch ( Exception e) {			
 			e.printStackTrace();
-		}finally{
+		}finally{			
+			
 			if ( fr != null ){
-				try {
-					fr.close();
-				} catch (IOException e) {					
-					e.printStackTrace();
-				}
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
 			}
-		}			
+			
+		}	
+		System.out.println("getIndex: " + indice );
 		return indice;
 	}
 	
@@ -120,22 +130,45 @@ public class ModeloVia implements Persistable {
 	 * @return indice incrementado
 	 */
 	private int updateIndex(){
-		FileWriter fr = null;
+		System.out.println("updateIndex entrar: " + indice );
+		DataOutputStream fr = null;		
+		
 		indice++;
 		try {
-			fr = new FileWriter(new File(PATH_INDEX));
-			fr.write(indice);	
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));		
+			fr.writeInt(indice);	
 		} catch ( Exception e) {			
 			e.printStackTrace();
 		}finally{
+		
 			if ( fr != null ){
-				try {
-					fr.close();
-				} catch (IOException e) {					
-					e.printStackTrace();
-				}
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
 			}
-		}		
+		}	
+		System.out.println("updateIndex salir: " + indice );
 		return indice;		
 	}
+	
+	/**
+	 * Crea fichero de indice
+	 */
+	private void createIndex(){
+		
+		System.out.println("createIndex");
+		DataOutputStream fr = null;		
+		indice=0;
+		try {
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));			
+			fr.writeInt(indice);	
+		} catch ( Exception e) {			
+			e.printStackTrace();
+		}finally{						
+			if ( fr != null ){
+				try {fr.close();} catch (IOException e) {e.printStackTrace();}
+			}
+			
+		}	
+		
+	}
+	
 }
