@@ -46,6 +46,9 @@ public class LoginController extends HttpServlet {
 	}
 
 	/**
+	 * Controlamos que el usuario NO esté YA en session, 
+	 * si NO es así le enviamos directamente al BackOffice
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
