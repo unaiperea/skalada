@@ -12,7 +12,7 @@ public enum Grado implements Serializable{
 
 	//TODO luego será una tabla auxiliar en la bbdd
 	FACIL, NORMAL, DIFICIL, EXTREMO; 
-	
+}
 	 
 	
 	 

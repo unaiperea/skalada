@@ -34,7 +34,7 @@ public class ModeloVia implements Persistable{
 	public ModeloVia() { //Constructor ModeloVia
 		super();
 		
-		file fIndex = new File(PATH_INDEX);
+		File fIndex = new File(PATH_INDEX);
 		if (fIndex!=null){
 			
 		}
