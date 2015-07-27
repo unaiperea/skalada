@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada;
 
 /**
+<<<<<<< HEAD
  * 
  * Grado de dificultad para las vías o sectores
  * @author Curso
@@ -9,5 +10,3 @@ package com.ipartek.formacion.skalada;
 public enum Grado {
 
 	//TODO luego será una tabla auxiliar en la bbdd
-	FACIL, NORMAL, DIFICIL, EXTREMO;
-}
