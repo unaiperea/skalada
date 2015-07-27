@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.skalada.Constantes;
 
@@ -16,7 +17,15 @@ import com.ipartek.formacion.skalada.Constantes;
 public class LoginController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-       
+     
+	//comprobamos con la BBDD	
+	private final String EMAIL = "admin@admin.com";
+	private final String PASS  = "admin";
+	
+	//Key para guardar el usuario en session
+	public final static String KEY_SESSION_USER = "ss_user";
+	
+	HttpSession session; 
 	private RequestDispatcher dispatcher = null;
 	
 	private String pEmail;
@@ -26,8 +35,7 @@ public class LoginController extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public LoginController() {
-        super();
-        // TODO Auto-generated constructor stub
+        super();       
     }
 
 	/**
@@ -41,29 +49,45 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//recoger parametros del formulario
-		getParameters(request);
 		
+		System.out.println("Login entrando...");
 		
-		//validar los datos
-
-		//comprobamos con la BBDD	
-		String email = "admin@admin.com";
-		String pass = "admin";
+		session = request.getSession();
 		
-		if(email.equals(pEmail)&&pass.equals(pPassword)){		
-			//Ir a => index_back.jsp		
+		String usuario = (String)session.getAttribute(KEY_SESSION_USER);
+		
+		//Usuario Logeado
+		if ( usuario != null && !"".equals(usuario) ){	
+			System.out.println("    usuario YA logeado");
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
-		} else {
-			//Ir a => login.jsp
-			request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
-			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+		//Usuario NO Logeado o caducada session	
+		}else{
+			System.out.println("    usuario NO logeado");
+			//recoger parametros del formulario
+			getParameters(request);		
+			
+			//validar los datos		
+			if(EMAIL.equals(pEmail)&&PASS.equals(pPassword)){
+				
+				//salver session
+				session.setAttribute(KEY_SESSION_USER, pEmail );
+				
+				//Ir a => index_back.jsp		
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+			} else {
+				//Ir a => login.jsp
+				request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			}
+			
 		}
 		
+		System.out.println("Login forward o saliendo");
 		dispatcher.forward(request, response);
 		
 	}
+
+	
 
 	/**
 	* Recoger los parametros enviados
