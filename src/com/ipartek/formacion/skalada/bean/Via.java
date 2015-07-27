@@ -1,5 +1,7 @@
 package com.ipartek.formacion.skalada.bean;
 
+import java.io.Serializable;
+
 import com.ipartek.formacion.skalada.Grado;
 
 /**
@@ -8,8 +10,7 @@ import com.ipartek.formacion.skalada.Grado;
  * @author Curso
  *
  */
-public class Via {
-	
+public class Via implements Serializable {
 	
 	//Atributos
 	/**

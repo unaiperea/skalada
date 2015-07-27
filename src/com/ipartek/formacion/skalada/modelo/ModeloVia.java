@@ -17,6 +17,7 @@ import com.ipartek.formacion.skalada.bean.Via;
  *
  */
 
+
 public class ModeloVia implements Persistable{
 	
 	private static final String PATH_DATA = "data/via/"; //Creamos la carpeta a mano, luego será una tabla de la bbdd
@@ -33,14 +34,13 @@ public class ModeloVia implements Persistable{
 	 */
 	public ModeloVia() { //Constructor ModeloVia
 		super();
-		
 		File fIndex = new File(PATH_INDEX);
 		if (fIndex!=null){
 			
 		}
 		
 		getIndex();
-		
+
 	}
 
 	//Menú Source --> Override/Implements Methods
@@ -52,6 +52,7 @@ public class ModeloVia implements Persistable{
 		
 		try{
 			Via v  = (Via)o; //Casteamos el objeto tipo Object para que contenga el objeto tipo Via
+
 			String file = PATH_DATA + (indice+1) + FILE_EXTENSION;			
 			oos = new ObjectOutputStream(new FileOutputStream( file ));
 			//guardar objeto
@@ -127,6 +128,7 @@ public class ModeloVia implements Persistable{
 	 * @return el índice incrementado
 	 */
 	private int updateIndex(){
+
 		FileWriter fw = null;
 		indice++;
 		
