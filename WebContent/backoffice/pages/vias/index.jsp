@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 
 <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -11,7 +12,7 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Vias
                     	<!-- TODO llamar al Servlet, nunca a una JSP -->
-                    	<a href="pages/vias/form.jsp" type="button" class="btn btn-outline btn-success">
+                    	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=-1" type="button" class="btn btn-outline btn-success">
                     		<i class="fa fa-plus"></i> Nueva
                     	</a>
                     </h1>
@@ -43,7 +44,11 @@
 	        	%>
 		            <tr>
 		                <td><%=v.getId()%></td>
-		                <td><%=v.getNombre()%></td>
+		                <td>
+		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=<%=i%>">
+		                		<%=v.getNombre()%>
+		                	</a>
+		                </td>
 		                <td><%=v.getGrado()%></td>
 		                <td><%=v.getLongitud()%></td>		                
 		            </tr>

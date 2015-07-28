@@ -1,6 +1,13 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Via"%>
+
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
+<%
+	//recoger parametro "via" de la Clase Via
+	Via via = (Via)request.getAttribute("via");
+
+%>
        
 
         <div id="page-wrapper">
@@ -20,13 +27,13 @@
             		<div class="form-group">
             			<!-- Mostramos el input text, pero se submita el hidden -->
                     	<label for="id">ID</label>
-                    	<input type="hidden" name="id" value="">
-            			<input type="text" class="form-control" value="69" disabled>
+                    	<input type="hidden" name="id" value="<%=via.getId()%>">
+            			<input type="text" class="form-control" value="<%=via.getId()%>" disabled>
             		</div>	
             	
             		<div class="form-group">
                     	<label for="nombre">Nombre</label>
-                        <input class="form-control" name="nombre">                        
+                        <input class="form-control" name="nombre" type="text" value="<%=via.getNombre()%>">                        
                     </div>
             	
             		<!-- TODO resto de Inputs -->
