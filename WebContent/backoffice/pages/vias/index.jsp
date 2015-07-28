@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 
@@ -36,16 +37,16 @@
 		 		       		 
 		        <tbody>
 	        	<%
-	        	//TODO recoger el atributo que nos llegara del Servlet con una coleccion de Vias
-	        	
+	        	//Recoger el atributo "vias" que nos llegara del Servlet con una coleccion de Vias
+	        	ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("vias");	        	
 	        	Via v = null;
-	        	for ( int i=0; i < 200; i++ ){
-	        		v = new Via("Fina y segura");	
+	        	for ( int i=0; i < vias.size() ; i++ ){
+	        		v = vias.get(i);	
 	        	%>
 		            <tr>
 		                <td><%=v.getId()%></td>
 		                <td>
-		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=<%=i%>">
+		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=<%=v.getId()%>">
 		                		<%=v.getNombre()%>
 		                	</a>
 		                </td>
