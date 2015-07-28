@@ -1,203 +1,288 @@
 package com.ipartek.formacion.skalada.modelo;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.skalada.bean.Via;
 
 /**
- * Clase encargada de persistir los objetos de tipo {@code Via} 
- * en ficheros serializando y des-serializando
+ * Clase encargada de persistir los objetos de tipo {@code Via} en ficheros
+ * serializando y des-serializando
+ * 
  * @author ur00
  *
  */
 public class ModeloVia implements Persistable {
-	
-	private static final String PATH_DATA      = "data/via/";
-	private static final String PATH_INDEX      = "data/via/index.dat";
+
+	private static final String PATH_DATA_FOLDER = "data/";
+	private static final String PATH_DATA_VIA = PATH_DATA_FOLDER + "via/";
+	private static final String PATH_INDEX = PATH_DATA_VIA + "index.dat";
 	private static final String FILE_EXTENSION = ".dat";
-	
+
 	/**
 	 * Identificador del ultimo objeto creado, valor inicial 0
 	 */
-	private static int indice; 
-	
+	private static int indice;
 
 	/**
 	 * Actualiza el indice
 	 */
 	public ModeloVia() {
 		super();
-		
+
+		// Crea la estructura de carpetas si no existe
+		File fDtaFolder = new File(PATH_DATA_FOLDER);
+		if (!fDtaFolder.exists()) {
+			fDtaFolder.mkdir();
+		}
+
+		File fDataFolderVia = new File(PATH_DATA_VIA);
+		if (!fDataFolderVia.exists()) {
+			fDataFolderVia.mkdir();
+		}
+
 		File findex = new File(PATH_INDEX);
-		if ( !findex.exists()){
+		if (!findex.exists()) {
 			createIndex();
-		}		
+		}
+
+		// obtiene el indice actual
 		getIndex();
 	}
-	
 
 	@Override
 	public int save(Object o) {
-		
-		ObjectOutputStream oos = null;
+
+		FileOutputStream outputStream = null;
+		ObjectOutputStream out = null;
+
+		String file = PATH_DATA_VIA + (indice + 1) + FILE_EXTENSION;
+
 		int resul = -1;
-		
-		try{
-			Via v  = (Via)o;		
-			String file = PATH_DATA + (indice+1) + FILE_EXTENSION;			
-			oos = new ObjectOutputStream(new FileOutputStream( file ));
-			//guardar objeto
-			oos.writeObject(v);
-			//actualizar indice
-			resul = updateIndex();			
-		}catch(Exception e){
+
+		try {
+
+			Via v = (Via) o;
+
+			v.setId(indice + 1);
+
+			outputStream = new FileOutputStream(file);
+			out = new ObjectOutputStream(outputStream);
+
+			// guardar objeto
+			out.writeObject(v);
+
+			// actualizar indice
+			resul = updateIndex();
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}finally{
-			if ( oos != null ){
-				try {
-					oos.close();
-				} catch (IOException e) {					
-					e.printStackTrace();
-				}
-			}		
-			
-		}			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null)
+					out.close();
+				if (outputStream != null)
+					outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return resul;
 	}
 
 	@Override
 	public Object getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		FileInputStream inputStream = null;
+		ObjectInputStream in = null;
+
+		String file = PATH_DATA_VIA + id + FILE_EXTENSION;
+
+		Via resul = null;
+
+		try {
+			inputStream = new FileInputStream(file);
+			in = new ObjectInputStream(inputStream);
+
+			resul = (Via) in.readObject();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+				if (inputStream != null)
+					inputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return resul;
 	}
 
 	@Override
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
-		//TODO implementar
+
+		FileInputStream inputStream = null;
+		ObjectInputStream in = null;
+
+		File vias = new File(PATH_DATA_VIA);
+		if (vias.exists()) {
+
+			File[] ficheros = vias.listFiles();
+
+			for (int i = 0; i < (ficheros.length - 1); i++) {
+
+				try {
+					inputStream = new FileInputStream(PATH_DATA_VIA
+							+ ficheros[i].getName());
+					in = new ObjectInputStream(inputStream);
+
+					resul.add((Via) in.readObject());
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (in != null)
+							in.close();
+						if (inputStream != null)
+							inputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 		return resul;
 	}
 
 	@Override
 	public boolean update(Object o) {
-		File f = null;
-		boolean resul = false;
-		
-		try{
-		f = new File(PATH_DATA);
-		
-		if (f.isDirectory()){ //Comprobar el índice del Objeto que sea igual al número que contiene el fichero
-			f.getName();
-		}
-		
-		
-		}catch(Exception e){
-			e.getStackTrace();
-		}
-		
-		return resul;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		
+
+		File fBorrar = null;
+
+		String file = PATH_DATA_VIA + id + FILE_EXTENSION;
+
 		boolean resul = false;
-		File f = null;
-		
-		try{
-			f = new File(PATH_DATA + id + FILE_EXTENSION);
-	
-			if (f.isFile() && f.exists()){
-				resul = f.delete();
-			}else{
-				resul = false;
-			}
-		}catch(Exception e){
-			e.getStackTrace();
-			resul = false;
+
+		fBorrar = new File(file);
+
+		if (fBorrar.exists()) {
+			fBorrar.delete();
+			resul = true;
 		}
+
 		return resul;
-	}	
+	}
 
 	/**
 	 * Recupera el indice actual del fichero de texto {@code PATH_INDEX}
+	 * 
 	 * @return indice actual, valor inicial 0
 	 */
-	private int getIndex(){
-		DataInputStream fr = null; //Lee un fichero de enteros
+	private int getIndex() {
+		DataInputStream fr = null;
 		try {
-			fr = new DataInputStream(new FileInputStream(PATH_INDEX));			
-			indice = fr.readInt(); //que lea el primer dato numérico	
-		} catch ( Exception e) {			
+			fr = new DataInputStream(new FileInputStream(PATH_INDEX));
+			indice = fr.readInt();
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{			
-			
-			if ( fr != null ){
-				try {fr.close();} catch (IOException e) {e.printStackTrace();}
+		} finally {
+			if (fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			
-		}	
-		System.out.println("getIndex: " + indice );
+		}
+		System.out.println("getIndex: " + indice);
 		return indice;
 	}
-	
+
 	/**
 	 * Incrementa en 1 el indice actual del fichero de texto {@code PATH_INDEX}
+	 * 
 	 * @return indice incrementado
 	 */
-	private int updateIndex(){
-		System.out.println("updateIndex entrar: " + indice );
-		DataOutputStream fr = null;		
-		
+	private int updateIndex() {
+		System.out.println("updateIndex entrar: " + indice);
+		DataOutputStream fr = null;
+
 		indice++;
 		try {
-			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));		
-			fr.writeInt(indice);	
-		} catch ( Exception e) {			
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));
+			fr.writeInt(indice);
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-		
-			if ( fr != null ){
-				try {fr.close();} catch (IOException e) {e.printStackTrace();}
+		} finally {
+
+			if (fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}	
-		System.out.println("updateIndex salir: " + indice );
-		return indice;		
+		}
+		System.out.println("updateIndex salir: " + indice);
+		return indice;
 	}
-	
+
 	/**
 	 * Crea fichero de indice
 	 */
-	private void createIndex(){
-		
+	private void createIndex() {
+
 		System.out.println("createIndex");
-		DataOutputStream fr = null;		
-		indice=0;
+		DataOutputStream fr = null;
+		indice = 0;
 		try {
-			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));			
-			fr.writeInt(indice);	
-		} catch ( Exception e) {			
+			fr = new DataOutputStream(new FileOutputStream(PATH_INDEX));
+			fr.writeInt(indice);
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{						
-			if ( fr != null ){
-				try {fr.close();} catch (IOException e) {e.printStackTrace();}
+		} finally {
+			if (fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			
-		}	
-		
+
+		}
+
 	}
-	
+
 }

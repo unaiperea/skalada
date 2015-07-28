@@ -37,7 +37,7 @@ public class Via implements Serializable {
 	//Constructores
 	public Via() {
 		super();
-		this.id = 1;
+		this.id = -1;
 		this.nombre = "";
 		this.grado = Grado.NORMAL;
 		this.longitud = 0;
@@ -46,7 +46,7 @@ public class Via implements Serializable {
 	
 	public Via(String nombre) {
 		super();
-		this.id = 1;
+		this.id = -1;
 		this.nombre = nombre;
 		this.grado = Grado.NORMAL;
 		this.longitud = 0;
@@ -61,6 +61,12 @@ public class Via implements Serializable {
 	//public void setId(int id) {
 	//	this.id = id;
 	//}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getNombre() {
 		return nombre;
 	}
