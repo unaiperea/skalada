@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 
 <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -14,7 +15,7 @@
         
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Edici&oacute;n Via</h1>
+                    <h1 class="page-header"><%=request.getAttribute("titulo")%></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -36,12 +37,17 @@
                         <input class="form-control" name="nombre" type="text" value="<%=via.getNombre()%>">                        
                     </div>
             	
+            	
+            		<div class="form-group">
+                    	<label for="nombre">Descripcion</label>
+                        <textarea class="form-control" name="descripcion"><%=via.getDescripcion()%></textarea>                        
+                    </div>
             		<!-- TODO resto de Inputs -->
             		
             		<!-- Botonera -->
             		<div class="form-group">
             			<input type="submit" value="Modificar" class="btn btn-outline btn-primary">
-            			<input type="button" value="Eliminar" class="btn btn-outline btn-danger">
+            			<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>" class="btn btn-outline btn-danger">Eliminar</a>
             		</div>
             		
             	</form>

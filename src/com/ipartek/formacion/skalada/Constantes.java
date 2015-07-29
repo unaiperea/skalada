@@ -23,4 +23,19 @@ public class Constantes {
 	public static final String CONTROLLER_VIAS   = ROOT_APP + "vias";
 	
 	
+	//Acciones
+	public static final int ACCION_NUEVO    = 0;
+	public static final int ACCION_DETALLE  = 1;
+	public static final int ACCION_LISTAR   = 2;
+	public static final int ACCION_ELIMINAR = 3;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

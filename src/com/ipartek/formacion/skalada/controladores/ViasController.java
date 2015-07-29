@@ -24,13 +24,11 @@ public class ViasController extends HttpServlet {
 	private ModeloVia modelo = null;
 	private Via via = null;
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ViasController() {
-        super();       
-    }
-
+	//parametros
+	private int pAccion = Constantes.ACCION_LISTAR; //accion por defecto
+	private int pID     = -1; //ID no valido
+	
+	
     /**
      * Este metodo se ejecuta solo la primera vez que se llama al Servlet
      * Se suele usar para crear el modelo
@@ -38,15 +36,124 @@ public class ViasController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {    	
     	super.init(config);
-    	modelo = new ModeloVia();
-    	
+    	modelo = new ModeloVia();    	
     	//TODO quitar estos datos de prueba
-    	generateViaMocks(modelo);
-    	
-    	
+    	//generateViaMocks(modelo);    	
     }
     
-    /**
+   
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			
+		
+		//recoger parametro ACCION y ID
+		getParameters(request, response);
+		
+		//realizar Accion solicitada
+		switch (pAccion) {
+			case Constantes.ACCION_DETALLE:
+				detalle(request, response);
+				break;
+			case Constantes.ACCION_NUEVO:
+				nuevo(request, response);
+				break;
+			case Constantes.ACCION_ELIMINAR:
+				eliminar(request, response);
+				break;		
+			default:
+				listar(request, response);
+				break;
+		}
+		
+		dispatcher.forward(request, response);
+	}
+	
+
+	private void listar(HttpServletRequest request, HttpServletResponse response) {
+		
+		request.setAttribute("vias", modelo.getAll() );
+		
+		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_INDEX );
+		
+	}
+
+
+
+	private void eliminar(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		
+		if ( modelo.delete(pID)){
+			request.setAttribute("msg", "Via Eliminada");
+		}else{
+			request.setAttribute("msg", "Via NO Eliminada " + pID );
+		}
+		
+		listar(request, response);
+		
+	}
+
+
+
+	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
+
+		via = new Via("nueva"); 
+		request.setAttribute("via", via );
+		request.setAttribute("titulo", "Crear nueva Via" );
+		
+		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_FORM);
+	}
+
+
+
+	private void detalle(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		via = (Via)modelo.getById(pID);
+		request.setAttribute("via", via );
+		request.setAttribute("titulo", via.getNombre() );
+		
+		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_FORM);
+		
+	}
+
+
+
+	private void getParameters(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		
+		try{
+			//recoger accion a realizar
+			String sAccion = request.getParameter("accion");
+			pAccion = Integer.parseInt(sAccion);			
+		
+			//recoger Identificador de la Via					
+			pID = Integer.parseInt(request.getParameter("id"));
+			
+		}catch(Exception e){
+			pAccion = Constantes.ACCION_LISTAR;
+			pID = -1;
+			e.printStackTrace();
+		}	
+		
+	}
+
+
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+	}
+
+	
+	 /**
      * Crea un juego de datos ficticio para las Vias
      * @param modelo2
      */
@@ -78,51 +185,4 @@ public class ViasController extends HttpServlet {
 		
 		
 	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-		
-		//recoger parametro id de la Via
-		String pID = request.getParameter("id");
-		
-		//detalle o nueva
-		if ( pID != null && !"".equals(pID)){
-			int id = Integer.parseInt(pID);
-			// nueva via
-			if ( id == -1 ){ 
-				via = new Via("Nueva");
-			//detalle via	
-			}else{
-				//TODO llamar al modelo para recuperarla por ID
-				via = new Via("Almendralejo");
-				via.setId(5);
-				via.setGrado(Grado.FACIL);
-				via.setLongitud(34);
-				via.setDescripcion("Lorem ipsum bla bla bla");
-			}
-			//enviar atributo con la via
-			request.setAttribute("via", via);
-			//cargarmos el dispatcher
-			dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_FORM);
-		
-		//Listar todas las vias	
-		}else{
-			request.setAttribute("vias", modelo.getAll() );
-			dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_INDEX);	
-		}
-		
-		dispatcher.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-	}
-
 }

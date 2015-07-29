@@ -11,9 +11,8 @@
         
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Vias
-                    	<!-- TODO llamar al Servlet, nunca a una JSP -->
-                    	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=-1" type="button" class="btn btn-outline btn-success">
+                    <h1 class="page-header">Vias                    	
+                    	<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_NUEVO%>" type="button" class="btn btn-outline btn-success">
                     		<i class="fa fa-plus"></i> Nueva
                     	</a>
                     </h1>
@@ -46,7 +45,7 @@
 		            <tr>
 		                <td><%=v.getId()%></td>
 		                <td>
-		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?id=<%=v.getId()%>">
+		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=v.getId()%>">
 		                		<%=v.getNombre()%>
 		                	</a>
 		                </td>
