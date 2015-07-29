@@ -112,7 +112,9 @@ public class ViasController extends HttpServlet {
 		
 		try {
 			pAccion = Integer.parseInt(request.getParameter("accion"));		
-			pID = Integer.parseInt(request.getParameter("id"));
+			if(request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))){
+				pID = Integer.parseInt(request.getParameter("id"));
+			}
 		} catch(Exception e){
 			e.printStackTrace();
 		}
