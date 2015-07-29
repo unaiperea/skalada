@@ -31,6 +31,15 @@
         });
     });
     </script>
+    
+    <!-- Ventana Modal -->
+    <script>
+    $(document).ready(function() {
+
+    });    
+    </script>
+    
+    
 
 </body>
 

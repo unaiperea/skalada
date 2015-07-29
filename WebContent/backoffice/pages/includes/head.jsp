@@ -1,13 +1,8 @@
 <%@page import="com.ipartek.formacion.skalada.controladores.LoginController"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
-<%
-	
-
-%>
-
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 

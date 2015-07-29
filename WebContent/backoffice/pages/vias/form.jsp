@@ -37,12 +37,25 @@
           	</div>
 
 			<div class="form-group">
-                <label for="grado">Grado <% Grado grado = via.getGrado(); %></label>
-                <select class="form-control" name="grado" > 
-                    <option value="FACIL" <% if( grado.equals(Grado.FACIL) ){ out.print("selected");  }%>>FACIL</option>
-					<option value="NORMAL" <% if( grado.equals(Grado.NORMAL) ) out.print("selected"); %> >NORMAL</option>
-					<option value="DIFICIL" <% if( grado.equals(Grado.DIFICIL) ) out.print("selected"); %> >DIFICIL</option>
-					<option value="EXTREMO" <% if( grado.equals(Grado.EXTREMO) ) out.print("selected"); %> >EXTREMO</option>             
+                <label for="grado">Grado </label>
+                <select class="form-control" name="grado" >
+                	
+                	<%	
+                		Grado[] grados = Grado.values();
+                		String selected = "";
+                		for (int i = 0; i < grados.length ; i++){ 
+                			
+//                 			String selected = ( grados[i] == via.getGrado() )?"selected":"";		//operador ternario
+                			
+                			if( grados[i] == via.getGrado() ){
+                				selected = "selected";  
+                			} else {
+                				selected = "";
+                			}
+                	%>
+                		<option value="<%=grados[i]%>" <%=selected%> ><%=grados[i]%></option>
+                	<% 	} %>
+
              	</select>
           	</div>
           	
@@ -60,25 +73,26 @@
 			
 			<!-- Botonera -->
 			<div class="form-group">
-				<input type="submit" class="btn btn-outline btn-primary" value="<%=request.getAttribute("metodo")%>">
+								
+				<% if(via.getId()!= -1){ %>
+						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
+						<div id="fade" class="overlay"></div>
+							<div id="light" class="modal">
+						  		<p>Lorem ipsum dolor sit.....</p>
+						  	</div>
+						  	
+							<a href="" class="btn btn-outline btn-danger" onclick="myFunction()">Eliminar</a>
+					
+					
 				
-				<%
-					if ("Modificar".equals(request.getAttribute("metodo"))){
-						out.print("<a href='"+ Constantes.CONTROLLER_VIAS + "?accion=" + Constantes.ACCION_ELIMINAR + "&id=" + via.getId() + "&accion=eliminar' class='btn btn-outline btn-danger'>Eliminar</a>");
-					}
-
-					if ("Guardar".equals(request.getAttribute("metodo"))){
-						out.print("<button type='reset' class='btn btn-outline btn-danger'>Reset</button>");
-					}
+<%-- 				href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>&accion=eliminar" --%>
 				
 				
-				%>
-
-<!-- 				<button type='reset' class='btn btn-outline btn-danger'>Reset</button> -->
-
-<%-- 				<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>&accion=eliminar" class="btn btn-outline btn-danger"> --%>
-<!-- 					Eliminar -->
-<!-- 				</a> -->
+				<% } else { %>
+						<input type="submit" class="btn btn-outline btn-primary" value="Crear / Guardar">
+						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
+				<% } %>
+	
 				
 			</div>
 			
