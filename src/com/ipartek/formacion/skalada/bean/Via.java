@@ -54,13 +54,6 @@ public class Via implements Serializable {
 	}
 	
 	//Getters y Setters
-	//El ID se encarga el ordenador de settearlo
-	//public int getId() {
-	//	return id;
-	//}
-	//public void setId(int id) {
-	//	this.id = id;
-	//}
 	public int getId() {
 		return id;
 	}
@@ -93,6 +86,18 @@ public class Via implements Serializable {
 	}
 
 	//Métodos/Funciones
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/***************************************
+	 *               METODOS               *  
+	****************************************/
+	
 	@Override
 	public String toString() {
 		return "Via [id=" + id + ", nombre=" + nombre + ", grado=" + grado

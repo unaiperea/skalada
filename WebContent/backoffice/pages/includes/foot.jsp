@@ -14,6 +14,15 @@
     <!-- <script src="bower_components/raphael/raphael-min.js"></script> -->
     <!-- <script src="bower_components/morrisjs/morris.min.js"></script> -->
     <!-- <script src="js/morris-data.js"></script> -->
+<<<<<<< HEAD
+=======
+    
+    
+    <!-- DataTables JavaScript -->
+    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+        
+>>>>>>> refs/remotes/upstream/master
 
 	<!-- DataTables JavaScript -->
     <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
@@ -22,6 +31,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
+<<<<<<< HEAD
 	
 	<script>
 	
@@ -30,6 +40,21 @@
 		    $('#tabla').DataTable();
 		} );
 	</script>
+=======
+
+	<script>
+		
+	    $(document).ready(function() {
+	    	
+	    	//Enganche para DataTable
+	        $('#tabla').DataTable({
+	                responsive: true
+	        });
+	        
+	    });
+    </script>
+
+>>>>>>> refs/remotes/upstream/master
 </body>
 
 </html>

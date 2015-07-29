@@ -62,7 +62,7 @@
                             <a href="<%=Constantes.VIEW_BACK_INDEX%>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="<%=Constantes.CONTROLLER_VIAS%>"><i class="fa fa-bar-chart-o fa-fw"></i> Vias</a>
+                            <a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i class="fa fa-bar-chart-o fa-fw"></i> Vias</a>
                         </li>
                         
                     </ul>
