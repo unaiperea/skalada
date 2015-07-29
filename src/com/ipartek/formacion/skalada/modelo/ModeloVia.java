@@ -1,6 +1,5 @@
 package com.ipartek.formacion.skalada.modelo;
 
-import static org.junit.Assert.fail;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,8 +22,9 @@ import com.ipartek.formacion.skalada.bean.Via;
  */
 public class ModeloVia implements Persistable {
 	
-	private static final String PATH_DATA      = "data/via/";
-	private static final String PATH_INDEX      = PATH_DATA + "index.dat";
+	private static final String PATH_DATA_FOLDER = "data/";
+	private static final String PATH_DATA_VIA = PATH_DATA_FOLDER + "via/";
+	private static final String PATH_INDEX = PATH_DATA_VIA + "index.dat";
 	private static final String FILE_EXTENSION = ".dat";
 	
 	/**
@@ -39,10 +39,23 @@ public class ModeloVia implements Persistable {
 	public ModeloVia() {
 		super();
 		
+		// Crea la estructura de carpetas si no existe
+		File fDtaFolder = new File(PATH_DATA_FOLDER);
+		if (!fDtaFolder.exists()) {
+			fDtaFolder.mkdir();
+		}
+
+		File fDataFolderVia = new File(PATH_DATA_VIA);
+		if (!fDataFolderVia.exists()) {
+			fDataFolderVia.mkdir();
+		}
+
 		File findex = new File(PATH_INDEX);
-		if ( !findex.exists()){
+		if (!findex.exists()) {
 			createIndex();
-		}		
+		}
+
+		// obtiene el indice actual
 		getIndex();
 	}
 	
@@ -53,7 +66,7 @@ public class ModeloVia implements Persistable {
 		FileOutputStream outputStream = null;
 		ObjectOutputStream out =  null;
 		
-		String file = PATH_DATA + (indice+1) + FILE_EXTENSION;
+		String file = PATH_DATA_VIA + (indice+1) + FILE_EXTENSION;
 		
 		int resul = -1;			
 		
@@ -73,15 +86,15 @@ public class ModeloVia implements Persistable {
 			resul = updateIndex();
 			
 		} catch (FileNotFoundException e) {
-			fail("Fichero  no encontrado");
+			e.printStackTrace();
 		} catch (IOException e) {
-			fail("Error al abrir fichero");
+			e.printStackTrace();
 		} finally {			
 			try {
 				if (out != null ) out.close();
 				if (outputStream != null ) outputStream.close();
 			} catch (IOException e) {
-				fail("Fallo al cerrar fichero");
+				e.printStackTrace();
 			}			
 		}	
 		
@@ -94,7 +107,7 @@ public class ModeloVia implements Persistable {
 		FileInputStream inputStream = null;
 		ObjectInputStream in =  null;	
 		
-		String file = PATH_DATA + id + FILE_EXTENSION;
+		String file = PATH_DATA_VIA + id + FILE_EXTENSION;
 		
 		Via resul = null;
 		
@@ -105,17 +118,17 @@ public class ModeloVia implements Persistable {
 			resul = (Via) in.readObject();
 						
 		} catch (FileNotFoundException e) {
-			fail("Fichero no encontrado");
+			e.printStackTrace();
 		} catch (IOException e) {
-			fail("Error al abrir fichero");
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			fail("Objeto de clase Via no encontrado en el fichero");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (in != null ) in.close();
 				if (inputStream != null ) inputStream.close();
 			} catch (IOException e) {
-				fail("Fallo al cerrar fichero");
+				e.printStackTrace();
 			}
 		}
 		
@@ -129,7 +142,7 @@ public class ModeloVia implements Persistable {
 		FileInputStream inputStream = null;
 		ObjectInputStream in =  null;		
 		
-		File vias = new File(PATH_DATA);
+		File vias = new File(PATH_DATA_VIA);
 		if (vias.exists()){
 			
 			File[] ficheros = vias.listFiles();
@@ -138,23 +151,23 @@ public class ModeloVia implements Persistable {
 	    		   	
 	    		
 	    		try {
-	    			inputStream = new FileInputStream(PATH_DATA + ficheros[i].getName());
+	    			inputStream = new FileInputStream(PATH_DATA_VIA + ficheros[i].getName());
 	    			in = new ObjectInputStream(inputStream);
 	    			
 	    			resul.add((Via) in.readObject());
 	    						
 	    		} catch (FileNotFoundException e) {
-	    			fail("Fichero no encontrado");
+	    			e.printStackTrace();
 	    		} catch (IOException e) {
-	    			fail("Error al abrir fichero");
+	    			e.printStackTrace();
 	    		} catch (ClassNotFoundException e) {
-	    			fail("Objeto de clase Via no encontrado en el fichero");
+	    			e.printStackTrace();
 	    		} finally {
 	    			try {
 	    				if (in != null ) in.close();
 	    				if (inputStream != null ) inputStream.close();
 	    			} catch (IOException e) {
-	    				fail("Fallo al cerrar fichero");
+	    				e.printStackTrace();
 	    			}
 	    		}
 	    	}			
@@ -165,8 +178,36 @@ public class ModeloVia implements Persistable {
 
 	@Override
 	public boolean update(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		FileOutputStream outputStream = null;
+		ObjectOutputStream out =  null;
+		
+		boolean resul = false;		
+		Via v = (Via)o;		
+		String file = PATH_DATA_VIA + v.getId() + FILE_EXTENSION;
+		
+		try {
+			outputStream = new FileOutputStream(file);
+			out = new ObjectOutputStream(outputStream);
+			
+			//guardar objeto
+			out.writeObject(v);
+			
+			resul = true;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {			
+			try {
+				if (out != null ) out.close();
+				if (outputStream != null ) outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}	
+		
+		return resul;
 	}
 
 	@Override
@@ -174,7 +215,7 @@ public class ModeloVia implements Persistable {
 		
 		File fBorrar = null;
 		
-		String file = PATH_DATA + id + FILE_EXTENSION;
+		String file = PATH_DATA_VIA + id + FILE_EXTENSION;
 		
 		boolean resul = false;
 			
