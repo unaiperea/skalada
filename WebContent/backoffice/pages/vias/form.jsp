@@ -72,12 +72,7 @@
 					<div class="form-group">
 			            <label for="imagen">Ruta de la imagen:</label>
 			            <input type="text" id="ruta_imgen" class="form-control" name="imagen" value="<%=via.getImagen()%>" onchange="cambiarImg(this.value)">
-			        	<br>
-				        	<script>
-						        function cambiarImg(val) {
-									 document.getElementById('vista_previa').src = "";				
-								}			        
-				        	</script>
+			        	<br>				        	
 			        	<figure class="col-md-10 col-md-offset-1" >
 			        		<img id="vista_previa" class="img-responsive" src="<%=via.getImagen()%>" alt="">
 			        	</figure>			        
