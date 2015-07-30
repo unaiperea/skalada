@@ -5,15 +5,16 @@
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger parametro "via" de la clase Via
+	//recoger parametro (Objeto Via)"via" y (String)"titulo"
 	Via via = (Via)request.getAttribute("via");
+	String titulo = request.getAttribute("titulo").toString();
 %>
 
 <div id="page-wrapper">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=request.getAttribute("titulo") %></h1>
+            <h1 class="page-header"><%=titulo%></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -37,7 +38,7 @@
           	</div>
 
 			<div class="form-group">
-                <label for="grado">Grado </label>
+                <label for="grado">Dificultad </label>
                 <select class="form-control" name="grado" >
                 	
                 	<%	
@@ -68,25 +69,76 @@
 	            <label for="descripcion">Descripcion</label>
 	            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
 	        </div>
-		
-			<!-- TODO resto de inputs -->
+
 			
 			<!-- Botonera -->
 			<div class="form-group">
 								
 				<% if(via.getId()!= -1){ %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
-						<div id="fade" class="overlay"></div>
-							<div id="light" class="modal">
-						  		<p>Lorem ipsum dolor sit.....</p>
+  						<!-- Trigger the modal with a button -->
+						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
+						
+						<!-- Ventana Modal -->
+						<div class="modal fade col-md-6 col-md-offset-3" id="myModal" role="dialog">
+							<div class="modal-dialog">
+						  
+						    <!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR VIA: <%=via.getNombre().toUpperCase() %></h2>
+						  			</div>
+						  			<div class="modal-body">
+						    			<p>Estas seguro de que desea eliminar la siguiente via:</p>
+					    				<div class="row">
+					    					<div class="form-group col-md-6">
+					    						<label for="id">ID</label>
+					    						<input type="text" name="id" class="form-control" value="<%=via.getId()%>" disabled >						    						
+					    					</div>
+					    					<div class="form-group col-md-6">
+					    						<label for="nombre">Nombre</label>
+					    						<input type="text" name="nombre" class="form-control" value="<%=via.getNombre()%>" disabled >						    						
+					    					</div>
+					    				</div>
+					    				<div class="row">
+					    					<div class="form-group col-md-6">
+					    						<label for="grado">Dificultad</label>
+					    						<input type="text" name="grado" class="form-control" value="<%=via.getGrado()%>" disabled >						    						
+					    					</div>
+					    					<div class="form-group col-md-6">
+					    						<label for="longitud">Longitud</label>
+					    						<input type="text" name="longitud" class="form-control" value="<%=via.getLongitud()%>" disabled >						    						
+					    					</div>
+					    				</div>
+					    				<div class="row">
+					    					<div class="form-group col-md-12">
+					    						<label for="descripcion">Descripcion</label>
+	            								<textarea class="form-control" rows="3" name="descripcion" disabled><%=via.getDescripcion()%></textarea>						    						
+					    					</div>
+					    				</div>
+					    				<div class="row checkbox">
+                                        	<div class="form-group col-md-12">
+                                        		<label>
+                                            		<input type="checkbox" id="check_eliminar">S&iacute;, estoy seguro. Deseo eliminar la Via seleccionada.
+                                           		</label>
+                                           		    <!-- Habilitar eliminacion mediante checkbox -->
+												    <script>
+														document.getElementById('check_eliminar').onclick = function () {
+															document.getElementById('boton_eliminar').classList.toggle("disabled");				
+														}	
+													</script>
+                                           	</div>
+                                       	</div>
+						  			</div>
+						  			<div class="modal-footer">						    			
+						    			<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>&accion=eliminar" id ="boton_eliminar" class="btn btn-danger btn-xs disabled">Eliminar</a>
+						      			<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						      		</div>
+						    	</div> <!-- END Modal content-->
 						  	</div>
-						  	
-							<a href="" class="btn btn-outline btn-danger" onclick="myFunction()">Eliminar</a>
-					
-					
-				
-<%-- 				href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>&accion=eliminar" --%>
-				
+						</div> <!-- END Ventana Modal -->
+			
 				
 				<% } else { %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Crear / Guardar">
