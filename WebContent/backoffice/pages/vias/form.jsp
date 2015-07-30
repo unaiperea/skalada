@@ -25,55 +25,78 @@
 	
 		<form action="<%=Constantes.CONTROLLER_VIAS%>" method="post" role="form">
 			
-			<div class="form-group">			
-				<!-- Mostramon el input text, pero se submita el hidden -->
-				<label for="id">ID</label>
-				<input type="hidden" name="id" value="<%=via.getId()%>">
-				<input type="text"  class="form-control" value="<%=via.getId()%>" disabled >
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">			
+						<!-- Mostramon el input text, pero se submita el hidden -->
+						<label for="id">ID</label>
+						<input type="hidden" name="id" value="<%=via.getId()%>">
+						<input type="text"  class="form-control" value="<%=via.getId()%>" disabled >
+					</div>
+					
+					<div class="form-group">
+		           		<label for="nombre">Nombre</label>
+		           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
+		          	</div>
+		
+					<div class="form-group">
+		                <label for="grado">Dificultad </label>
+		                <select class="form-control" name="grado" >
+		                	
+		                	<%	
+		                		Grado[] grados = Grado.values();
+		                		String selected = "";
+		                		for (int i = 0; i < grados.length ; i++){ 
+		                			
+// 		                			String selected = ( grados[i] == via.getGrado() )?"selected":"";		//operador ternario
+		                			
+		                			if( grados[i] == via.getGrado() ){
+		                				selected = "selected";  
+		                			} else {
+		                				selected = "";
+		                			}
+		                	%>
+		                		<option value="<%=grados[i]%>" <%=selected%> ><%=grados[i]%></option>
+		                	<% 	} %>
+		
+		             	</select>
+		          	</div>
+		          	
+		          	<div class="form-group">
+		           		<label for="longitud">Longitud</label>
+		           		<input type="number" class="form-control" name="longitud" value="<%=via.getLongitud()%>">
+		          	</div>
+				</div>
+				
+				<div class="col-md-6">
+					<div class="form-group">
+			            <label for="imagen">Ruta de la imagen:</label>
+			            <input type="text" id="ruta_imgen" class="form-control" name="imagen" value="<%=via.getImagen()%>" onchange="cambiarImg(this.value)">
+			        	<br>
+				        	<script>
+						        function cambiarImg(val) {
+									 document.getElementById('vista_previa').src = "";				
+								}			        
+				        	</script>
+			        	<figure class="col-md-10 col-md-offset-1" >
+			        		<img id="vista_previa" class="img-responsive" src="<%=via.getImagen()%>" alt="">
+			        	</figure>			        
+			        </div>
+			        <script>
+				        function cambiarImg(val) {
+							 document.getElementById('vista_previa').src = val;				
+						}			        
+			        </script>
+			    </div>
+				
 			</div>
-			
-			<div class="form-group">
-           		<label for="nombre">Nombre</label>
-           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
-          	</div>
-
-			<div class="form-group">
-                <label for="grado">Dificultad </label>
-                <select class="form-control" name="grado" >
-                	
-                	<%	
-                		Grado[] grados = Grado.values();
-                		String selected = "";
-                		for (int i = 0; i < grados.length ; i++){ 
-                			
-//                 			String selected = ( grados[i] == via.getGrado() )?"selected":"";		//operador ternario
-                			
-                			if( grados[i] == via.getGrado() ){
-                				selected = "selected";  
-                			} else {
-                				selected = "";
-                			}
-                	%>
-                		<option value="<%=grados[i]%>" <%=selected%> ><%=grados[i]%></option>
-                	<% 	} %>
-
-             	</select>
-          	</div>
-          	
-          	<div class="form-group">
-           		<label for="longitud">Longitud</label>
-           		<input type="number" class="form-control" name="longitud" value="<%=via.getLongitud()%>">
-          	</div>
           	
           	<div class="form-group">
 	            <label for="descripcion">Descripcion</label>
 	            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
 	        </div>
 	        
-	        <div class="form-group">
-	            <label for="imagen">Ruta de la imagen</label>
-	            <input type="text" class="form-control" name="imagen" value="<%=via.getImagen()%>">
-	        </div>
+	        
 
 			
 			<!-- Botonera -->
