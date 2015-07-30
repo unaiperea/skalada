@@ -44,4 +44,14 @@
     <servlet-name>HomeController</servlet-name>
     <url-pattern>/home</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>controlador para visualizar los detalles de las vias en el frontend</description>
+    <display-name>ViasPublicController</display-name>
+    <servlet-name>ViasPublicController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ViasPublicController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViasPublicController</servlet-name>
+    <url-pattern>/via</url-pattern>
+  </servlet-mapping>
 </web-app>

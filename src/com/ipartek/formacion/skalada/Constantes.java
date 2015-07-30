@@ -6,6 +6,7 @@ public class Constantes {
 	
 	//vistas publicas
 	public static final String VIEW_PUBLIC_INDEX = "index.jsp";
+	public static final String VIEW_PUBLIC_VIA = "/pages/via_detalle.jsp";
 	
 	//vistas backoffice
 	public static final String ROOT_BACK = ROOT_APP + "backoffice/";
@@ -21,6 +22,7 @@ public class Constantes {
 	public static final String CONTROLLER_LOGOUT = ROOT_APP + "logout";	
 	public static final String CONTROLLER_VIAS   = ROOT_APP + "vias";
 	public static final String CONTROLLER_HOME   = ROOT_APP + "home";
+	public static final String CONTROLLER_VIA   = ROOT_APP + "via";
 	
 	//acciones
 	public static final int ACCION_NUEVO	= 0;

@@ -34,7 +34,7 @@
 			
 			<div class="form-group">
            		<label for="nombre">Nombre</label>
-           		<input class="form-control" name="nombre" type="text" value="<%=via.getNombre()%>">
+           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
           	</div>
 
 			<div class="form-group">
@@ -68,6 +68,11 @@
           	<div class="form-group">
 	            <label for="descripcion">Descripcion</label>
 	            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
+	        </div>
+	        
+	        <div class="form-group">
+	            <label for="imagen">Ruta de la imagen</label>
+	            <input type="text" class="form-control" name="imagen" value="<%=via.getImagen()%>">
 	        </div>
 
 			

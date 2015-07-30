@@ -39,6 +39,11 @@ public class Via implements Serializable {
 	 * Descripcion
 	 */
 	private String descripcion;
+	
+	/**
+	 * Imagen
+	 */
+	private String imagen;
 
 //**********************************
 //****		Contructores		****
@@ -53,9 +58,10 @@ public class Via implements Serializable {
 		this.setGrado(Grado.NORMAL);
 		this.setLongitud(0);
 		this.setDescripcion("");
+		this.setImagen("http://placehold.it/700x450");
 	}
 	
-	
+
 //**********************************
 //****		Getters Setters		****
 //**********************************
@@ -98,15 +104,22 @@ public class Via implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+		
+	public String getImagen() {
+		return imagen;
+	}
 
-//**********************************
-//****		Metodos				****
-//**********************************
-	@Override
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+
+@Override
 	public String toString() {
 		return "Via [id=" + id + ", nombre=" + nombre + ", grado=" + grado
 				+ ", longitud=" + longitud + ", descripcion=" + descripcion
-				+ "]";
+				+ ", imagen=" + imagen + "]";
 	}
 	
 

@@ -108,7 +108,7 @@
                <figure>
                     <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
                 	<figcaption class="text-center">
-						<a href="#" ><%=v.getNombre()%></a>
+						<a href="<%=Constantes.CONTROLLER_VIA%>?id=<%=v.getId()%>" ><%=v.getNombre()%></a>
 					</figcaption>
 				</figure>
             </div>

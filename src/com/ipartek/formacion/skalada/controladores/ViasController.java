@@ -31,6 +31,7 @@ public class ViasController extends HttpServlet {
 	private Grado pGrado;
 	private int pLongitud;
 	private String pDescripcion;
+	private String pImagen;
 	
     
     /**
@@ -120,7 +121,7 @@ public class ViasController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		via = (Via)modelo.getById(pID);
 		request.setAttribute("via", via);
-		request.setAttribute("titulo", via.getNombre());
+		request.setAttribute("titulo", via.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);		
 	}
@@ -168,6 +169,7 @@ public class ViasController extends HttpServlet {
 		via.setGrado(pGrado);
 		via.setLongitud(pLongitud);
 		via.setDescripcion(pDescripcion);
+		via.setImagen(pImagen);
 	}
 
 
@@ -187,6 +189,7 @@ public class ViasController extends HttpServlet {
 			pLongitud = 0;
 		}		
 		pDescripcion = request.getParameter("descripcion");
+		pImagen = request.getParameter("imagen");
 	
 	}
 	
