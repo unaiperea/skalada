@@ -53,7 +53,7 @@
                         </li>
                         
                         <li>
-                        	<a href="<%=Constantes.VIEW_PUBLIC_INDEX%>"><i class="fa fa-globe fa-fw"></i> Web Publica</a>
+                        	<a href="<%=Constantes.CONTROLLER_HOME%>"><i class="fa fa-globe fa-fw"></i> Web Publica</a>
                         </li>                        	
                         <li>
                             <a href="<%=Constantes.VIEW_BACK_INDEX%>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>

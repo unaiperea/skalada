@@ -1,10 +1,13 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ipartek.formacion.skalada.Constantes;
 
 /**
  * Servlet implementation class LogoutControler
@@ -35,7 +38,7 @@ public class LogoutControler extends HttpServlet {
 		System.out.println("Logout.... ");
 		
 		request.getSession().invalidate();
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		request.getRequestDispatcher("home").forward(request, response);
 		
 	}
 

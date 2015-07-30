@@ -90,37 +90,10 @@
 											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR VIA: <%=via.getNombre().toUpperCase() %></h2>
 						  			</div>
 						  			<div class="modal-body">
-						    			<p>Estas seguro de que desea eliminar la siguiente via:</p>
-					    				<div class="row">
-					    					<div class="form-group col-md-6">
-					    						<label for="id">ID</label>
-					    						<input type="text" name="id" class="form-control" value="<%=via.getId()%>" disabled >						    						
-					    					</div>
-					    					<div class="form-group col-md-6">
-					    						<label for="nombre">Nombre</label>
-					    						<input type="text" name="nombre" class="form-control" value="<%=via.getNombre()%>" disabled >						    						
-					    					</div>
-					    				</div>
-					    				<div class="row">
-					    					<div class="form-group col-md-6">
-					    						<label for="grado">Dificultad</label>
-					    						<input type="text" name="grado" class="form-control" value="<%=via.getGrado()%>" disabled >						    						
-					    					</div>
-					    					<div class="form-group col-md-6">
-					    						<label for="longitud">Longitud</label>
-					    						<input type="text" name="longitud" class="form-control" value="<%=via.getLongitud()%>" disabled >						    						
-					    					</div>
-					    				</div>
-					    				<div class="row">
-					    					<div class="form-group col-md-12">
-					    						<label for="descripcion">Descripcion</label>
-	            								<textarea class="form-control" rows="3" name="descripcion" disabled><%=via.getDescripcion()%></textarea>						    						
-					    					</div>
-					    				</div>
-					    				<div class="row checkbox">
+						    			<div class="row checkbox">
                                         	<div class="form-group col-md-12">
                                         		<label>
-                                            		<input type="checkbox" id="check_eliminar">S&iacute;, estoy seguro. Deseo eliminar la Via seleccionada.
+                                            		<input type="checkbox" id="check_eliminar">Marca la casilla para eliminar
                                            		</label>
                                            		    <!-- Habilitar eliminacion mediante checkbox -->
 												    <script>

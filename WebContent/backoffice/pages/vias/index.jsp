@@ -72,7 +72,7 @@
 	        	 
 	        <tbody>	           
 	           <%
-	           		//TODO recoger el atributo "vias" que nos llegara del Servlet con una coleccion de Vias(ArrayList<Vias>)
+	           		// recoger el atributo "vias" que nos llegara del Servlet con una coleccion de Vias(ArrayList<Vias>)
 	           		ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("vias");
 	           		
 	           		Via v = null;
