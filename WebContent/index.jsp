@@ -1,3 +1,5 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Via"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
 <!DOCTYPE html>
@@ -418,38 +420,26 @@ header {
         <!-- Portfolio Section -->
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">Portfolio Heading</h2>
+                <h2 class="page-header">&Uacute;ltimas V&iacute;as</h2>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
+
+            	<%
+            	ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("ultimas_vias");
+            	if (vias == null ){ //Si las vías son nulas
+            		vias = new ArrayList<Via>(); //Hago uno nuevo y que no recorra nada el for, sino cascaría 
+            	}
+            	Via via = null;
+            	for (int i=0; i<vias.size(); i++){
+            		via = vias.get(i);
+            	%>
+            	<div class="col-md-4 col-sm-6">
+            		<figure>
+                   		<img class="img-responsive img-portfolio img-hover" src="<%=via.getImg()%>" alt="">
+            			<figcaption><a href="<%=Constantes.CONTROLLER_VIA%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=via.getId()%>"><%=via.getNombre()%></a></figcaption>
+            		</figure>
+				</div>
+            	<%} //end for%>
+
         </div>
         <!-- /.row -->
 

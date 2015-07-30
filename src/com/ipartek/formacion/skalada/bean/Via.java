@@ -33,6 +33,10 @@ public class Via implements Serializable {
 	 * Descripción general de la vía
 	 */
 	private String descripcion;
+	/**
+	 * Imágen de la vía
+	 */
+	private String img;
 
 	//Constructores
 	public Via() {
@@ -42,6 +46,7 @@ public class Via implements Serializable {
 		this.grado = Grado.NORMAL;
 		this.longitud = 0;
 		this.descripcion = "";
+		this.img = "";
 	}
 	
 	public Via(String nombre) {
@@ -51,15 +56,10 @@ public class Via implements Serializable {
 		this.grado = Grado.NORMAL;
 		this.longitud = 0;
 		this.descripcion = "";
+		this.img = "";
 	}
 	
 	//Getters y Setters
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -85,6 +85,14 @@ public class Via implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	//Métodos/Funciones
 	public int getId() {
 		return id;
@@ -97,12 +105,12 @@ public class Via implements Serializable {
 	/***************************************
 	 *               METODOS               *  
 	****************************************/
-	
 	@Override
 	public String toString() {
 		return "Via [id=" + id + ", nombre=" + nombre + ", grado=" + grado
 				+ ", longitud=" + longitud + ", descripcion=" + descripcion
-				+ "]";
+				+ ", img=" + img + "]";
 	}
+	
 
 }

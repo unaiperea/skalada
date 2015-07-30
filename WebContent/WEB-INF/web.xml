@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>skalada</display-name>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>home</welcome-file>
   </welcome-file-list>
   <servlet>
     <description>Login para entrar la backoffice</description>
@@ -34,4 +34,27 @@
     <servlet-name>LogOutController</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Controlador de la página pública principal o fontend</description>
+    <display-name>HomeController</display-name>
+    <servlet-name>HomeController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.HomeController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HomeController</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>Accede a la vía seleccionada</description>
+    <display-name>ViaController</display-name>
+    <servlet-name>ViaController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ViaController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ViaController</servlet-name>
+    <url-pattern>/via</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -27,6 +27,10 @@ public class ViasController extends HttpServlet {
 	//parametros
 	private int pAccion = Constantes.ACCION_LISTAR; //accion por defecto
 	private int pID     = -1; //ID no valido
+	private String pNombre;
+	private int    pLongitud;
+	private Grado  pGrado;
+	private String pDescripcion;
 	
 	
     /**
@@ -36,7 +40,8 @@ public class ViasController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {    	
     	super.init(config);
-    	modelo = new ModeloVia();    	
+    	modelo = new ModeloVia();
+    	
     	//TODO quitar estos datos de prueba
     	//generateViaMocks(modelo);    	
     }
@@ -72,6 +77,11 @@ public class ViasController extends HttpServlet {
 	}
 	
 
+	/**
+	 * Obtiene todas las vias del modelo y carga con dispatch con backoffice/pages/vias/form.jsp
+	 * @param request
+	 * @param response
+	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		
 		request.setAttribute("vias", modelo.getAll() );
@@ -125,14 +135,18 @@ public class ViasController extends HttpServlet {
 	private void getParameters(HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		
 		try{
 			//recoger accion a realizar
 			String sAccion = request.getParameter("accion");
 			pAccion = Integer.parseInt(sAccion);			
 		
-			//recoger Identificador de la Via					
-			pID = Integer.parseInt(request.getParameter("id"));
+			//recoger Identificador de la Via	
+			String sID = request.getParameter("id");
+			if( sID != null && !"".equalsIgnoreCase(sID)){
+				pID = Integer.parseInt(sID);
+			}else{
+				pID = 1;
+			}
 			
 		}catch(Exception e){
 			pAccion = Constantes.ACCION_LISTAR;
@@ -149,9 +163,59 @@ public class ViasController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		try{
+			getParametersFormulario(request, response); //Recogemos los parámetros que nos han enviado desde el formulario
+			
+			crearObjetoVia(); //Le metemos los parámetros al nuevo objeto
+			
+			if (via.getId() == -1){
+				modelo.save(via); //guardamos el nuevo reg
+				request.setAttribute("msg", "Nueva vía creada con éxito"); //Enviamos un mensaje al cliente en el atributo msg
+			}else{
+				modelo.update(via); //hacemos update del existente
+				request.setAttribute("msg", "Nueva vía modificada con éxito"); //Enviamos un mensaje al cliente en el atributo msg
+			}
+			
+			listar(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+			request.setAttribute("msg", "Error recibiendo parametros");
+			dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_VIAS_FORM );
+		}finally{
+			dispatcher.forward(request, response);
+		}
 		
 	}
 
+	/**
+	 * Crea un objeto {@code Via} con los parámetros recibidos
+	 */
+	private void crearObjetoVia() {
+		via = new Via(pNombre);
+		via.setId(pID);
+		via.setLongitud(pLongitud);
+		via.setGrado(pGrado);
+		via.setDescripcion(pDescripcion);
+
+	}
+	
+	/**
+	 * Recoger los parámetros enviados desde el formulario:
+	 * @see backoffice\pages\vias\form.jsp
+	 * @param request
+	 * @param response
+	 */
+	private void getParametersFormulario(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		pID = Integer.parseInt(request.getParameter("id"));
+		pNombre = request.getParameter("nombre");
+		pLongitud = Integer.parseInt(request.getParameter("longitud"));
+		pGrado = Grado.valueOf(request.getParameter("grado")); //Casteamos el String a un objeto de tipo Grado
+		pDescripcion = request.getParameter("descripcion");
+		
+	}
+	
 	
 	 /**
      * Crea un juego de datos ficticio para las Vias
@@ -163,24 +227,28 @@ public class ViasController extends HttpServlet {
 		v.setDescripcion("Tampoco lo se");
 		v.setLongitud(12);
 		v.setGrado(Grado.FACIL);
+		v.setImg("http://lorempixel.com/400/200/");
 		modelo.save(v);
 		
 		v = new Via("Arrebalde");
 		v.setDescripcion("Arrabalde es un pueblo situado al noreste de la provincia de Zamora a 25 kil�metros de Benavente. Es conocido culturalmente por su riqueza  arqueol�gica, ya que en lo alto de su sierra se encuentran los restos del antiguo castro celta de �Las Labradas� El castro de Las Labradas fue emplazado en la Sierra de Carpurias a 1.000 metros de altitud. Por su extensi�n, esta considerado como el m�s grande de todo el noroeste peninsular, con asentamientos en la Edad del Bronce (1400 a 900 a.C.) y finales de la Edad del Hierro (siglos I a.C. al Id.C.). Destaca la aparici�n de dos ocultaciones de joyas prerromanas conocidas gen�ricamente como �El Tesoro de Arrabalde�. En las antiguas escuelas del pueblo de Arrabalde encontramos el Aula Arqueol�gica, donde tendremos una amable visita guiada por la reproducci�n de una calle del Castro. As� mismo dispondremos de informaci�n sobre toda la Ruta Arqueol�gica de los Valles.En las inmediaciones del Castro existen unas franjas rocosas de cuarcitas conocidas como Pe�a la Pipa y Pe�a Sorda . En estas paredes el Club Monta�ero Benaventano ha equipado 40 v�as de Escalada Deportiva que van desde el tercero hasta el s�ptimo grado. Seis de estas rutas componen un sector de iniciaci�n llamado J�venes Guerreros.Para alojarnos, Benavente dispone de gran oferta, tambi�n hay un camping en M�zar de Valverde. Adem�s el pueblo de Arrabalde, dispone de dos panader�as con productos tradicionales, dos bares, una tienda y una farmacia.");
 		v.setLongitud(32);
 		v.setGrado(Grado.DIFICIL);
+		v.setImg("http://lorempixel.com/400/200/");
 		modelo.save(v);
 		
 		v = new Via("La Cabeza");
 		v.setDescripcion("No hay descripci�n disponible para esta zona");
 		v.setLongitud(142);
 		v.setGrado(Grado.EXTREMO);
+		v.setImg("http://lorempixel.com/400/200/");
 		modelo.save(v);
 		
 		v = new Via("Uxola (Alcoy)");
 		v.setDescripcion("Peque�a escuela situada a escasos cinco minutos del casco urbano de Alcoy. Cuenta con v�as dif�ciles y explosivas y en ella se han forjado los potentes escaladores locales.");
 		v.setLongitud(142);
 		v.setGrado(Grado.NORMAL);
+		v.setImg("http://lorempixel.com/400/200/");
 		modelo.save(v);
 		
 		
