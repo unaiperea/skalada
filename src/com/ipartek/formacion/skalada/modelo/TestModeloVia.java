@@ -40,9 +40,21 @@ public class TestModeloVia {
 	@Test
 	public void test() {
 		
-		Via v1 = new Via("agarra lo que puedas");
-		v1.setLongitud(30);
-		v1.setGrado(Grado.DIFICIL);
+		String nombreVia = "agarra lo que puedas";
+		Grado grado = new Grado("");
+		int longitud = 0;
+		//Zona
+		String nombreZona = "Ogoño";
+		Zona zona = new Zona(nombreZona, null); //Creamos una zona sin array de sectores
+		//Sectores
+		String nombreSector1 = "cara sur";
+		Sector sector1 = new Sector(nombreSector1, zona);
+		
+		//Tipo Escalada
+		String nombreTipoEscalada = "deportiva";
+		TipoEscalada tipoEscalada = new TipoEscalada(nombreTipoEscalada);
+		
+		Via v1 = new Via(nombreVia, grado, longitud, tipoEscalada, sector1);
 		v1.setDescripcion(LOREM_IPSUM_1);
 		
 		//Guardar Objeto
@@ -51,9 +63,9 @@ public class TestModeloVia {
 		
 		//recuperar por su ID y comprobar que sea igual
 		Via v2 = (Via)modelo.getById(id);
-		assertEquals( "agarra lo que puedas", v2.getNombre() );
-		assertEquals( 30 , v2.getLongitud() );
-		assertEquals( Grado.DIFICIL, v2.getGrado() );
+		assertEquals( nombreVia, v2.getNombre() );
+		assertEquals( longitud , v2.getLongitud() );
+		assertEquals( grado.getNombre(), v2.getGrado().getNombre() );
 		assertEquals( LOREM_IPSUM_1, v2.getDescripcion() );
 		
 		//eliminar
