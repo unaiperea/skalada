@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.Grado;
+import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
@@ -208,7 +208,7 @@ public class ViasController extends HttpServlet {
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre");
 		pLongitud = Integer.parseInt(request.getParameter("longitud"));
-		pGrado = Grado.valueOf(request.getParameter("grado")); //Casteamos el String a un objeto de tipo Grado
+		//pGrado = Grado.valueOf(request.getParameter("grado")); //Casteamos el String a un objeto de tipo Grado
 		pDescripcion = request.getParameter("descripcion");
 		
 	}

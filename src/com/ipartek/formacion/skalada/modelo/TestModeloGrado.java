@@ -14,7 +14,7 @@ public class TestModeloGrado {
 
 	String nombreGrado1 = "Mock1";
 	Grado grado1 = new Grado(nombreGrado1);
-	ModeloGrado modeloGrado = new ModeloGrado;
+	ModeloGrado modeloGrado = new ModeloGrado();
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
