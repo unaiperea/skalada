@@ -1,5 +1,4 @@
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
-<%@page import="com.ipartek.formacion.skalada.Grado"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>

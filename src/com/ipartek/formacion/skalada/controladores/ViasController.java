@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.Grado;
+import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
@@ -169,7 +169,6 @@ public class ViasController extends HttpServlet {
 		via.setGrado(pGrado);
 		via.setLongitud(pLongitud);
 		via.setDescripcion(pDescripcion);
-		via.setImagen(pImagen);
 	}
 
 
@@ -182,7 +181,7 @@ public class ViasController extends HttpServlet {
 	
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre");
-		pGrado = Grado.valueOf(request.getParameter("grado"));
+//		pGrado = Grado.valueOf(request.getParameter("grado"));
 		if(request.getParameter("longitud") != null && !"".equals(request.getParameter("longitud"))){
 			pLongitud = Integer.parseInt(request.getParameter("longitud"));
 		} else {
@@ -192,37 +191,7 @@ public class ViasController extends HttpServlet {
 		pImagen = request.getParameter("imagen");
 	
 	}
-	
-	
-    /**
-     * Crea un juego de datos ficticios para las Vias
-     * @param modelo2
-     */
-	private void generateViaMocks(ModeloVia modelo2) {
-		Via v = new Via("No se");
-		v.setDescripcion("Tampoco lo se");
-		v.setGrado(Grado.DIFICIL);
-		v.setLongitud(67);
-		modelo.save(v);
 
-		v = new Via("Arrabalde");
-		v.setDescripcion("Arrabalde es un pueblo situado al noreste de la provincia de Zamora a 25 kilómetros de Benavente. Es conocido culturalmente por su riqueza  arqueológica, ya que en lo alto de su sierra se encuentran los restos del antiguo castro celta de 'Las Labradas'");
-		v.setGrado(Grado.EXTREMO);
-		v.setLongitud(500);
-		modelo.save(v);
-		
-		v = new Via("La Cucala");
-		v.setDescripcion("Escuela de escalada cercana a Castellon y alternativa a Castellet, equipado por el Club Trepa Castellet y el Club de Montaña Villareal.");
-		v.setGrado(Grado.FACIL);
-		v.setLongitud(12);
-		modelo.save(v);
-		
-		v = new Via("Montserrat");
-		v.setDescripcion("El Bruc, Collbato, y Monistrol de Montserrat son los puntos de partida para acceder a los distintos sectores de la zona. Monserrat Sur contiene vías de un largo de las zonas bajas de la cara sur de Montserrat con concesiones de zonas algo más arriba. Los criterios a la hora de seleccionar el contenido de la guía son la cercanía a los aparcamientos (entre 5' y 1 h) y pertenecer a la cara Sur.");
-		v.setGrado(Grado.NORMAL);
-		v.setLongitud(30);
-		modelo.save(v);
-	}
 
 }
 

@@ -21,14 +21,14 @@ DROP TABLE IF EXISTS `grado`;
 CREATE TABLE IF NOT EXISTS `grado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(10) NOT NULL COMMENT 'Grado de dificultad de la via de escalada, por ejemplo: ',
-  `desc` text,
+  `descripcion` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.grado: ~8 rows (aproximadamente)
 DELETE FROM `grado`;
 /*!40000 ALTER TABLE `grado` DISABLE KEYS */;
-INSERT INTO `grado` (`id`, `nombre`, `desc`) VALUES
+INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 	(1, '6a', NULL),
 	(2, '6b', NULL),
 	(3, 'V', NULL),
@@ -73,14 +73,14 @@ DROP TABLE IF EXISTS `tipo_escalada`;
 CREATE TABLE IF NOT EXISTS `tipo_escalada` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `desc` text,
+  `descripcion` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.tipo_escalada: ~4 rows (aproximadamente)
 DELETE FROM `tipo_escalada`;
 /*!40000 ALTER TABLE `tipo_escalada` DISABLE KEYS */;
-INSERT INTO `tipo_escalada` (`id`, `nombre`, `desc`) VALUES
+INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'Deportiva', NULL),
 	(2, 'Clásica', NULL),
 	(3, 'Alpina\r\n', NULL),
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `via` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
   `longitud` int(11) NOT NULL DEFAULT '0' COMMENT 'Longitud de la via de escalada en metros',
-  `desc` text,
+  `descripcion` text,
   `id_grado` int(11) NOT NULL,
   `id_tipo_escalada` int(11) NOT NULL,
   `id_sector` int(11) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `via` (
 -- Volcando datos para la tabla eskalada.via: ~14 rows (aproximadamente)
 DELETE FROM `via`;
 /*!40000 ALTER TABLE `via` DISABLE KEYS */;
-INSERT INTO `via` (`id`, `nombre`, `longitud`, `desc`, `id_grado`, `id_tipo_escalada`, `id_sector`) VALUES
+INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`) VALUES
 	(1, 'Irentxo', 30, 'Mantenida', 1, 1, 2),
 	(2, 'Bosque de los Inurios\r\n', 18, 'Vía con 5 movimientos muy duros', 2, 1, 2),
 	(3, 'Normal', 120, 'Larga y bonita vía con pasos de todo tipo. Reequipada con químicos en su totalidad', 3, 1, 3),

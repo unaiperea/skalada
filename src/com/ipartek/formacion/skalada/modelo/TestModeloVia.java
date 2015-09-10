@@ -8,8 +8,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.ipartek.formacion.skalada.Grado;
+import com.ipartek.formacion.skalada.bean.Grado;
+import com.ipartek.formacion.skalada.bean.Sector;
+import com.ipartek.formacion.skalada.bean.TipoEscalada;
 import com.ipartek.formacion.skalada.bean.Via;
+import com.ipartek.formacion.skalada.bean.Zona;
 
 public class TestModeloVia {
 	
@@ -40,9 +43,18 @@ public class TestModeloVia {
 	@Test
 	public void test() {
 		
-		Via v1 = new Via("agarra lo que puedas");
-		v1.setLongitud(30);
-		v1.setGrado(Grado.DIFICIL);
+		String nombreVia = "agarra lo que puedas";
+		String nombreGrado = "V";
+		Grado grado = new Grado(nombreGrado);
+		int longitud = 160;
+		String nombreZona = "Naranjo de Bulnes";
+		Zona zona = new Zona(nombreZona, null);		
+		String nombreSector = "Cara Sur";
+		Sector sector = new Sector(nombreSector, zona);
+		String nombreTipoEscalada = "Deportiva";
+		TipoEscalada tipoEscalada = new TipoEscalada(nombreTipoEscalada);
+		
+		Via v1 = new Via(nombreVia, grado, longitud, tipoEscalada, sector);
 		v1.setDescripcion(LOREM_IPSUM_1);
 		
 		//Guardar Objeto
@@ -51,9 +63,9 @@ public class TestModeloVia {
 		
 		//recuperar por su ID y comprobar que sea igual
 		Via v2 = (Via)modelo.getById(id);
-		assertEquals( "agarra lo que puedas", v2.getNombre() );
-		assertEquals( 30 , v2.getLongitud() );
-		assertEquals( Grado.DIFICIL, v2.getGrado() );
+		assertEquals( nombreVia, v2.getNombre() );
+		assertEquals( longitud , v2.getLongitud() );
+		assertEquals( grado.getNombre(), v2.getGrado().getNombre() );
 		assertEquals( LOREM_IPSUM_1, v2.getDescripcion() );
 		
 		modelo.getAll();

@@ -2,8 +2,6 @@ package com.ipartek.formacion.skalada.bean;
 
 import java.io.Serializable;
 
-import com.ipartek.formacion.skalada.Grado;
-
 /**
  * Ruta para escalada en una pared
  * 
@@ -19,7 +17,7 @@ public class Via implements Serializable {
 	 * Identificador
 	 */
 	private int id;	
-	
+
 	/**
 	 * Nombre de la Via
 	 */
@@ -41,87 +39,104 @@ public class Via implements Serializable {
 	private String descripcion;
 	
 	/**
-	 * Imagen
+	 * Tipo de escalada practicada en la via
 	 */
-	private String imagen;
+	private TipoEscalada tipoEscalada;
+	
+	/**
+	 * Sector a la que pertenece la via
+	 */
+	private Sector sector;
 
+	
 //**********************************
-//****		Contructores		****
-//**********************************
+//****		Constructores		****
+//**********************************	
+	/**
+	 * @param id
+	 * @param nombre
+	 * @param grado
+	 * @param longitud
+	 * @param tipoEscalada
+	 * @param sector
+	 */
+	public Via(String nombre, Grado grado, int longitud, TipoEscalada tipoEscalada, Sector sector) {
+		super();
+		this.setNombre(nombre);
+		this.setGrado(grado);
+		this.setLongitud(longitud);
+		this.setTipoEscalada(tipoEscalada);
+		this.setSector(sector);
+	}
+
+	
 	/**
 	 * @param nombre
 	 */
 	public Via(String nombre) {
 		super();
-		this.id = -1;
 		this.setNombre(nombre);
-		this.setGrado(Grado.NORMAL);
-		this.setLongitud(0);
-		this.setDescripcion("");
-		this.setImagen("http://placehold.it/700x450");
+		this.setGrado(null);
+		this.setTipoEscalada(null);
+		this.setSector(null);
 	}
 	
-
+	
 //**********************************
-//****		Getters Setters		****
-//**********************************
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public Grado getGrado() {
-		return grado;
-	}
-
-	public void setGrado(Grado grado) {
-		this.grado = grado;
-	}
-
-	public int getLongitud() {
-		return longitud;
-	}
-
-	public void setLongitud(int longitud) {
-		this.longitud = longitud;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
+//****		Getters/Setters		****
+//**********************************	
 	public int getId() {
 		return id;
 	}
-	
 	public void setId(int id) {
 		this.id = id;
 	}
-		
-	public String getImagen() {
-		return imagen;
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Grado getGrado() {
+		return grado;
+	}
+	public void setGrado(Grado grado) {
+		this.grado = grado;
+	}
+	public int getLongitud() {
+		return longitud;
+	}
+	public void setLongitud(int longitud) {
+		this.longitud = longitud;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public TipoEscalada getTipoEscalada() {
+		return tipoEscalada;
+	}
+	public void setTipoEscalada(TipoEscalada tipoEscalada) {
+		this.tipoEscalada = tipoEscalada;
+	}
+	public Sector getSector() {
+		return sector;
+	}
+	public void setSector(Sector sector) {
+		this.sector = sector;
 	}
 
-
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
-	}
-
-
-@Override
+//**********************************
+//****		ToString()			****
+//**********************************		
+	@Override
 	public String toString() {
 		return "Via [id=" + id + ", nombre=" + nombre + ", grado=" + grado
 				+ ", longitud=" + longitud + ", descripcion=" + descripcion
-				+ ", imagen=" + imagen + "]";
+				+ ", tipoEscalada=" + tipoEscalada + ", sector=" + sector + "]";
 	}
-	
 
 	
 	

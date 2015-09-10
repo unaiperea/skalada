@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.Grado;
+import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
