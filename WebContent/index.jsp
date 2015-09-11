@@ -106,9 +106,9 @@
             %>
             <div class="col-md-4 col-sm-6">
                <figure>
-                    <img class="img-responsive img-portfolio img-hover" src="<%=v.getImagen()%>" alt="">
+                    <img class="img-responsive img-portfolio img-hover" src="imagen" alt="">
                 	<figcaption class="text-center">
-						<a href="<%=Constantes.CONTROLLER_VIA%>?id=<%=v.getId()%>" ><%=v.getNombre()%></a>
+<%-- 						<a href="<%=Constantes.CONTROLLER_VIA%>?id=<%=v.getId()%>" ><%=v.getNombre()%></a> --%>
 					</figcaption>
 				</figure>
             </div>

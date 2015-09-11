@@ -54,4 +54,44 @@
     <servlet-name>ViasPublicController</servlet-name>
     <url-pattern>/via</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GradosController</display-name>
+    <servlet-name>GradosController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.GradosController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GradosController</servlet-name>
+    <url-pattern>/grados</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TipoEscaladaController</display-name>
+    <servlet-name>TipoEscaladaController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.TipoEscaladaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TipoEscaladaController</servlet-name>
+    <url-pattern>/tipo-escalada</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ZonasController</display-name>
+    <servlet-name>ZonasController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ZonasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ZonasController</servlet-name>
+    <url-pattern>/zonas</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SectoresController</display-name>
+    <servlet-name>SectoresController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.SectoresController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SectoresController</servlet-name>
+    <url-pattern>/sectores</url-pattern>
+  </servlet-mapping>
 </web-app>
