@@ -1,4 +1,4 @@
-<%@page import="com.ipartek.formacion.skalada.bean.Grado"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -9,9 +9,9 @@
     
 	<div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Grados
+            <h1 class="page-header">Vias
             	<!-- TODO llamar al Servlet, nunca a una JSP -->
-            	<a href="<%=Constantes.CONTROLLER_GRADOS%>?accion=<%=Constantes.ACCION_NUEVO%>" class="btn btn-outline btn-success btn-lg">
+            	<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_NUEVO%>" class="btn btn-outline btn-success btn-lg">
             		<i class="fa fa-plus"></i> Nuevo
             	</a>
            	</h1>
@@ -65,27 +65,35 @@
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
+	                <th>Longitud</th>
+	                <th>Dificultad</th>	                
+	                <th>Tipo escalada</th>
+	                <th>Sector</th>
 	                <th>Descripción</th>
 	            </tr>
 	        </thead> 
 	        	 
 	        <tbody>	           
 	           <%
-	           		// recoger el atributo "grados" que nos llegara del Servlet con una coleccion de grados(ArrayList<Grado>)
-	           		ArrayList<Grado> grados = (ArrayList<Grado>)request.getAttribute("grados");
+	           		// recoger el atributo "vias" que nos llegara del Servlet con una coleccion de vias(ArrayList<Via>)
+	           		ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("vias");
 	           		
-	           		Grado g = null;
-	           		for(int i = 0 ; i < grados.size() ; i++){
-	           			g = grados.get(i);
+	           		Via v = null;
+	           		for(int i = 0 ; i < vias.size() ; i++){
+	           			v = vias.get(i);
    	           %>
    	                <tr>
-		                <td><%=g.getId()%></td>
+		                <td><%=v.getId()%></td>
 		                <td>
-		                	<a href="<%=Constantes.CONTROLLER_GRADOS%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=g.getId()%>">
-		                		<%=g.getNombre()%>
+		                	<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=v.getId()%>">
+		                		<%=v.getNombre()%>
 		                	</a>
 		                </td>
-		                <td><%=g.getDescripcion()%></td>
+		                <td><%=v.getLongitud()%></td>
+		                <td><%=v.getGrado().getNombre()%></td>
+		                <td><%=v.getTipoEscalada().getNombre()%></td>
+		                <td><%=v.getSector().getNombre()%> (<%=v.getSector().getZona().getNombre()%>)</td>		                
+		                <td><%=v.getDescripcion()%></td>
 		            </tr>	            
 	           <%
 	           		} //end for

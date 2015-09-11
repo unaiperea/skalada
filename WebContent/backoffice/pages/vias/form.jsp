@@ -1,11 +1,11 @@
-<%@page import="com.ipartek.formacion.skalada.bean.Grado"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger atributos (Objeto Grado)"grado" y (String)"titulo"
-	Grado grado = (Grado)request.getAttribute("grado");
+	//recoger atributos (Objeto Via)"via" y (String)"titulo"
+	Via via = (Via)request.getAttribute("via");
 	String titulo = request.getAttribute("titulo").toString();
 %>
 
@@ -22,25 +22,40 @@
     	
 	<!-- Formulario -->
 	
-		<form action="<%=Constantes.CONTROLLER_GRADOS%>" method="post" role="form">
+		<form action="<%=Constantes.CONTROLLER_VIAS%>" method="post" role="form">
 			
 			<div class="row">
 				
 				<div class="form-group">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
 					<label for="id">ID</label>
-					<input type="hidden" name="id" value="<%=grado.getId()%>">
-					<input type="text"  class="form-control" value="<%=grado.getId()%>" disabled >
+					<input type="hidden" name="id" value="<%=via.getId()%>">
+					<input type="text"  class="form-control" value="<%=via.getId()%>" disabled >
 				</div>
 				
 				<div class="form-group">
 	           		<label for="nombre">Nombre</label>
-	           		<input type="text" class="form-control" name="nombre" value="<%=grado.getNombre()%>">
+	           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
 	          	</div>
-
+	          	
+	          	<div class="form-group">
+	           		<label for="longitud">Longitud</label>
+	           		<input type="number" class="form-control" name="longitud" value="<%=via.getLongitud()%>">
+	          	</div>
+	          	
+				<div class="form-group">
+	           		<label for="grado">Dificultad</label>
+	           		<input type="text" class="form-control" name="grado" value="<%=via.getNombre()%>">
+	          	</div>
+	          	
+				<div class="form-group">
+	           		<label for="nombre">Nombre</label>
+	           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
+	          	</div>
+	          	
 	          	<div class="form-group">
 		            <label for="descripcion">Descripción</label>
-		            <textarea class="form-control" rows="3" name="descripcion"><%=grado.getDescripcion()%></textarea>
+		            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
 		        </div>
 	        </div>
 	        
@@ -49,7 +64,7 @@
 			<!-- Botonera -->
 			<div class="form-group">
 								
-				<% if(grado.getId()!= -1){ %>
+				<% if(via.getId()!= -1){ %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
   						<!-- Trigger the modal with a button -->
 						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
@@ -62,7 +77,7 @@
 								<div class="modal-content">
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR: <%=grado.getNombre().toUpperCase() %></h2>
+											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR: <%=via.getNombre().toUpperCase() %></h2>
 						  			</div>
 						  			<div class="modal-body">
 						    			<div class="row checkbox">
@@ -80,7 +95,7 @@
                                        	</div>
 						  			</div>
 						  			<div class="modal-footer">						    			
-						    			<a href="<%=Constantes.CONTROLLER_GRADOS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=grado.getId()%>&accion=eliminar" id ="boton_eliminar" class="btn btn-danger btn-xs disabled">Eliminar</a>
+						    			<a href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=via.getId()%>&accion=eliminar" id ="boton_eliminar" class="btn btn-danger btn-xs disabled">Eliminar</a>
 						      			<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 						      		</div>
 						    	</div> <!-- END Modal content-->

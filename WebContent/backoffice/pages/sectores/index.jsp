@@ -1,5 +1,3 @@
-<%@page contentType="UTF-8" %>
-
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
@@ -11,7 +9,7 @@
     
 	<div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Sectors
+            <h1 class="page-header">Sectores
             	<!-- TODO llamar al Servlet, nunca a una JSP -->
             	<a href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_NUEVO%>" class="btn btn-outline btn-success btn-lg">
             		<i class="fa fa-plus"></i> Nuevo

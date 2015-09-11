@@ -1,4 +1,4 @@
-<%@page contentType="UTF-8" %>
+
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>

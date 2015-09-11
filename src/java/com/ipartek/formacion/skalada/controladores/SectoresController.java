@@ -111,6 +111,7 @@ public class SectoresController extends HttpServlet {
 			request.setAttribute("sector", sector);
 			request.setAttribute("titulo", "Crear nuevo Sector");
 			request.setAttribute("metodo", "Guardar");
+			request.setAttribute("zonas", modeloZona.getAll());
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 			
 		}
