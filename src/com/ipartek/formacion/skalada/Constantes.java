@@ -17,13 +17,24 @@ public class Constantes {
 	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
 	public static final String VIEW_BACK_VIAS_FORM = "backoffice/pages/vias/form.jsp";
 	
+	public static final String VIEW_BACK_GRADOS_INDEX = "backoffice/pages/grados/index.jsp";
+	public static final String VIEW_BACK_GRADOS_FORM = "backoffice/pages/grados/form.jsp";
+	
+	public static final String VIEW_BACK_TIPOESCALADA_INDEX = "backoffice/pages/tiposEscalada/index.jsp";
+	public static final String VIEW_BACK_TIPOESCALADA_FORM = "backoffice/pages/tiposEscalada/form.jsp";
+	
+	public static final String VIEW_BACK_ZONA_INDEX = "backoffice/pages/zonas/index.jsp";
+	public static final String VIEW_BACK_ZONA_FORM = "backoffice/pages/zonas/form.jsp";
+	
 	//controladores
 	public static final String CONTROLLER_LOGIN  = ROOT_APP + "login";
 	public static final String CONTROLLER_LOGOUT = ROOT_APP + "logout";
 	public static final String CONTROLLER_VIAS   = ROOT_APP + "vias";
 	public static final String CONTROLLER_HOME   = ROOT_APP + "home";
 	public static final String CONTROLLER_VIA   = ROOT_APP + "via";
-	
+	public static final String CONTROLLER_GRADOS   = ROOT_APP + "grados";
+	public static final String CONTROLLER_TIPOSESCALADA = ROOT_APP + "tipos-escalada";
+	public static final String CONTROLLER_ZONAS = ROOT_APP + "zonas";
 	
 	//Acciones
 	public static final int ACCION_NUEVO    = 0;

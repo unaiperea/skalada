@@ -7,43 +7,42 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.ipartek.formacion.skalada.bean.Grado;
+import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloGrado implements Persistable {
+public class ModeloZona implements Persistable {
 
-	private static final String TABLA           = "grado";
+	private static final String TABLA           = "zona";
 	private static final String COL_ID          = "id";
 	private static final String COL_NOMBRE      = "nombre";
-	private static final String COL_DESCRIPCION = "descripcion";
 	
-	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_DESCRIPCION + "`) VALUES (?,?);";
+	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`) VALUES (?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
 	private static final String SQL_GETBYID = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
 	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
-	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_DESCRIPCION + "`= ? WHERE `" + COL_ID + "`= ? ;";
+	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
 	
 	@Override
 	public int save(Object o) {
 		int resul = -1;
-		Grado g = null;	
+		Zona z = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
 		
 		if(o != null){
 			try{
-				g = (Grado)o;
+				z = (Zona)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());		
+				pst.setString(1, z.getNombre());
+
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						g.setId(resul);
+						z.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -132,17 +131,16 @@ public class ModeloGrado implements Persistable {
 	@Override
 	public boolean update(Object o) {
 		boolean resul = false;
-		Grado g = null;
+		Zona z = null;
 		PreparedStatement pst = null;
 		
 		if (o != null){
 			try{
-				g = (Grado) o;
+				z = (Zona) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_UPDATE);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());
-				pst.setInt(3, g.getId());
+				pst.setString(1, z.getNombre());
+				pst.setInt(3, z.getId());
 				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
@@ -198,12 +196,11 @@ public class ModeloGrado implements Persistable {
 	 * @return
 	 * @throws SQLException 
 	 */
-	private Grado mapeo (ResultSet rs) throws SQLException{
-		Grado resul = null;    
+	private Zona mapeo (ResultSet rs) throws SQLException{
+		Zona resul = null;    
 		
-		resul = new Grado( rs.getString(COL_NOMBRE) );
+		resul = new Zona( rs.getString(COL_NOMBRE), null ); //El constructor tiene como parámetros un nombre y un un ArrayList de Sectores
 		resul.setId( rs.getInt(COL_ID));
-		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
 		
 		return resul;
 	}

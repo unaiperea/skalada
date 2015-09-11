@@ -21,6 +21,7 @@ public class Grado implements Serializable{
 	public Grado(String nombre) {
 		super();
 		this.nombre = nombre;
+		this.id = -1;
 	}
 
 	public int getId() {

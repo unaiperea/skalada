@@ -11,21 +11,22 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.ipartek.formacion.skalada.bean.Grado;
+import com.ipartek.formacion.skalada.bean.TipoEscalada;
 
 
-public class TestModeloGrado {
+public class TestModeloTipoEscalada {
 	
-	static ModeloGrado modelo = null;
+	static ModeloTipoEscalada modelo = null;
 	
-	static String nombreGrado = "gradoMock";
-	static String descripcionGrado = "Lorem Ipsum Ñ, Á";
-	static String nombreGrado_updated = "updated";
-	static String descripcionGrado_updated = "Lorem Ipsum Ñ, Á";
+	static String nombreTipoEscalada = "gradoMock";
+	static String descripcionTipoEscalada = "Lorem Ipsum Ñ, Á";
+	static String nombreTipoEscalada_updated = "updated";
+	static String descripcionTipoEscalada_updated = "Lorem Ipsum Ñ, Á";
 	static int id;	
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		modelo = new ModeloGrado();
+		modelo = new ModeloTipoEscalada();
 	}
 
 	@AfterClass
@@ -48,11 +49,11 @@ public class TestModeloGrado {
 		int total_despues;		//Cantidad de registros en la tabla `test` tras insertar uno nuevo	
 			
 		//Test para comprobar que al insertar un nuevo registro aumenta el ID
-		Grado g_insert = new Grado(nombreGrado);
-		g_insert.setDescripcion(descripcionGrado);
+		TipoEscalada tp_insert = new TipoEscalada(nombreTipoEscalada);
+		tp_insert.setDescripcion(descripcionTipoEscalada);
 		
 		total = modelo.getAll().size();
-		id = modelo.save(g_insert);
+		id = modelo.save(tp_insert);
 		
 		assertTrue("No se ha insertado o id mal generado",
 				(id != -1) && (id != 0));
@@ -62,23 +63,23 @@ public class TestModeloGrado {
 					total == total_despues-1);
 		
 		//Test para comprobar que al obtener un registro por su ID lo devuelve correctamente
-		Grado g_get;	
-		g_get = (Grado)modelo.getById(id);		
-		assertEquals(nombreGrado, g_get.getNombre());
-		assertEquals(descripcionGrado, g_get.getDescripcion());
-		assertEquals(id, g_get.getId());
+		TipoEscalada tp_get;	
+		tp_get = (TipoEscalada)modelo.getById(id);		
+		assertEquals(nombreTipoEscalada, tp_get.getNombre());
+		assertEquals(descripcionTipoEscalada, tp_get.getDescripcion());
+		assertEquals(id, tp_get.getId());
 		
 		//Test para comprobar que actualiza el registro indentificado por su ID
-		Grado g_update = new Grado(nombreGrado_updated);
-		g_update.setDescripcion(descripcionGrado_updated);
-		g_update.setId(id);
+		Grado tp_update = new Grado(nombreTipoEscalada_updated);
+		tp_update.setDescripcion(descripcionTipoEscalada_updated);
+		tp_update.setId(id);
 		
 		//Modificamos bbdd
-		assertTrue(modelo.update(g_update));		
-		g_get = (Grado)modelo.getById(g_update.getId());		
-		assertEquals(nombreGrado_updated, g_get.getNombre());
-		assertEquals(descripcionGrado_updated, g_get.getDescripcion());
-		assertEquals(g_update.getId(), g_get.getId());
+		assertTrue(modelo.update(tp_update));		
+		tp_get = (TipoEscalada)modelo.getById(tp_update.getId());		
+		assertEquals(nombreTipoEscalada_updated, tp_get.getNombre());
+		assertEquals(descripcionTipoEscalada_updated, tp_get.getDescripcion());
+		assertEquals(tp_update.getId(), tp_get.getId());
 		
 		//Test para comprobar que elimina el registro
 		assertTrue(modelo.delete(id));
@@ -93,9 +94,9 @@ public class TestModeloGrado {
 		assertNull(modelo.getById(0));
 		
 		//Intentar actualizar un grado inexistente en la base de datos
-		Grado g = new Grado(nombreGrado);
-		g.setId(id);
-		assertTrue(!modelo.update(g));
+		TipoEscalada tp = new TipoEscalada(nombreTipoEscalada);
+		tp.setId(id);
+		assertTrue(!modelo.update(tp));
 		assertTrue(!modelo.update(null));
 		
 		//Intentar insertar un null
@@ -106,12 +107,12 @@ public class TestModeloGrado {
 		
 		
 		//Intentar insertar un grado con un id existente
-		Grado g_1 = new Grado(nombreGrado);
-		id = modelo.save(g_1);
-		Grado g_2 = new Grado(nombreGrado);
-		g_2.setId(id);
+		TipoEscalada tp_1 = new TipoEscalada(nombreTipoEscalada);
+		id = modelo.save(tp_1);
+		TipoEscalada tp_2 = new TipoEscalada(nombreTipoEscalada);
+		tp_2.setId(id);
 		
-		assertTrue((id+1) == modelo.save(g_2));
+		assertTrue((id+1) == modelo.save(tp_2));
 		
 		assertTrue(modelo.delete(id));
 		assertTrue(modelo.delete(id+1));

@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.ipartek.formacion.skalada.bean.Grado;
+import com.ipartek.formacion.skalada.bean.TipoEscalada;
 
-public class ModeloGrado implements Persistable {
+public class ModeloTipoEscalada implements Persistable {
 
-	private static final String TABLA           = "grado";
+	private static final String TABLA           = "tipo_escalada";
 	private static final String COL_ID          = "id";
 	private static final String COL_NOMBRE      = "nombre";
 	private static final String COL_DESCRIPCION = "descripcion";
@@ -26,24 +26,24 @@ public class ModeloGrado implements Persistable {
 	@Override
 	public int save(Object o) {
 		int resul = -1;
-		Grado g = null;	
+		TipoEscalada tp = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
 		
 		if(o != null){
 			try{
-				g = (Grado)o;
+				tp = (TipoEscalada)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());		
+				pst.setString(1, tp.getNombre());
+				pst.setString(2, tp.getDescripcion());		
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						g.setId(resul);
+						tp.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -132,17 +132,17 @@ public class ModeloGrado implements Persistable {
 	@Override
 	public boolean update(Object o) {
 		boolean resul = false;
-		Grado g = null;
+		TipoEscalada tp = null;
 		PreparedStatement pst = null;
 		
 		if (o != null){
 			try{
-				g = (Grado) o;
+				tp = (TipoEscalada) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_UPDATE);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());
-				pst.setInt(3, g.getId());
+				pst.setString(1, tp.getNombre());
+				pst.setString(2, tp.getDescripcion());
+				pst.setInt(3, tp.getId());
 				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
@@ -198,10 +198,10 @@ public class ModeloGrado implements Persistable {
 	 * @return
 	 * @throws SQLException 
 	 */
-	private Grado mapeo (ResultSet rs) throws SQLException{
-		Grado resul = null;    
+	private TipoEscalada mapeo (ResultSet rs) throws SQLException{
+		TipoEscalada resul = null;    
 		
-		resul = new Grado( rs.getString(COL_NOMBRE) );
+		resul = new TipoEscalada( rs.getString(COL_NOMBRE) );
 		resul.setId( rs.getInt(COL_ID));
 		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
 		

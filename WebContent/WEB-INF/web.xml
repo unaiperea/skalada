@@ -4,6 +4,20 @@
   <welcome-file-list>
     <welcome-file>home</welcome-file>
   </welcome-file-list>
+  
+    <!-- CONTROLADOR HOME -->
+  <servlet>
+    <description>Controlador de la página pública principal o frontend</description>
+    <display-name>HomeController</display-name>
+    <servlet-name>HomeController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.HomeController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HomeController</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  
+  <!-- LOGIN -->
   <servlet>
     <description>Login para entrar la backoffice</description>
     <display-name>LoginController</display-name>
@@ -14,16 +28,8 @@
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ViasController</display-name>
-    <servlet-name>ViasController</servlet-name>
-    <servlet-class>com.ipartek.formacion.skalada.controladores.ViasController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ViasController</servlet-name>
-    <url-pattern>/vias</url-pattern>
-  </servlet-mapping>
+  
+    <!-- LOGOUT -->
   <servlet>
     <description></description>
     <display-name>LogOutController</display-name>
@@ -34,27 +40,53 @@
     <servlet-name>LogOutController</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+  
+  <!-- CONTROLADOR VÍAS -->
   <servlet>
-    <description>Controlador de la página pública principal o fontend</description>
-    <display-name>HomeController</display-name>
-    <servlet-name>HomeController</servlet-name>
-    <servlet-class>com.ipartek.formacion.skalada.controladores.HomeController</servlet-class>
+    <description></description>
+    <display-name>ViasController</display-name>
+    <servlet-name>ViasController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ViasController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>HomeController</servlet-name>
-    <url-pattern>/home</url-pattern>
+    <servlet-name>ViasController</servlet-name>
+    <url-pattern>/vias</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <description>Accede a la vía seleccionada</description>
-    <display-name>ViaController</display-name>
-    <servlet-name>ViaController</servlet-name>
-    <servlet-class>com.ipartek.formacion.skalada.controladores.ViaController</servlet-class>
+  <!--  CONTROLADOR GRADOS -->
+   <servlet>
+    <description></description>
+    <display-name>GradosController</display-name>
+    <servlet-name>GradosController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.GradosController</servlet-class>
   </servlet>
-  
   <servlet-mapping>
-    <servlet-name>ViaController</servlet-name>
-    <url-pattern>/via</url-pattern>
+    <servlet-name>GradosController</servlet-name>
+    <url-pattern>/grados</url-pattern>
+  </servlet-mapping>
+  
+  <!-- CONTROLADOR TIPOSESCALADA -->
+  <servlet>
+    <description></description>
+    <display-name>TiposEscaladaController</display-name>
+    <servlet-name>TiposEscaladaController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.TiposEscaladaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TiposEscaladaController</servlet-name>
+    <url-pattern>/tipos-escalada</url-pattern>
+  </servlet-mapping>
+  
+    <!-- CONTROLADOR ZONAS -->
+  <servlet>
+    <description></description>
+    <display-name>ZonasController</display-name>
+    <servlet-name>ZonasController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ZonasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ZonasController</servlet-name>
+    <url-pattern>/zonas</url-pattern>
   </servlet-mapping>
   
 </web-app>

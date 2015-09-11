@@ -20,7 +20,8 @@ public class Zona implements Serializable {
 			this.sectores = sectores;
 		}else{
 			this.sectores = new ArrayList<Sector>();
-		}	
+		}
+		this.id = -1;
 	}
 
 	public int getId() {

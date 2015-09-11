@@ -434,7 +434,7 @@ header {
             	%>
             	<div class="col-md-4 col-sm-6">
             		<figure>
-                   		<img class="img-responsive img-portfolio img-hover" src="<%=via.getImg()%>" alt="">
+                   		<img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
             			<figcaption><a href="<%=Constantes.CONTROLLER_VIA%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=via.getId()%>"><%=via.getNombre()%></a></figcaption>
             		</figure>
 				</div>

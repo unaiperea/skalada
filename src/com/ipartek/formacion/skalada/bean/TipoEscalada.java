@@ -14,6 +14,7 @@ public class TipoEscalada implements Serializable {
 	public TipoEscalada(String nombre) {
 		super();
 		this.nombre = nombre;
+		this.id = -1;
 	}
 
 
