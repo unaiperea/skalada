@@ -1,3 +1,6 @@
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>

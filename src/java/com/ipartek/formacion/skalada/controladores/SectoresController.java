@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -76,6 +77,7 @@ public class SectoresController extends HttpServlet {
 		private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 			
 			try {
+				request.setCharacterEncoding("UTF-8");
 				pAccion = Integer.parseInt(request.getParameter("accion"));		
 				if(request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))){
 					pID = Integer.parseInt(request.getParameter("id"));
@@ -109,8 +111,7 @@ public class SectoresController extends HttpServlet {
 			zona = new Zona("");
 			sector = new Sector("", zona);
 			request.setAttribute("sector", sector);
-			request.setAttribute("titulo", "Crear nuevo Sector");
-			request.setAttribute("metodo", "Guardar");
+			request.setAttribute("titulo", "Crear nuevo Sector");			
 			request.setAttribute("zonas", modeloZona.getAll());
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 			
@@ -119,8 +120,7 @@ public class SectoresController extends HttpServlet {
 		private void detalle(HttpServletRequest request, HttpServletResponse response) {
 			sector = (Sector)modeloSector.getById(pID);
 			request.setAttribute("sector", sector);
-			request.setAttribute("titulo", sector.getNombre().toUpperCase());
-			request.setAttribute("metodo", "Modificar");
+			request.setAttribute("titulo", sector.getNombre().toUpperCase());			
 			request.setAttribute("zonas", modeloZona.getAll());
 						
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);		
@@ -161,10 +161,23 @@ public class SectoresController extends HttpServlet {
 		 * Crea un Objeto {@code Sector} Con los parametros recibidos
 		 */
 		private void crearObjeto() {
-			zona = new Zona("");
-			zona.setId(pIDZona);
-			sector = new Sector(pNombre, zona);
-			sector.setId(pID);
+			
+			//zona = new Zona("");
+			//zona.setId(pIDZona);
+			zona = (Zona)modeloZona.getById(pIDZona);
+			
+			//existe sector
+			if ( pID != -1 ){
+				
+				sector = (Sector)modeloSector.getById(pID);
+				sector.setZona(zona);
+				
+			//nuevo sector	
+			}else{
+				sector = new Sector(pNombre, zona);
+				sector.setId(pID);
+			}	
+			
 		}
 
 
@@ -172,8 +185,10 @@ public class SectoresController extends HttpServlet {
 		* Recoger los parametros enviados desde el formulario
 		* @see backoffice\pages\sectores\form.jsp
 		* @param request
+		 * @throws UnsupportedEncodingException 
 		*/
-		private void getParametersForm(HttpServletRequest request) {	
+		private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
+			request.setCharacterEncoding("UTF-8");
 			pID = Integer.parseInt(request.getParameter("id"));
 			pNombre = request.getParameter("nombre");	
 			pIDZona = Integer.parseInt(request.getParameter("zona"));

@@ -3,11 +3,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger atributos (Objeto Sector)"sector" y (String)"titulo"
+
 	Sector sector = (Sector)request.getAttribute("sector");
 	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("zonas");
 	String titulo = request.getAttribute("titulo").toString();
@@ -66,7 +67,7 @@
 			<div class="form-group">
 								
 				<% if(sector.getId()!= -1){ %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
+						<input type="submit" class="btn btn-outline btn-primary" value="Modificar">
   						<!-- Trigger the modal with a button -->
 						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
 						
@@ -105,7 +106,7 @@
 			
 				
 				<% } else { %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Crear / Guardar">
+						<input type="submit" class="btn btn-outline btn-primary" value="Guardar">
 						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
 				<% } %>
 	
