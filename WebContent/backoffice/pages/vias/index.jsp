@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
@@ -20,37 +21,13 @@
     
     <div class="row">
         <% 
-			String msg = (String)request.getAttribute("msg-success");	
+			Mensaje msg = (Mensaje)request.getAttribute("msg");	
 			if (msg != null){
-				out.print("<div class='alert alert-success alert-dismissible' role='alert'>");
+				out.print("<div class='alert " + msg.getTipo() + " alert-dismissible' role='alert'>");
 					out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
 						out.print("<span aria-hidden='true'>&times;</span>");
 					out.print("</button>");
-					out.print("<strong>"+ msg +"</strong>");
-				out.print("</div>");
-			} 
-		%>
-		
-		<%	
-			msg = (String)request.getAttribute("msg-warning");	
-			if (msg != null){
-				out.print("<div class='alert alert-warning alert-dismissible' role='alert'>");
-					out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-						out.print("<span aria-hidden='true'>&times;</span>");
-					out.print("</button>");
-					out.print("<strong>"+ msg +"</strong>");
-				out.print("</div>");
-			} 
-		%>
-		
-		<%	
-			msg = (String)request.getAttribute("msg-danger");	
-			if (msg != null){
-				out.print("<div class='alert alert-danger alert-dismissible' role='alert'>");
-					out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-						out.print("<span aria-hidden='true'>&times;</span>");
-					out.print("</button>");
-					out.print("<strong>"+ msg +"</strong>");
+					out.print("<strong>"+ msg.getTexto() +"</strong>");
 				out.print("</div>");
 			} 
 		%>
@@ -69,7 +46,6 @@
 	                <th>Dificultad</th>	                
 	                <th>Tipo escalada</th>
 	                <th>Sector</th>
-	                <th>Descripción</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -93,7 +69,6 @@
 		                <td><%=v.getGrado().getNombre()%></td>
 		                <td><%=v.getTipoEscalada().getNombre()%></td>
 		                <td><%=v.getSector().getNombre()%> (<%=v.getSector().getZona().getNombre()%>)</td>		                
-		                <td><%=v.getDescripcion()%></td>
 		            </tr>	            
 	           <%
 	           		} //end for
