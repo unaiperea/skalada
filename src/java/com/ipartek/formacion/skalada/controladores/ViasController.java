@@ -101,12 +101,12 @@ public class ViasController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("vias", modelo.getAll());
+		request.setAttribute("vias", modeloVia.getAll());
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);		
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		if(modelo.delete(pID)){
+		if(modeloVia.delete(pID)){
 			request.setAttribute("msg-danger", "Se a eliminado la Via correctamente");
 		} else {
 			request.setAttribute("msg-warning", "Error al eliminar la Via [id(" + pID + ")]");
@@ -124,11 +124,11 @@ public class ViasController extends HttpServlet {
 	}
 	
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
-		via = (Via)modelo.getById(pID);
+		via = (Via)modeloVia.getById(pID);
 		request.setAttribute("via", via);
 		request.setAttribute("titulo", via.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
-		request.setAttribute("zona", );
+		request.setAttribute("zonas", modeloZona.getAll() );
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);		
 	}
 

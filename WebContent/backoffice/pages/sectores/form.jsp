@@ -47,7 +47,7 @@
 		            <label for="zona">Zona</label>
 		            <select class="form-control" name="zona">
   					<%
-  					for (int i = 0 ; i < zonas.size() ; i++){
+  					for (int i=0 ; i<zonas.size() ; i++){
   					%>
   						
   						    <% if( zonas.get(i).getId() == sector.getZona().getId() ){ %>

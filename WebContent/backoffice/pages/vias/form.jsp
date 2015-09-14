@@ -1,4 +1,6 @@
 <!-- Para que me salgan los acentos --> 
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%>
 
@@ -11,6 +13,7 @@
 	//recoger atributos (Objeto Via)"via" y (String)"titulo"
 	Via via = (Via)request.getAttribute("via");
 	String titulo = request.getAttribute("titulo").toString();
+	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("zonas"); 
 %>
 
 <div id="page-wrapper">
@@ -58,7 +61,13 @@
 	          	</div>
 	          	
 	          	<div class="form-group">
+	           		<label for="nombre">Zona</label>
+	           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
+	          	</div>
+	          	
+	          	<div class="form-group">
 		            <label for="descripcion">DescripciÃ³n</label>
+		            <!-- FOR PARA RELLENAR EL COMBO DE ZONAS -->
 		            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
 		        </div>
 	        </div>
