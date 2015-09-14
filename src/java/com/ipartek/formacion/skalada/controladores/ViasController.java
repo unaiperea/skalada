@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
+import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
+import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
  * Servlet implementation class ViasController
@@ -21,7 +24,8 @@ public class ViasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private RequestDispatcher dispatcher = null;
-	private ModeloVia modelo = null;
+	private ModeloVia modeloVia = null;
+	private ModeloZona modeloZona = null;
 	private Via via = null;
 	
 	//parametros
@@ -41,7 +45,8 @@ public class ViasController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	modelo = new ModeloVia();
+    	modeloVia = new ModeloVia();
+    	modeloZona = new ModeloZona();
     	
     	// datos de prueba
 //    	generateViaMocks(modelo);
@@ -121,8 +126,9 @@ public class ViasController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		via = (Via)modelo.getById(pID);
 		request.setAttribute("via", via);
-//		request.setAttribute("titulo", via.getNombre().toUpperCase());
+		request.setAttribute("titulo", via.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
+		request.setAttribute("zona", );
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);		
 	}
 
@@ -141,13 +147,13 @@ public class ViasController extends HttpServlet {
 		
 		//Guardar/Modificar Objeto Via
 		if (pID == -1){
-			if( modelo.save(via) != -1){	
+			if( modeloVia.save(via) != -1){	
 				request.setAttribute("msg-success", "A&ntilde;adida correctamente la nueva via");
 			} else {
 				request.setAttribute("msg-danger", "Error al guardar la nueva Via");
 			}
 		} else {
-			if(modelo.update(via)){
+			if(modeloVia.update(via)){
 				request.setAttribute("msg-success", "Modificada correctamente la Via ");
 			} else {
 				request.setAttribute("msg-danger", "Error al modificar la Via ");

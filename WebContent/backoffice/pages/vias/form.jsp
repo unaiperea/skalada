@@ -1,3 +1,7 @@
+<!-- Para que me salgan los acentos --> 
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%>
+
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -54,7 +58,7 @@
 	          	</div>
 	          	
 	          	<div class="form-group">
-		            <label for="descripcion">Descripción</label>
+		            <label for="descripcion">DescripciÃ³n</label>
 		            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
 		        </div>
 	        </div>
