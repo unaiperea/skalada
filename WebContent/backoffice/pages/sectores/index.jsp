@@ -13,7 +13,7 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Tipos de Escalada
                     	<!--  Llamar al Servlet, nunca a una .JSP -->
-		            	<a href="<%=Constantes.CONTROLLER_TIPOSESCALADA%>?accion=<%=Constantes.ACCION_NUEVO%>&id=-1" type="button" class="btn btn-outline btn-success">
+		            	<a href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_NUEVO%>&id=-1" type="button" class="btn btn-outline btn-success">
                     		<i class="fa fa-plus"></i> Nueva
                     	</a>
                     </h1>
@@ -30,7 +30,7 @@
 			            <tr>
 			                <th>Id</th>
 			                <th>Nombre</th>
-			                <th>Descripci�n:</th>
+			                <th>Zona</th>
                 
 			            </tr>
 			        </thead>
@@ -40,19 +40,19 @@
 			            <!-- C�digo Java -->
 			            <%
 			            	//Recoger� el atributo "sector" que nos llegar� del Servlet con una colecci�n de Sectores
-			            	ArrayList<TipoEscalada> tipoEscalada = (ArrayList<TipoEscalada>)request.getAttribute("tipoEscalada");
-			           		TipoEscalada tp = null;
-			            	for (int i=0; i<tipoEscalada.size();i++){
-			            		tp = tipoEscalada.get(i);
+			            	ArrayList<Sector> sectores = (ArrayList<Sector>)request.getAttribute("sectores");
+			            	Sector s = null;
+			            	for (int i=0; i<sectores.size();i++){
+			            		s = sectores.get(i);
 			            %>
 			            <tr>
-			                <td><%=tp.getId()%></td>
+			                <td><%=s.getId()%></td>
 			                <td>
-			                	<a href="<%=Constantes.CONTROLLER_TIPOSESCALADA%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=tp.getId()%>">
-			                		<%=tp.getNombre()%>
+			                	<a href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=s.getId()%>">
+			                		<%=s.getNombre()%>
 			                	</a>
 			                </td>
-			                <td><%=tp.getDescripcion()%></td>
+			                <td><%=s.getZona().getNombre()%></td> <!-- Cojo el atributo de tipo Zona y cojo su nombre -->
 			            </tr>
 			            <% } //end for %>
 			            

@@ -7,43 +7,52 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.ipartek.formacion.skalada.bean.TipoEscalada;
+import com.ipartek.formacion.skalada.bean.Sector;
+import com.ipartek.formacion.skalada.bean.Zona;
 
 public class ModeloSector implements Persistable {
 
-	private static final String TABLA           = "sector";
-	private static final String COL_ID          = "id";
-	private static final String COL_NOMBRE      = "nombre";
-	private static final String COL_IDZONA = "id_Zona";
+	private static final String TABLA_SECTOR = "sector";
+	private static final String TABLA_ZONA = "zona";
+	private static final String COL_ID = "id";
+	private static final String COL_NOMBRE = "nombre";
+	private static final String COL_ZONA_ID = "id_zona";
+	private static final String COL_ZONA_NOMBRE = "nombre_zona";
 	
-	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_IDZONA + "`) VALUES (?,?);";
-	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETBYID = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
-	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_IDZONA + "`= ? WHERE `" + COL_ID + "`= ? ;";
+	private static final String SQL_INSERT = "INSERT INTO `" + TABLA_SECTOR + "` (`" + COL_NOMBRE + "`, `" + COL_ZONA_ID + "`) VALUES (?,?);";
+	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_SECTOR + "` WHERE `" + COL_ID + "`= ?;";
+
+//	private static final String SQL_GETONE = "SELECT  s." + COL_ID + ", s." + COL_NOMBRE + ", " + COL_ZONA_ID + ", z." + COL_NOMBRE + " AS " + COL_ZONA_NOMBRE
+//											  + " FROM " + TABLA_SECTOR + " AS s INNER JOIN " + TABLA_ZONA + " AS z ON (s." + COL_ZONA_ID + " = z." + COL_ID 
+//											  + ") WHERE s." + COL_ID + " = ?";
+	
+	private static final String SQL_GETBYID = "SELECT  s.id, s.nombre, id_zona, z.nombre AS nombre_zona FROM sector AS s INNER JOIN zona AS z ON (s.id_zona = z.id) WHERE s.id = ?";
+	private static final String SQL_GETALL = "SELECT  s." + COL_ID + ", s." + COL_NOMBRE + ", " + COL_ZONA_ID + ", z." + COL_NOMBRE + " AS " + COL_ZONA_NOMBRE
+											  + " FROM " + TABLA_SECTOR + " AS s, " + TABLA_ZONA + " AS z WHERE s." + COL_ZONA_ID + "= z." + COL_ID; 
+	private static final String SQL_UPDATE = "UPDATE `" + TABLA_SECTOR + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_ZONA_ID + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
 	
 	@Override
 	public int save(Object o) {
 		int resul = -1;
-		TipoEscalada tp = null;	
+		Sector s = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
 		
 		if(o != null){
 			try{
-				tp = (TipoEscalada)o;
+				s = (Sector)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, tp.getNombre());
-				pst.setString(2, tp.getDescripcion());		
+				pst.setString(1, s.getNombre());
+				pst.setInt(2, s.getZona().getId()); //getZona retorna un objeto de tiopo Zona y luego accedemos a su Id	
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						tp.setId(resul);
+						s.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -132,17 +141,17 @@ public class ModeloSector implements Persistable {
 	@Override
 	public boolean update(Object o) {
 		boolean resul = false;
-		TipoEscalada tp = null;
+		Sector s = null;
 		PreparedStatement pst = null;
 		
 		if (o != null){
 			try{
-				tp = (TipoEscalada) o;
+				s = (Sector) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_UPDATE);
-				pst.setString(1, tp.getNombre());
-				pst.setString(2, tp.getDescripcion());
-				pst.setInt(3, tp.getId());
+				pst.setString(1, s.getNombre());
+				pst.setInt(2, s.getZona().getId()); //getZona retorna un objeto de tiopo Zona y luego accedemos a su Id
+				pst.setInt(3, s.getId());
 				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
@@ -198,12 +207,14 @@ public class ModeloSector implements Persistable {
 	 * @return
 	 * @throws SQLException 
 	 */
-	private TipoEscalada mapeo (ResultSet rs) throws SQLException{
-		TipoEscalada resul = null;    
+	private Sector mapeo (ResultSet rs) throws SQLException{
+		Sector resul = null;    
 		
-		resul = new TipoEscalada( rs.getString(COL_NOMBRE) );
+		Zona zona = new Zona( rs.getString(COL_ZONA_NOMBRE) );
+		zona.setId(rs.getInt(COL_ZONA_ID));
+		
+		resul = new Sector( rs.getString(COL_NOMBRE), zona );
 		resul.setId( rs.getInt(COL_ID));
-		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
 		
 		return resul;
 	}

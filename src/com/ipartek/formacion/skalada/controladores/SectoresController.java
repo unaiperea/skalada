@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -10,24 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.bean.Zona;
-import com.ipartek.formacion.skalada.modelo.ModeloZona;
 import com.ipartek.formacion.skalada.bean.Sector;
+import com.ipartek.formacion.skalada.bean.Zona;
+import com.ipartek.formacion.skalada.modelo.ModeloSector;
+import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
  * Servlet implementation class GradosController
  */
-public class ZonasController extends HttpServlet {
+public class SectoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private RequestDispatcher dispatcher = null;
-	private ModeloZona modelo = null;
+	private ModeloSector modeloSector = null;
+	private ModeloZona modeloZona = null;
+	private Sector sector = null;
 	private Zona zona = null;
 	
 	//parametros
 	private int pAccion = Constantes.ACCION_LISTAR; //accion por defecto
-	private int pID = -1; //ID no valido.
+	private int pID     = -1; //ID no valido.
 	private String pNombre;
+	private int pIDZona;
 	
 	
     /**
@@ -37,8 +42,11 @@ public class ZonasController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {    	
     	super.init(config);
-    	modelo = new ModeloZona();
+    	modeloSector = new ModeloSector();  
+    	modeloZona = new ModeloZona();
     }
+    
+   
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -76,9 +84,9 @@ public class ZonasController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		
-		request.setAttribute("zona", modelo.getAll() );
+		request.setAttribute("sectores", modeloSector.getAll() );
 		
-		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_ZONAS_INDEX );
+		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_SECTORES_INDEX );
 		
 	}
 
@@ -88,7 +96,7 @@ public class ZonasController extends HttpServlet {
 			HttpServletResponse response) {
 
 		
-		if ( modelo.delete(pID)){
+		if ( modeloSector.delete(pID)){
 			request.setAttribute("msg", "Registro Eliminado");
 		}else{
 			request.setAttribute("msg", "ERROR: Registro NO Eliminado " + pID );
@@ -101,13 +109,12 @@ public class ZonasController extends HttpServlet {
 
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-
-		zona = new Zona(""); 
-		request.setAttribute("zona", zona );
-		request.setAttribute("titulo", "Crear nuevo registro" );
-		request.setAttribute("metodo", "Guardar");
-		
-		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_ZONAS_FORM);
+		zona = new Zona("");
+		sector = new Sector("", zona);
+		request.setAttribute("sector", sector);
+		request.setAttribute("titulo", "Crear nuevo Sector");			
+		request.setAttribute("zonas", modeloZona.getAll());
+		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 	}
 
 
@@ -115,11 +122,13 @@ public class ZonasController extends HttpServlet {
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		zona = (Zona)modelo.getById(pID);
-		request.setAttribute("zona", zona );
-		request.setAttribute("titulo", zona.getNombre() );
-		request.setAttribute("metodo", "Modificar");
-		dispatcher = request.getRequestDispatcher( Constantes.VIEW_BACK_ZONAS_FORM);
+		sector = (Sector)modeloSector.getById(pID);
+		
+		request.setAttribute("sector", sector);
+		request.setAttribute("titulo", sector.getNombre().toUpperCase());			
+		request.setAttribute("zonas", modeloZona.getAll());
+					
+		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);	
 		
 	}
 
@@ -155,37 +164,49 @@ public class ZonasController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-			getParametersFormulario(request, response); //Recogemos los parámetros que nos han enviado desde el formulario
+
+			getParametersFormulario(request); //Recogemos los parámetros que nos han enviado desde el formulario
 			
 			crearObjeto(); //Le metemos los parámetros al nuevo objeto
 			
+			//Guardar/Modificar Objeto Sector
 			if (pID == -1){
-				if( modelo.save(zona) != -1){	
+				if( modeloSector.save(sector) != -1){	
 					request.setAttribute("msg", "Registro creado con exito");
 				} else {
 					request.setAttribute("msg", "Error al guardar el nuevo registro");
 				}
 			} else {
-				if(modelo.update(zona)){
+				if(modeloSector.update(sector)){
 					request.setAttribute("msg", "Modificado correctamente el registro [id(" + pID + ")]");
 				} else {
 					request.setAttribute("msg", "Error al modificar el registro [id(" + pID + ")]");
 				}
 			}
 			
-			listar(request, response);
+			listar(request,response);
 			
 			dispatcher.forward(request, response);
+		
 	}
 
-	
 	/**
 	 * Crea un objeto {@code Object} con los parámetros recibidos
 	 */
 	private void crearObjeto() {
-		zona = new Zona(pNombre);
-		zona.setId(pID);
+		zona = (Zona)modeloZona.getById(pIDZona); //Se habrá elejido previamente de un combo por lo que pregunta antes si existe en la bbdd antes de nada
+		
+		//existe sector
+		if (pID != -1){
+			sector = (Sector)modeloSector.getById(pID);
+			sector.setZona(zona);
+			
+		//nuevo sector
+		}else{
+			sector = new Sector(pNombre, zona);
+			sector.setId(pID);
+		}
+		
 	}
 	
 	/**
@@ -194,11 +215,12 @@ public class ZonasController extends HttpServlet {
 	 * @param request
 	 * @param response
 	 */
-	private void getParametersFormulario(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void getParametersFormulario(HttpServletRequest request) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
 		
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre"); //Según el atributo name="nombre" del input
+		pIDZona  = Integer.parseInt(request.getParameter("zona"));
 		
 	}
 

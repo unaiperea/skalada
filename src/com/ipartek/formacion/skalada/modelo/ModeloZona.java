@@ -199,7 +199,7 @@ public class ModeloZona implements Persistable {
 	private Zona mapeo (ResultSet rs) throws SQLException{
 		Zona resul = null;    
 		
-		resul = new Zona( rs.getString(COL_NOMBRE), null ); //El constructor tiene como parámetros un nombre y un un ArrayList de Sectores
+		resul = new Zona( rs.getString(COL_NOMBRE) ); //El constructor tiene como parámetros un nombre y un un ArrayList de Sectores
 		resul.setId( rs.getInt(COL_ID));
 		
 		return resul;

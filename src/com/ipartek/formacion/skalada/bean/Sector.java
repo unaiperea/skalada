@@ -13,8 +13,9 @@ public class Sector implements Serializable {
 	
 	public Sector(String nombre, Zona zona) {
 		super();
-		this.nombre = nombre;
-		this.zona = zona;
+		this.setId(-1);
+		this.setNombre(nombre);
+		this.setZona(zona);
 	}
 
 	public int getId() {

@@ -13,15 +13,11 @@ public class Zona implements Serializable {
 	private String nombre;
 	private List<Sector> sectores;
 
-	public Zona(String nombre, List<Sector> sectores) {
+	public Zona(String nombre) {
 		super();
-		this.nombre = nombre;
-		if ( sectores != null ){
-			this.sectores = sectores;
-		}else{
-			this.sectores = new ArrayList<Sector>();
-		}
-		this.id = -1;
+		this.setId(-1);
+		this.setNombre(nombre);
+		this.setSectores(new ArrayList<Sector>());
 	}
 
 	public int getId() {

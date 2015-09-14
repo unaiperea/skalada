@@ -1,3 +1,5 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
@@ -6,7 +8,8 @@
 
 <%
 	//Recogemos parï¿½metro "via" de la Clase Via. Lo ha enviado desde el controlador con request.setAttribute("via",via);
-	TipoEscalada tp = (TipoEscalada)request.getAttribute("tipoEscalada");
+	Sector s = (Sector)request.getAttribute("sector");
+	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("zonas");
 	String titulo = request.getAttribute("titulo").toString();
 %>
 
@@ -21,29 +24,38 @@
             <!-- /.row -->
             <div class="row">
             
-				<form role="form" action="<%=Constantes.CONTROLLER_TIPOSESCALADA%>" method="post">
+				<form role="form" action="<%=Constantes.CONTROLLER_SECTORES%>" method="post">
 				
 					<div class="form-group">
             			<!-- Mostramos el input text, pero se submita el hidden -->
                     	<label for="id">ID</label>
-                    	<input type="hidden" name="id" value="<%=tp.getId()%>"> <!-- Si viaja en el formulario -->
-            			<input type="text" class="form-control" value="<%=tp.getId()%>" disabled> <!-- No viaja en el formulario -->
+                    	<input type="hidden" name="id" value="<%=s.getId()%>"> <!-- Si viaja en el formulario -->
+            			<input type="text" class="form-control" value="<%=s.getId()%>" disabled> <!-- No viaja en el formulario -->
             		</div>	
 				
 					<div class="form-group">
                     	<label for="nombre">Nombre</label>
-                        <input class="form-control" name="nombre" type="text" value="<%=tp.getNombre()%>">                        
+                        <input class="form-control" name="nombre" type="text" value="<%=s.getNombre()%>">                        
                     </div>
 					
 					<div class="form-group">
-                    	<label for="nombre">Descripcion</label>
-                        <textarea class="form-control" name="descripcion"><%=tp.getDescripcion()%></textarea>                        
+                    	<label for="nombre">Zonas</label>
+                    	<select>
+                    		<%for (int i=0 ; i<zonas.size() ; i++){ 
+                    		
+                    			if (zonas.get(i).getId() == s.getZona().getId()){%> <!-- Que se quede seleccionado la zona que tenía asignada -->
+	                    			<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+	                    		<%}else{%>
+									<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+								<%} //End if
+                    		}//End for%>
+						</select>
                     </div>
 
 					<!-- Botonera -->
 			<div class="form-group">
 								
-				<% if(tp.getId()!= -1){ %>
+				<% if(s.getId()!= -1){ %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
   						<!-- Trigger the modal with a button -->
 						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
@@ -56,7 +68,7 @@
 								<div class="modal-content">
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR: <%=tp.getNombre().toUpperCase() %></h2>
+											<h2 class="modal-title text-center text-danger"><i class="fa fa-exclamation-triangle"></i> ELIMINAR: <%=s.getNombre().toUpperCase() %></h2>
 						  			</div>
 						  			<div class="modal-body">
 					    				<div class="row checkbox">
@@ -74,7 +86,7 @@
                                        	</div>
 						  			</div>
 						  			<div class="modal-footer">						    			
-						    			<a href="<%=Constantes.CONTROLLER_TIPOSESCALADA%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=tp.getId()%>" id ="boton_eliminar" class="btn btn-danger btn-xs disabled">Eliminar</a>
+						    			<a href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_ELIMINAR%>&id=<%=s.getId()%>" id ="boton_eliminar" class="btn btn-danger btn-xs disabled">Eliminar</a>
 						      			<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 						      		</div>
 						    	</div> <!-- END Modal content-->

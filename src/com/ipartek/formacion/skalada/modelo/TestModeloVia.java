@@ -48,7 +48,7 @@ public class TestModeloVia {
 		int longitud = 0;
 		//Zona
 		String nombreZona = "Ogoño";
-		Zona zona = new Zona(nombreZona, null); //Creamos una zona sin array de sectores
+		Zona zona = new Zona(nombreZona); //Creamos una zona sin array de sectores
 		//Sectores
 		String nombreSector1 = "cara sur";
 		Sector sector1 = new Sector(nombreSector1, zona);
