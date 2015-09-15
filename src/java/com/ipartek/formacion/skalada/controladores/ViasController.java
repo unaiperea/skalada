@@ -96,8 +96,10 @@ public class ViasController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
+		
 		request.setAttribute("vias", modelo.getAll());
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);		
+		
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
@@ -121,8 +123,6 @@ public class ViasController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		via = (Via)modelo.getById(pID);
 		request.setAttribute("via", via);
-//		request.setAttribute("titulo", via.getNombre().toUpperCase());
-		request.setAttribute("metodo", "Modificar");
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);		
 	}
 

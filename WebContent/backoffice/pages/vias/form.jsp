@@ -1,3 +1,6 @@
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -6,7 +9,7 @@
 <%
 	//recoger atributos (Objeto Via)"via" y (String)"titulo"
 	Via via = (Via)request.getAttribute("via");
-	String titulo = request.getAttribute("titulo").toString();
+	String titulo = "TODO";//request.getAttribute("titulo").toString();
 %>
 
 <div id="page-wrapper">
