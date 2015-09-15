@@ -177,8 +177,7 @@ CREATE TABLE IF NOT EXISTS `zona` (
 INSERT INTO `zona` (`id`, `nombre`) VALUES
 	(1, 'Atxarte'),
 	(3, 'Cabo Ogoño'),
-	(4, 'Naranjo de Bulnes'),
-	(5, 'sdf'),
+	(4, 'Naranjo de Bulnes'),	
 	(2, 'Untzillaitz Sur');
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
