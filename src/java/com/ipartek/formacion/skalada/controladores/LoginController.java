@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -103,9 +104,10 @@ public class LoginController extends HttpServlet {
 	/**
 	* Recoger los parametros enviados
 	* @param request
+	 * @throws UnsupportedEncodingException 
 	*/
-	private void getParameters(HttpServletRequest request) {
-	
+	private void getParameters(HttpServletRequest request) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
 		pEmail = request.getParameter("email");
 		pPassword = request.getParameter("password");
 		

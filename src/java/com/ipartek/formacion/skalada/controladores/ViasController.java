@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -176,9 +177,10 @@ public class ViasController extends HttpServlet {
 	* Recoger los parametros enviados desde el formulario
 	* @see backoffice\pages\vias\form.jsp
 	* @param request
+	 * @throws UnsupportedEncodingException 
 	*/
-	private void getParametersForm(HttpServletRequest request) {
-	
+	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre");
 //		pGrado = Grado.valueOf(request.getParameter("grado"));

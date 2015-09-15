@@ -1,3 +1,6 @@
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+
 <jsp:include page="includes/head.jsp"></jsp:include>
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
