@@ -1,4 +1,5 @@
- </div>
+ <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+</div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
@@ -25,12 +26,42 @@
     
     <!-- Enganche para DataTable -->
     <script>
-    $(document).ready(function() {
-        $('#tabla').DataTable({
-                responsive: true
-        });
-    });
+    
+    	//Habilitar DataTable
+	    $(document).ready(function() {
+	        $('#tabla').DataTable({
+	                responsive: true
+	        });
+	    });
+    	
+    	//Llamada controlador AJAX Sectores
+    	//  var result = "Llamadaaaaaaaaaa";
+    	
+    	$( " #zonas" ).change(function(){
+    		console.info("Llamada controlador AJAX Sectores");
+    		var id_zona = $(this).find("option:selected").val(); //Coje el valor seleccionado del propio elemento (this = select option)
+    		console.debug("Zona seleccionada = " + id_zona);
+    			
+    			//Url donde se encuentra el servicio Ajax
+    			var url =  "<%=Constantes.CONTROLLER_ZONAS_JSON%>";
+    			
+    			$.ajax( url , {
+    				"type": "GET", // por defecto siempre es get por lo que sobraría
+    				"success": function(result) {
+    					console.info(result);	
+    				},
+    				"error": function(result) {
+    					console.error("Error ajax", result);
+    				},
+    				"data": { id_zona: id_zona }, //La key: el dato
+    				"async": true,
+    			});
+    			
+    		});
+
     </script>
+    
+    
 
 </body>
 

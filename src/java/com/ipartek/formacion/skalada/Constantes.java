@@ -37,6 +37,7 @@ public class Constantes {
 	public static final String CONTROLLER_GRADOS   = ROOT_APP + "grados";
 	public static final String CONTROLLER_TIPO_ESCALADA   = ROOT_APP + "tipo-escalada";
 	public static final String CONTROLLER_ZONAS   = ROOT_APP + "zonas";
+	public static final String CONTROLLER_ZONAS_JSON   = ROOT_APP + "zonas-json";
 	public static final String CONTROLLER_SECTORES   = ROOT_APP + "sectores";
 	
 	//acciones

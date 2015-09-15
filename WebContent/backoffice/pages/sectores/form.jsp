@@ -1,3 +1,6 @@
+<!-- Para que me salgan los acentos -->
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
 
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="java.util.ArrayList"%>

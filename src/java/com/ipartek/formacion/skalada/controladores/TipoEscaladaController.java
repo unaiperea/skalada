@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -161,7 +162,10 @@ public class TipoEscaladaController extends HttpServlet {
 	* @see backoffice\pages\grados\form.jsp
 	* @param request
 	*/
-	private void getParametersForm(HttpServletRequest request) {	
+	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
+			
+		request.setCharacterEncoding("UTF-8"); //Cuando se cojan Strings desde un formulario hay que decirle que sea en formato UTF8
+		
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre");	
 		pDescripcion = request.getParameter("descripcion");

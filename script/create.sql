@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `tipo_escalada` (
 -- Volcando datos para la tabla eskalada.tipo_escalada: ~12 rows (aproximadamente)
 /*!40000 ALTER TABLE `tipo_escalada` DISABLE KEYS */;
 INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
-	(1, 'Libre, solo integral o natural', 'En este tipo de escalada sï¿½lo se utilizan los pies y las manos para progresar, sin fijar ningï¿½n medio de seguridad para evitar accidentes. Se suelen usar pies de gato para una mayor fijaciï¿½n.'),
+	(1, 'Libre, solo integral o natural', 'En este tipo de escalada sólo se utilizan los pies y las manos para progresar, sin fijar ningún medio de seguridad para evitar accidentes. Se suelen usar pies de gato para una mayor fijación.'),
 	(2, 'Clásica', 'Aquí el escalador va metiendo sus propios seguros en la pared para hacer una escalada más segura. Se pueden introducir los seguro en anclajes naturales (árboles, puentes de roca, puntas de roca, etc.) o en anclajes artificiales recuperables (fisureros, friends, clavos, nudos empotrados, etc.).'),
 	(3, 'Alpina', 'Cuando la escalada clásica se realiza en una montaña de gran altura, conllevando riesgos de nevadas, avalanchas, falta de oxígeno, etc, y con el fin de alcanzar la cima.'),
 	(4, 'Artificial', 'Se trata de una variante de la escalada clásica en la que se emplean los mismos elementos de seguridad pero en la que se emplean tanto para asegurarse como para progresar en la ascensión.'),
@@ -178,7 +178,6 @@ INSERT INTO `zona` (`id`, `nombre`) VALUES
 	(1, 'Atxarte'),
 	(3, 'Cabo Ogoño'),
 	(4, 'Naranjo de Bulnes'),
-	(5, 'sdf'),
 	(2, 'Untzillaitz Sur');
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

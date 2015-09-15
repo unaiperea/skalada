@@ -1,3 +1,7 @@
+<!-- Para que me salgan los acentos -->
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
+
 <%@page import="com.ipartek.formacion.skalada.bean.TipoEscalada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
@@ -65,7 +69,7 @@
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
-	                <th>Descripción</th>
+	                <th>DescripciÃ³n</th>
 	            </tr>
 	        </thead> 
 	        	 

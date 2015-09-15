@@ -163,7 +163,8 @@ public class ZonasController extends HttpServlet {
 	 * @throws UnsupportedEncodingException 
 	*/
 	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
-		request.setCharacterEncoding("UTF-8");
+		
+		request.setCharacterEncoding("UTF-8"); //Cuando se cojan Strings desde un formulario hay que decirle que sea en formato UTF8
 		pID = Integer.parseInt(request.getParameter("id"));
 		pNombre = request.getParameter("nombre");	
 	}

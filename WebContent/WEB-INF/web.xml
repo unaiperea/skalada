@@ -94,4 +94,14 @@
     <servlet-name>SectoresController</servlet-name>
     <url-pattern>/sectores</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Controlador para retornar las zonas en formato json preparado para recibir llamadas por AJAX</description>
+    <display-name>ZonasJsonController</display-name>
+    <servlet-name>ZonasJsonController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.json.ZonasJsonController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ZonasJsonController</servlet-name>
+    <url-pattern>/zonas-json</url-pattern>
+  </servlet-mapping>
 </web-app>
