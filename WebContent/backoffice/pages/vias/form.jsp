@@ -108,7 +108,7 @@
            		
            		<label class="control-label col-md-1" for="sector">Sector</label>
 	           	<div class="col-md-3">
-	           		<select class="form-control" name="sector">
+	           		<select class="form-control" id="sector" name="sector">
 	 					<%
 	 					for (int i = 0 ; i < sectores.size() ; i++){
 	 						if( sectores.get(i).getId() == via.getSector().getId() ){ %>

@@ -47,21 +47,35 @@
 	    		var url = "<%=Constantes.CONTROLLER_ZONAS_JSON%>";	    		
 	    		$.ajax( url , {
 	    			"type": "GET", 
-	    			"success": function(result) {
-	    				console.info(result);	    				
+	    			"success": function(result){
+	    				rellenarSelectSector(result);	    				
 	    			},
 	    			"error": function(result) {
 	    				console.error("Error ajax", result);
 	    			},
 	    			"data": { id_zona: id_zona },
 	    			"async": true,
-	    		});
+	    		});	    		
 	    		
-	    		
-			});
+			});//End: change zona
 	    	
+			
+		   /**
+			* Limpiar y rellenar el select-options con los datos
+			* obtenidos del servicio Ajax para los Sectores  
+			*/
+			function rellenarSelectSector( result ){
+				console.debug("vaciar select sectores");
+				$("#sector").html("");
+				console.debug("inyectar options");
+				$(result).each( function ( i , v ){
+					//console.debug("id:" + v.id + " value:" + v.nombre );					
+					$("#sector").append('<option value="'+v.id+'">'+v.nombre+'</option>');					
+				});//End: foreach
+			}//End: rellenarSelectSector
+			
 	        
-	    });
+	    });//End: Ready
     </script>
 
 </body>

@@ -2,6 +2,7 @@ package com.ipartek.formacion.skalada.controladores.json;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 
 /**
@@ -33,15 +36,18 @@ public class ZonasJsonController extends HttpServlet {
 
 
 		//recoger parametros
+		int id_zona = Integer.parseInt(request.getParameter("id_zona"));
 		
 		//llamar al modelo
+		ArrayList<Sector> sectores = modeloSectores.getAllByZona(id_zona);
+		
 		
 		//responder
 		response.setContentType("application/json");		
 		response.setCharacterEncoding("UTF-8");
 		
 		PrintWriter out = response.getWriter();		
-		String jsonReponse = "{\"my_key\": \"my_value\"}";		
+		String jsonReponse = new Gson().toJson(sectores);		
 		out.print(jsonReponse);
 		out.flush();
 		
