@@ -30,14 +30,15 @@ public class Constantes {
 	public static final String VIEW_BACK_SECTORES_FORM = "backoffice/pages/sectores/form.jsp";
 	
 	//controladores
-	public static final String CONTROLLER_LOGIN  = ROOT_APP + "login";
-	public static final String CONTROLLER_LOGOUT = ROOT_APP + "logout";	
-	public static final String CONTROLLER_VIAS   = ROOT_APP + "vias";
-	public static final String CONTROLLER_HOME   = ROOT_APP + "home";
-	public static final String CONTROLLER_GRADOS   = ROOT_APP + "grados";
+	public static final String CONTROLLER_LOGIN           = ROOT_APP + "login";
+	public static final String CONTROLLER_LOGOUT          = ROOT_APP + "logout";	
+	public static final String CONTROLLER_VIAS            = ROOT_APP + "vias";
+	public static final String CONTROLLER_HOME            = ROOT_APP + "home";
+	public static final String CONTROLLER_GRADOS          = ROOT_APP + "grados";
 	public static final String CONTROLLER_TIPO_ESCALADA   = ROOT_APP + "tipo-escalada";
-	public static final String CONTROLLER_ZONAS   = ROOT_APP + "zonas";
-	public static final String CONTROLLER_SECTORES   = ROOT_APP + "sectores";
+	public static final String CONTROLLER_ZONAS           = ROOT_APP + "zonas";
+	public static final String CONTROLLER_ZONAS_JSON      = ROOT_APP + "zonas-json";
+	public static final String CONTROLLER_SECTORES        = ROOT_APP + "sectores";
 	
 	//acciones
 	public static final int ACCION_NUEVO	= 0;

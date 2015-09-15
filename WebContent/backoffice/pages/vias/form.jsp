@@ -1,15 +1,26 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
+<%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
+<%@page import="com.ipartek.formacion.skalada.bean.TipoEscalada"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Grado"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger atributos (Objeto Via)"via" y (String)"titulo"
+	//recojer atributos de la request
+	String titulo = request.getAttribute("titulo").toString();
+
 	Via via = (Via)request.getAttribute("via");
-	String titulo = "TODO";//request.getAttribute("titulo").toString();
+	ArrayList<Grado> grados = (ArrayList<Grado>)request.getAttribute("grados");
+	ArrayList<TipoEscalada> tipoEscaladas = (ArrayList<TipoEscalada>)request.getAttribute("tipoEscaladas");
+ 	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("zonas");
+	ArrayList<Sector> sectores = (ArrayList<Sector>)request.getAttribute("sectores");
+	
 %>
 
 <div id="page-wrapper">
@@ -25,48 +36,104 @@
     	
 	<!-- Formulario -->
 	
-		<form action="<%=Constantes.CONTROLLER_VIAS%>" method="post" role="form">
-			
-			<div class="row">
-				
-				<div class="form-group">			
-					<!-- Mostramon el input text, pero se submita el hidden -->
-					<label for="id">ID</label>
+		<form class="form-horizontal" action="<%=Constantes.CONTROLLER_VIAS%>" method="post" role="form">
+
+			<div class="form-group">			
+				<!-- Mostramon el input text, pero se submita el hidden -->
+				<label class="control-label col-md-2" for="id">ID</label>
+				<div class="col-md-1">
 					<input type="hidden" name="id" value="<%=via.getId()%>">
 					<input type="text"  class="form-control" value="<%=via.getId()%>" disabled >
+				</div> 
+			
+           		<label  class="control-label col-md-1" for="nombre">Nombre</label>
+           		<div class="col-md-7">
+           			<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
+          		</div>
+          	</div>
+	          	
+          	<div class="form-group">
+           		<label class="control-label col-md-2" for="longitud">Longitud</label>
+           		<div class="col-md-2">
+           			<input type="number" class="form-control" name="longitud" value="<%=via.getLongitud()%>">
+          		</div>
+          		
+           		<label class="control-label col-md-1" for="grado">Grado</label>
+           		<div class="col-md-2">
+	           		<select class="form-control" name="grado">
+	 					<%
+	 					for (int i = 0 ; i < grados.size() ; i++){
+	 						if( grados.get(i).getId() == via.getGrado().getId() ){ %>
+							    <option selected value="<%=grados.get(i).getId()%>"><%=grados.get(i).getNombre()%></option>
+						  <%} else { %>
+								<option value="<%=grados.get(i).getId()%>"><%=grados.get(i).getNombre()%></option>
+						  <%}//end else  						
+	 					}//end for
+					%>
+					</select>	
+          		</div>
+          		
+           		<label class="control-label col-md-2" for="tipo_escalada">Tipo Escalada</label>
+           		<div class="col-md-2">
+	           		<select class="form-control" name="tipo_escalada">
+	 					<%
+	 					for (int i = 0 ; i < tipoEscaladas.size() ; i++){
+	 						if( tipoEscaladas.get(i).getId() == via.getTipoEscalada().getId() ){ %>
+							    <option selected value="<%=tipoEscaladas.get(i).getId()%>"><%=tipoEscaladas.get(i).getNombre()%></option>
+						  <%} else { %>
+								<option value="<%=tipoEscaladas.get(i).getId()%>"><%=tipoEscaladas.get(i).getNombre()%></option>
+						  <%}//end else  						
+	 					}//end for
+					%>
+					</select>
 				</div>
-				
-				<div class="form-group">
-	           		<label for="nombre">Nombre</label>
-	           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
-	          	</div>
+          	</div>
 	          	
-	          	<div class="form-group">
-	           		<label for="longitud">Longitud</label>
-	           		<input type="number" class="form-control" name="longitud" value="<%=via.getLongitud()%>">
-	          	</div>
 	          	
-				<div class="form-group">
-	           		<label for="grado">Dificultad</label>
-	           		<input type="text" class="form-control" name="grado" value="<%=via.getNombre()%>">
-	          	</div>
+          	<div class="form-group">
+           		<label class="control-label col-md-2" for="zona">Zona</label>
+           		<div class="col-md-3">
+           			<select class="form-control" name="zona" id="zona">
+	 					<%
+	 					for (int i = 0 ; i < zonas.size() ; i++){
+	 						if( zonas.get(i).getId() == via.getSector().getZona().getId() ){ %>
+							    <option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+						  <%} else { %>
+								<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+						  <%}//end else  						
+	 					}//end for
+					%>
+					</select>
+           		</div>
+           		
+           		<label class="control-label col-md-1" for="sector">Sector</label>
+	           	<div class="col-md-3">
+	           		<select class="form-control" name="sector">
+	 					<%
+	 					for (int i = 0 ; i < sectores.size() ; i++){
+	 						if( sectores.get(i).getId() == via.getSector().getId() ){ %>
+							    <option selected value="<%=sectores.get(i).getId()%>"><%=sectores.get(i).getNombre()%></option>
+						  <%} else { %>
+								<option value="<%=sectores.get(i).getId()%>"><%=sectores.get(i).getNombre()%></option>
+						  <%}//end else  						
+	 					}//end for
+					%>
+					</select>
+				</div>
+          	</div>
 	          	
-				<div class="form-group">
-	           		<label for="nombre">Nombre</label>
-	           		<input type="text" class="form-control" name="nombre" value="<%=via.getNombre()%>">
-	          	</div>
-	          	
-	          	<div class="form-group">
-		            <label for="descripcion">Descripción</label>
-		            <textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
+	        <div class="form-group">
+		            <label class="control-label col-md-2" for="descripcion">Descripción</label>
+		            <div class="col-md-9">
+		            	<textarea class="form-control" rows="3" name="descripcion"><%=via.getDescripcion()%></textarea>
+		       		</div>
 		        </div>
-	        </div>
-	        
+	            
 
 			
 			<!-- Botonera -->
 			<div class="form-group">
-								
+				<div class="col-md-4 pull-right">				
 				<% if(via.getId()!= -1){ %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
   						<!-- Trigger the modal with a button -->
@@ -111,7 +178,7 @@
 						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
 				<% } %>
 	
-				
+				</div>
 			</div>
 			
 		</form>
