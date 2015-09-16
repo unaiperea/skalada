@@ -29,39 +29,51 @@
     <div class="row">
     	
 	<!-- Formulario -->
+	<!-- @see: http://www.tutorialspoint.com/servlets/servlets-file-uploading.htm -->
 	
-		<form action="<%=Constantes.CONTROLLER_SECTORES%>" method="post" role="form">
+		<form action="<%=Constantes.CONTROLLER_SECTORES%>"
+			method="post"
+			role="form">
 			
-			<div class="row">
-				
-				<div class="form-group">			
-					<!-- Mostramon el input text, pero se submita el hidden -->
-					<label for="id">ID</label>
-					<input type="hidden" name="id" value="<%=sector.getId()%>">
-					<input type="text"  class="form-control" value="<%=sector.getId()%>" disabled >
-				</div>
-				
-				<div class="form-group">
-	           		<label for="nombre">Nombre</label>
-	           		<input type="text" class="form-control" name="nombre" value="<%=sector.getNombre()%>">
-	          	</div>
+			<div class="row col-md-offset-1 col-md-10">
 
-	          	<div class="form-group">
-		            <label for="zona">Zona</label>
-		            <select class="form-control" name="zona">
-  					<%
-  					for (int i=0 ; i<zonas.size() ; i++){
-  					%>
-  						
-  						    <% if( zonas.get(i).getId() == sector.getZona().getId() ){ %>
-  						    	<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
-  						    <%}else{ %>
-  								<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
-  							<%}//end else  						
-  					}//end for
-					%>
-					</select>
-		        </div>
+					<div class="form-group">			
+						<!-- Mostramon el input text, pero se submita el hidden -->
+						<label for="id">ID</label>
+						<input type="hidden" name="id" value="<%=sector.getId()%>">
+						<input type="text"  class="form-control" value="<%=sector.getId()%>" disabled >
+					</div>
+					
+					<div class="form-group">
+		           		<label for="nombre">Nombre</label>
+		           		<input type="text" class="form-control" name="nombre" value="<%=sector.getNombre()%>">
+		          	</div>
+	
+		          	<div class="form-group">
+			            <label for="zona">Zona</label>
+			            <select class="form-control" name="zona">
+	  					<%
+	  					for (int i=0 ; i<zonas.size() ; i++){
+	  					%>
+	  						
+	  						    <% if( zonas.get(i).getId() == sector.getZona().getId() ){ %>
+	  						    	<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+	  						    <%}else{ %>
+	  								<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+	  							<%}//end else  						
+	  					}//end for
+						%>
+						</select>
+			        </div>
+			        <div class="form-group">			
+						<!-- Mostramon el input text, pero se submita el hidden -->
+						<label for="imagen">Imágen</label>
+						<input type="file"  class="form-control" name="imagen">
+						<img src="../img/<%=sector.getImagen()%>"
+							 alt="Imágen del sector "<%=sector.getNombre()%>
+							 class="img-responsive img-thumbnail"></a>
+					</div>
+				</div>
 	        </div>
 	        
 

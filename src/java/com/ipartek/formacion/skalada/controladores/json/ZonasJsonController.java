@@ -2,6 +2,7 @@ package com.ipartek.formacion.skalada.controladores.json;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 
 /**
@@ -40,16 +43,21 @@ public class ZonasJsonController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//recoger parámetros
+		//recoger parï¿½metros
+		int id_zona = Integer.parseInt(request.getParameter("id_zona"));
 		
 		//Llamar al modelo
+		ArrayList<Sector> sectores = modeloSectores.getAllByZona(id_zona);
 		
 		//Responder
-		response.setContentType("application/son");
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter(); //Objeto para escribir la respuesta
 		
-		String jsonResponse = "{\"my_key\": \"my_value\"}";
+		/*Le damos un arraylist para que lo pase a formato Json (librerï¿½a de Google).
+		Si le damos un objeto para que lo pase a Json ha de tener la clï¿½usula Serializable en la Class*/
+		String jsonResponse = new Gson().toJson(sectores);
+		//String jsonResponse = "{\"my_key\": \"my_value\"}";
 		
 		out.print(jsonResponse);
 		out.flush(); //Liberamos el buffer

@@ -39,7 +39,7 @@
 		<form class="form-horizontal" action="<%=Constantes.CONTROLLER_VIAS%>" method="post" role="form">
 
 			<div class="form-group">			
-				<!-- Mostramon el input text, pero se submita el hidden -->
+				<!-- Mostramos el input text, pero se submita el hidden -->
 				<label class="control-label col-md-2" for="id">ID</label>
 				<div class="col-md-1">
 					<input type="hidden" name="id" value="<%=via.getId()%>">
@@ -111,7 +111,7 @@
            		
            		<label class="control-label col-md-1" for="sector">Sector</label>
 	           	<div class="col-md-3">
-	           		<select class="form-control" name="sector">
+	           		<select id="sectores" class="form-control" name="sector">
 	 					<%
 	 					for (int i = 0 ; i < sectores.size() ; i++){
 	 						if( sectores.get(i).getId() == via.getSector().getId() ){ %>

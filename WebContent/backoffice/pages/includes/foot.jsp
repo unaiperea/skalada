@@ -32,33 +32,47 @@
 	        $('#tabla').DataTable({
 	                responsive: true
 	        });
-	    });
+	    
     	
     	//Llamada controlador AJAX Sectores
-    	//  var result = "Llamadaaaaaaaaaa";
-    	
-    	$( " #zonas" ).change(function(){
+    	$( "#zonas" ).change(function(){
     		console.info("Llamada controlador AJAX Sectores");
     		var id_zona = $(this).find("option:selected").val(); //Coje el valor seleccionado del propio elemento (this = select option)
     		console.debug("Zona seleccionada = " + id_zona);
     			
-    			//Url donde se encuentra el servicio Ajax
-    			var url =  "<%=Constantes.CONTROLLER_ZONAS_JSON%>";
-    			
-    			$.ajax( url , {
-    				"type": "GET", // por defecto siempre es get por lo que sobraría
-    				"success": function(result) {
-    					console.info(result);	
-    				},
-    				"error": function(result) {
-    					console.error("Error ajax", result);
-    				},
-    				"data": { id_zona: id_zona }, //La key: el dato
-    				"async": true,
-    			});
-    			
-    		});
+   			//Url donde se encuentra el servicio Ajax
+   			var url =  "<%=Constantes.CONTROLLER_ZONAS_JSON%>";
+   			$.ajax( url , {
+   				"type": "GET", // por defecto siempre es get por lo que sobraría
+   				"success": function(result){
+   					rellenarSelectSector(result);
+   				},
+   				"error": function(result) {
+   					console.error("Error ajax", result);
+   				},
+   				"data": { id_zona: id_zona }, //La key: el dato
+   				"async": true,
+   			});//End: Ajax
+   			
+   		});//End: change zona
 
+   		/**
+   		* Limpiar y rellenar el select options con los datos obtenidos del servicio Ajax para los Sectores
+   		*/
+    	function rellenarSelectSector(result){
+    		console.debug("Vaciar select sectores");
+    		$("#sectores").html(""); //Limpiamos el select
+    		
+    		console.debug("Inyectar options");
+    		$(result).each(function (index, value){ //Se puede abreviar con (i, v)
+    			console.debug("index: " + value.id + " Value:" + value.nombre);
+    			$("#sectores").append('<option value="'+value.id+'">'+value.nombre+'</option>')
+    		});
+    	}
+	});//End: Ready
+	
+	
+	
     </script>
     
     

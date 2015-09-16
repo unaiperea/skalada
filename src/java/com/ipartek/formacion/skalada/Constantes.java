@@ -46,4 +46,9 @@ public class Constantes {
 	public static final int ACCION_LISTAR	= 2;
 	public static final int ACCION_ELIMINAR = 3;
 	
+	//Imágenes
+	public static final String IMG_UPLOAD_FOLDER = "";
+	public static final String IMG_DEFAULT_SECTOR = "default_sector.jpg";
+	
+	
 }

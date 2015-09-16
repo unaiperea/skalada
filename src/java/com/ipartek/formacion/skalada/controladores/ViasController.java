@@ -143,6 +143,7 @@ public class ViasController extends HttpServlet {
 		request.setAttribute("grados", modeloGrado.getAll());
 		request.setAttribute("tipoEscaladas", modeloTipoEscalada.getAll());
 		request.setAttribute("sectores", modeloSector.getAll());
+		request.setAttribute("zonas", modeloZona.getAll());
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
 		
 	}
@@ -169,12 +170,12 @@ public class ViasController extends HttpServlet {
 		//recoger parametros del formulario
 		getParametersForm(request);
 		
-		//Crear Objeto Via
+		//Crear Objeto Via con el Grado, TipoEscalada, Zona y Sector
 		crearObjetoVia();
 		
 		//Guardar/Modificar Objeto Via
 		if (pID == -1){
-			if( modeloVia.save(via) != -1){	
+			if( modeloVia.save(via) != -1){
 				msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");
 			} else {
 				msg = new Mensaje(Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
@@ -204,6 +205,8 @@ public class ViasController extends HttpServlet {
 		
 		if (pID != -1) {
 			via = (Via)modeloVia.getById(pID);
+			via.setNombre(pNombre);
+			via.setLongitud(pLongitud);
 			via.setGrado(grado);
 			via.setTipoEscalada(tipoEscalada);
 			via.setSector(sector);
@@ -213,8 +216,6 @@ public class ViasController extends HttpServlet {
 			via.setDescripcion(pDescripcion);
 		}
 	}
-
-
 
 	/**
 	* Recoger los parametros enviados desde el formulario
