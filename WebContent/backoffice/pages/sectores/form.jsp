@@ -1,3 +1,5 @@
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
 
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="java.util.ArrayList"%>
@@ -26,11 +28,13 @@
     <div class="row">
     	
 	<!-- Formulario -->
+	<!-- @see: http://www.tutorialspoint.com/servlets/servlets-file-uploading.htm -->
 	
-		<form action="<%=Constantes.CONTROLLER_SECTORES%>" method="post" role="form">
+		<form action="<%=Constantes.CONTROLLER_SECTORES%>"
+		       
+		      method="post" 
+		      role="form">
 			
-			<div class="row">
-				
 				<div class="form-group">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
 					<label for="id">ID</label>
@@ -58,7 +62,16 @@
   					}//end for
 					%>
 					</select>
-		        </div>
+		      
+		      <!-- Imagen -->
+		      	<div class="form-group">
+		      		<label for="imagen">Imagen</label>
+	           		<input type="file" class="form-control" name="imagen">
+	           		<img src="../img/<%=sector.getImagen()%>"
+	           		 	 alt="Imagen del sector <%=sector.getNombre()%>"
+	           			 class="img-responsive img-thumbnail"> 
+		      	</div>
+		      
 	        </div>
 	        
 
