@@ -67,7 +67,7 @@
 		      	<div class="form-group">
 		      		<label for="imagen">Imagen</label>
 	           		<input type="file" class="form-control" name="imagen">
-	           		<img src="../img/<%=sector.getImagen()%>"
+	           		<img src="../uploads/<%=sector.getImagen()%>"
 	           		 	 alt="Imagen del sector <%=sector.getNombre()%>"
 	           			 class="img-responsive img-thumbnail"> 
 		      	</div>

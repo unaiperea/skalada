@@ -44,11 +44,7 @@ public class SectoresController extends HttpServlet {
 	private String pNombre;
 	private int pIDZona;
 
-	// variables subida imagenes
-	private boolean isMultipart;
-	private String filePath = Constantes.IMG_UPLOAD_FOLDER;
-	private int maxFileSize = 1000 * 1024;
-	private int maxMemSize = 40 * 1024;
+	//Imagen File	
 	private File file;
 
 	/**
@@ -200,40 +196,7 @@ public class SectoresController extends HttpServlet {
 	 * @param request
 	 */
 	private void uploadFile(HttpServletRequest request) {
-		/*
-		try {
-			
-			
-		  
-		    //Comprobar que se haya subido 1 imagen
-		    if (i.hasNext ()){
-		    	
-		    	FileItem fi = (FileItem)i.next();
-		    	
-		    	//atributos de la imagen
-		    	String fieldName = fi.getFieldName();
-	            String fileName = fi.getName();
-	            String contentType = fi.getContentType();
-	            boolean isInMemory = fi.isInMemory();
-	            long sizeInBytes = fi.getSize();
-	            
-	            //TODO comprobar 'size' y 'contentType'
-	            
-	            //guardar imagen
-	            file = new File( filePath + fileName );
-	            fi.write( file ) ;
-	            
-	            //TODO actualizar modelo
-	         
-		    }
-		 
-		    
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-	  */
+		//TODO realizar comprobaciones y guardar imagen en PC
 	}
 
 	/**
@@ -245,16 +208,21 @@ public class SectoresController extends HttpServlet {
 		// zona.setId(pIDZona);
 		zona = (Zona) modeloZona.getById(pIDZona);
 
+		//TODO controlar si cambiamos el sector pero no la imagen
+		
 		// existe sector
 		if (pID != -1) {
 
 			sector = (Sector) modeloSector.getById(pID);
+			sector.setNombre(pNombre);
 			sector.setZona(zona);
+			sector.setImagen(file.getName());
 
 			// nuevo sector
 		} else {
 			sector = new Sector(pNombre, zona);
 			sector.setId(pID);
+			sector.setImagen(file.getName());
 		}
 
 	}
@@ -274,21 +242,23 @@ public class SectoresController extends HttpServlet {
 			
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			// maximum size that will be stored in memory
-			factory.setSizeThreshold(maxMemSize);
+			//TODO cambiar este valor para que falle
+			factory.setSizeThreshold( Constantes.MAX_MEM_SIZE );
 			// Location to save data that is larger than maxMemSize.
-			factory.setRepository(new File("C:\\desarrollo\\java\\apache-tomcat-6.0.43\\temp"));
+			//TODO comprobar si no existe carpeta
+			factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER));
 			
 			// Create a new file upload handler
 		    ServletFileUpload upload = new ServletFileUpload(factory);
 		    // maximum file size to be uploaded.
-		    upload.setSizeMax( maxFileSize );
+		    //TODO cambiar valor no dejar subir mas 1Mb
+		    upload.setSizeMax( Constantes.MAX_FILE_SIZE );
 		    
 		    //Parametros de la request del formulario, NO la imagen
 		    HashMap<String, String> dataParameters = new HashMap<String, String>();
 			// Parse the request to get file items.		   
 		    List<FileItem> items = upload.parseRequest(request);		   
-		    for (FileItem item : items) {
-		    	
+		    for (FileItem item : items) {		    	
 		    	//parametro formulario
 		    	if ( item.isFormField() ){		    		
 		    		dataParameters.put( item.getFieldName(), item.getString() );
@@ -300,12 +270,12 @@ public class SectoresController extends HttpServlet {
 		            long sizeInBytes    = item.getSize();
 		            
 		            //TODO comprobar size y contentType
-		            
-		            file = new File( filePath + "\\" +fileName );
+		            //TODO No repetir nombres imagenes
+		            //TODO comprobar subir +1 imagen
+		            file = new File( Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName );
 		            item.write( file ) ;
-		    	}	            
-		    	
-		    }
+		    	}	
+		    }//End: for List<FileItem>
 		    
 		   	pID = Integer.parseInt( dataParameters.get("id"));
 			pNombre = dataParameters.get("nombre");
