@@ -32,6 +32,7 @@
 	<!-- @see: http://www.tutorialspoint.com/servlets/servlets-file-uploading.htm -->
 	
 		<form action="<%=Constantes.CONTROLLER_SECTORES%>"
+			enctype="multipart/form-data" //Para subir ficheros
 			method="post"
 			role="form">
 			
@@ -69,9 +70,9 @@
 						<!-- Mostramon el input text, pero se submita el hidden -->
 						<label for="imagen">Imágen</label>
 						<input type="file"  class="form-control" name="imagen">
-						<img src="../img/<%=sector.getImagen()%>"
+						<img src="<%=Constantes.IMG_UPLOAD_FOLDER%>"/"<%=sector.getImagen()%>" 
 							 alt="Imágen del sector "<%=sector.getNombre()%>
-							 class="img-responsive img-thumbnail"></a>
+							 class="img-responsive img-thumbnail"></a> <!-- ../uploads/ -->
 					</div>
 				</div>
 	        </div>

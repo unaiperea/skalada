@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
 
-import sun.rmi.server.Dispatcher;
-
 /**
  * Servlet implementation class Controller
  */

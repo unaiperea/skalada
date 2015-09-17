@@ -40,8 +40,7 @@ public class ViasController extends HttpServlet {
 	private ModeloSector modeloSector = null;
 	private Sector sector = null;
 	private ModeloZona modeloZona = null;
-
-	
+	  
 	//parametros
 	private int pAccion = Constantes.ACCION_LISTAR;		//Accion por defecto
 	private int pID	= -1;		//ID no valido	

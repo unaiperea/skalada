@@ -24,7 +24,7 @@ public class ModeloVia implements Persistable {
 	
 	private static final String SQL_INSERT = "";
 	private static final String SQL_GETALL = "select v.`id`, v.`nombre`, v.`longitud`, v.`descripcion`, v.`id_grado`, g.`nombre` as `nombre_grado`, v.`id_sector`, s.`nombre` as `nombre_sector`, v.`id_tipo_escalada`, tp.`nombre` as `nombre_tipo_escalada`, s.`id_zona`, z.`nombre` as `nombre_zona` from `via` as v INNER JOIN `grado` as g ON v.`id_grado` = g.`id` INNER JOIN  `sector` as s ON v.`id_sector` = s.`id` INNER JOIN  `tipo_escalada` as tp ON v.`id_tipo_escalada` = tp.`id` INNER JOIN  `zona` as z ON s.`id_zona` = z.`id`";
-	
+
 	/*select 
 	v.`id`, v.`nombre`, v.`longitud`, v.`descripcion`,
 	v.`id_grado`, g.`nombre` as `nombre_grado`,
@@ -39,7 +39,7 @@ from
 	INNER JOIN  `zona` as z ON s.`id_zona` = z.`id`*/
 	
 	private static final String SQL_GETONE = SQL_GETALL + " WHERE v.`id` = ? ";
-	private static final String SQL_UPDATE = "";
+	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`= ?, `longitud`= ?, `descripcion`= ?, `id_grado`= ?, `id_tipo_escalada`= ?, `id_sector`= ? WHERE  `id`= ?;";
 	private static final String SQL_DELETE = "";
 
 	@Override
@@ -156,8 +156,15 @@ from
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
+				//UPDATE `via` SET `nombre`= ?, `longitud`= ?, `descripcion`= ?, `id_grado`= ?, `id_tipo_escalada`= ?, `id_sector`= ? WHERE  `id`= ?;
 				pst.setString(1, v.getNombre());
-				pst.setInt(2, v.getId());				
+				pst.setInt(2, v.getLongitud());
+				pst.setString(3, v.getDescripcion());
+				pst.setInt(4, v.getGrado().getId());
+				pst.setInt(5, v.getTipoEscalada().getId());
+				pst.setInt(6, v.getSector().getId());
+				//pst.setInt(7, v.getSector().getZona().getId()); //Zona no está en la tabla. Habrá que hacer update directamente en la zona
+				pst.setInt(8, v.getId());
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
