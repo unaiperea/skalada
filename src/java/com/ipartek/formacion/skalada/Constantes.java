@@ -47,7 +47,7 @@ public class Constantes {
 	public static final int ACCION_ELIMINAR = 3;
 	
 	//Imagenes
-	public static final String IMG_UPLOAD_FOLDER   = "";
+	public static final String IMG_UPLOAD_FOLDER   = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\uploads";
 	public static final String IMG_DEFAULT_SECTOR  = "default_sector.jpg";
 	
 }

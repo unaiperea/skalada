@@ -31,7 +31,7 @@
 	<!-- @see: http://www.tutorialspoint.com/servlets/servlets-file-uploading.htm -->
 	
 		<form action="<%=Constantes.CONTROLLER_SECTORES%>"
-		       
+		      enctype="multipart/form-data" 
 		      method="post" 
 		      role="form">
 			
