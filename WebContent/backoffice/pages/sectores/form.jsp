@@ -67,24 +67,51 @@
 		      <!-- Imagen -->
 		      	<div class="form-group">
 		      		<label for="imagen">Imagen</label>
-	           		<input type="file" class="form-control" name="imagen">
+	           		<input type="file" id="imagen" 
+	           		       class="form-control" name="imagen"
+	           		       onchange="showFileSize();"
+	           		       >
 	           		
 	           		<%
 	           			String img_path = Constantes.IMG_DEFAULT_SECTOR;
+		      			//imagen subida al servidor	
 		      			if ( !img_path.equals( sector.getImagen())){
 		      				img_path = Constantes.IMG_WEP_PATH + sector.getImagen();
+		      				
+		      			//imagen por defecto del proyecto	
 		      			}else{
 		      				img_path = "../img/" + img_path;
-		      			}	
-	           		
-	           		
+		      			}
 	           		%>
 	           		
 	           		<img src="<%=img_path%>"
 	           		 	 alt="Imagen del sector <%=sector.getNombre()%>"
 	           			 class="img-responsive img-thumbnail"> 
 	           	
-		 
+		 			<script type='text/javascript'>
+						function showFileSize() {
+						    var input, file;						   
+						    if (!window.FileReader) {
+						        bodyAppend("p", "The file API isn't supported on this browser yet.");
+						        return;
+						    }
+						
+						    input = document.getElementById('imagen');
+						    if ( input.files[0] ){
+						    	file = input.files[0];
+						    	if ( file.size > <%=Constantes.MAX_FILE_SIZE%> ){
+						    		alert( "Demasiado grande la imagen");
+						    		document.getElementById('btn_submit').classList.toggle("disabled");			
+						    	}else{
+						    		document.getElementById('btn_submit').classList.remove("disabled");	
+						    	}						    	
+						    }   
+						}//end showFileSize
+						
+						
+						
+						
+				</script>		
 		      	</div>
 		      
 	        </div>
@@ -95,7 +122,7 @@
 			<div class="form-group">
 								
 				<% if(sector.getId()!= -1){ %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Modificar">
+						<input type="submit" id="btn_submit" class="btn btn-outline btn-primary" value="Modificar">
   						<!-- Trigger the modal with a button -->
 						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
 						
@@ -134,7 +161,7 @@
 			
 				
 				<% } else { %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Guardar">
+						<input type="submit" id="btn_submit" class="btn btn-outline btn-primary" value="Guardar">
 						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
 				<% } %>
 	

@@ -16,12 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
+import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -156,36 +158,50 @@ public class SectoresController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// recoger parametros del formulario
-		getParametersForm(request);
+		
+		Mensaje msg = new Mensaje( Mensaje.MSG_DANGER , "Error sin identificar");
+		
+		try{
+				// recoger parametros del formulario
+				getParametersForm(request);
+		
+				// Crear Objeto Sector
+				crearObjeto();
+		
+				// Guardar/Modificar Objeto Via
+				if (pID == -1) {
+					if (modeloSector.save(sector) != -1) {
+						msg.setTipo(Mensaje.MSG_SUCCESS);
+						msg.setTexto("Registro creado con exito");
+						
+					} else {
+						msg.setTipo(Mensaje.MSG_DANGER);
+						msg.setTexto("Error al guardar el nuevo registro");														
+					}
+				} else {
+					if (modeloSector.update(sector)) {
+						msg.setTipo(Mensaje.MSG_SUCCESS);
+						msg.setTexto("Modificado correctamente el registro [id(" + pID
+								+ ")]");						
+					} else {
+						msg.setTipo(Mensaje.MSG_DANGER);
+						msg.setTexto("Error al modificar el registro [id(" + pID + ")]");			
+					}
+				}
+				
+				request.setAttribute("msg", msg);
 
-		// Subida imagen
-		uploadFile(request);
-
-		// Crear Objeto Sector
-		crearObjeto();
-
-		// Guardar/Modificar Objeto Via
-		if (pID == -1) {
-			if (modeloSector.save(sector) != -1) {
-				request.setAttribute("msg-success", "Registro creado con exito");
-			} else {
-				request.setAttribute("msg-danger",
-						"Error al guardar el nuevo registro");
-			}
-		} else {
-			if (modeloSector.update(sector)) {
-				request.setAttribute("msg-success",
-						"Modificado correctamente el registro [id(" + pID
-								+ ")]");
-			} else {
-				request.setAttribute("msg-danger",
-						"Error al modificar el registro [id(" + pID + ")]");
-			}
-		}
-
+		}catch( FileSizeLimitExceededException e){		
+			e.printStackTrace();
+			msg = new Mensaje( Mensaje.MSG_DANGER , "La imagen excede del tamaño maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes" );
+			request.setAttribute("msg", msg);	
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = new Mensaje( Mensaje.MSG_DANGER , e.getMessage() );
+			request.setAttribute("msg", msg);
+		}	
+		
 		listar(request, response);
-
 		dispatcher.forward(request, response);
 
 	}
@@ -216,13 +232,17 @@ public class SectoresController extends HttpServlet {
 			sector = (Sector) modeloSector.getById(pID);
 			sector.setNombre(pNombre);
 			sector.setZona(zona);
-			sector.setImagen(file.getName());
+			if ( file != null ){
+				sector.setImagen(file.getName());
+			}	
 
 			// nuevo sector
 		} else {
 			sector = new Sector(pNombre, zona);
 			sector.setId(pID);
-			sector.setImagen(file.getName());
+			if ( file != null ){
+				sector.setImagen(file.getName());
+			}	
 		}
 
 	}
@@ -235,9 +255,8 @@ public class SectoresController extends HttpServlet {
 	 * @throws UnsupportedEncodingException
 	 * @throws FileUploadException 
 	 */
-	private void getParametersForm(HttpServletRequest request) {
+	private void getParametersForm(HttpServletRequest request) throws Exception {
 	
-		try{
 			request.setCharacterEncoding("UTF-8");		
 			
 			DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -261,31 +280,34 @@ public class SectoresController extends HttpServlet {
 		    for (FileItem item : items) {		    	
 		    	//parametro formulario
 		    	if ( item.isFormField() ){		    		
-		    		dataParameters.put( item.getFieldName(), item.getString() );
+		    		dataParameters.put( item.getFieldName(), item.getString("UTF-8") );
 		    	//Imagen	
-		    	}else{
-		    		String fileName     = item.getName();
-		            String contentType  = item.getContentType();
-		            boolean isInMemory  = item.isInMemory();
-		            long sizeInBytes    = item.getSize();
-		            
-		            //TODO comprobar size y contentType
-		            //TODO No repetir nombres imagenes
-		            //TODO comprobar subir +1 imagen
-		            file = new File( Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName );
-		            item.write( file ) ;
+		    	}else{		    		
+		    		String fileName     = item.getName();		    		
+		    		if ( !"".equals(fileName)){		    		
+			            String fileContentType  = item.getContentType();
+			            
+			            if ( Constantes.CONTENT_TYPES.contains(fileContentType)){
+			             		            
+				            long sizeInBytes    = item.getSize();				            
+				            
+				            //TODO No repetir nombres imagenes
+				            
+				            file = new File( Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName );
+				            item.write( file ) ;
+			            }else{
+			            	throw new Exception( "[" + fileContentType + "] extensión de imagen no permitida");
+			            }//end: content-type no permitido    
+		    		}else{
+		    			file = null;
+		    		}   
 		    	}	
 		    }//End: for List<FileItem>
 		    
 		   	pID = Integer.parseInt( dataParameters.get("id"));
 			pNombre = dataParameters.get("nombre");
 			pIDZona = Integer.parseInt(dataParameters.get("zona"));
-			
-			
-		}catch(Exception e){
-			
-			e.printStackTrace();
-		}
+		
 	}
 
 }

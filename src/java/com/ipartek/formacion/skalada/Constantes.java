@@ -1,5 +1,8 @@
 package com.ipartek.formacion.skalada;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Constantes {
 
 	public static final String ROOT_APP = "/skalada/";
@@ -54,5 +57,5 @@ public class Constantes {
 	public static final int    MAX_FILE_SIZE            = 1000 * 1024;
 	public static final int    MAX_MEM_SIZE             = 40 * 1024;
 	public static final String IMG_DEFAULT_SECTOR       = "default_sector.jpg";
-	
+	public static final ArrayList<String> CONTENT_TYPES =  new ArrayList<String>( Arrays.asList("image/jpeg", "image/png"));
 }
