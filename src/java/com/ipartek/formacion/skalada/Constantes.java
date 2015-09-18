@@ -48,8 +48,9 @@ public class Constantes {
 	public static final int ACCION_ELIMINAR = 3;
 	
 	//Imagenes y Ficheros
-	public static final String IMG_UPLOAD_FOLDER        = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\webapps\\"+APP_NAME+"\\uploads";
+	public static final String IMG_UPLOAD_FOLDER        = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\webapps\\uploads";
 	public static final String IMG_UPLOAD_TEMP_FOLDER   = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\temp";
+	public static final String IMG_WEP_PATH             = "http://localhost:8080/uploads/"; 
 	public static final int    MAX_FILE_SIZE            = 1000 * 1024;
 	public static final int    MAX_MEM_SIZE             = 40 * 1024;
 	public static final String IMG_DEFAULT_SECTOR       = "default_sector.jpg";

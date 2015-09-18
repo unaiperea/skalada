@@ -1,3 +1,4 @@
+<%@page import="java.awt.Image"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
@@ -67,9 +68,23 @@
 		      	<div class="form-group">
 		      		<label for="imagen">Imagen</label>
 	           		<input type="file" class="form-control" name="imagen">
-	           		<img src="../uploads/<%=sector.getImagen()%>"
+	           		
+	           		<%
+	           			String img_path = Constantes.IMG_DEFAULT_SECTOR;
+		      			if ( !img_path.equals( sector.getImagen())){
+		      				img_path = Constantes.IMG_WEP_PATH + sector.getImagen();
+		      			}else{
+		      				img_path = "../img/" + img_path;
+		      			}	
+	           		
+	           		
+	           		%>
+	           		
+	           		<img src="<%=img_path%>"
 	           		 	 alt="Imagen del sector <%=sector.getNombre()%>"
 	           			 class="img-responsive img-thumbnail"> 
+	           	
+		 
 		      	</div>
 		      
 	        </div>
