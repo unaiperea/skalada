@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
+import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
 /**
@@ -23,14 +24,14 @@ public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ModeloVia modelo = null;
-	
+	private ModeloSector modeloSector = null;
        
     /**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		modelo = new ModeloVia();
+		modeloSector = new ModeloSector();
 	}
 
 	/**
@@ -39,6 +40,7 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
+		
 	}
 
 	/**
@@ -46,28 +48,17 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		/*
-//		 * Se puede dibujar html a pelo
-//		 */
-//		PrintWriter out = response.getWriter();		
-//		out.println("<h1>HOME</h1>");		
-//		out.flush();
+		//Recuperar los 6 últimos 6 sectores del modelo
+		//Usar limit 6 en la select y order by id desc
+		ArrayList<Object> sectores = modeloSector.getAll();
+		if (sectores.size() > 6){
+			sectores = new ArrayList<Object>(sectores.subList(0, 6));
+		}
 		
+		//Enviarlas como atributo en la request
+		request.setAttribute("ultimos_sectores", sectores);
 		
-//		if ( modelo.getAll().size() > 6 ){
-//			request.setAttribute("ultimas_vias", modelo.getAll().subList(0, 6));
-//		}
-		
-		//recuperar las ultimas 6 vias del modelo
-//		ArrayList<Object> vias = modelo.getAll();
-//		if ( vias.size() > 6 ){
-//			vias = new ArrayList<Object>(vias.subList(0, 6));
-//		}
-//		
-//		//enviarlas como atributo en la request
-//		request.setAttribute("ultimas_vias", vias);
-//		
-//		//ir a index
+		//Ir a index
 		request.getRequestDispatcher(Constantes.VIEW_PUBLIC_INDEX).forward(request, response);
 		
 		

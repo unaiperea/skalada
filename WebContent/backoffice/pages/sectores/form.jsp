@@ -69,21 +69,80 @@
 			        <div class="form-group">			
 						<!-- Mostramon el input text, pero se submita el hidden -->
 						<label for="imagen">Imágen</label>
-						<input type="file"  class="form-control" name="imagen">
-						<img src="<%=Constantes.IMG_UPLOAD_FOLDER%>"/"<%=sector.getImagen()%>" 
+						<input id="imagen" type="file"  class="form-control" name="imagen" onchange="showFileSize();">
+						
+						<%
+							String img_path = Constantes.IMG_DEFAULT_SECTOR;
+							if ( !img_path.equals(sector.getImagen()) ){ //Si la imágen es diferente a la de por defecto personalizar
+								img_path = Constantes.IMG_WEB_PATH + sector.getImagen();
+							}else{
+								img_path = "../img/" + img_path; //Carga la imágen por defecto
+							}
+						%>
+						<img src="<%=img_path%>" 
 							 alt="Imágen del sector "<%=sector.getNombre()%>
-							 class="img-responsive img-thumbnail"></a> <!-- ../uploads/ -->
+							 class="img-responsive img-thumbnail"></a>
 					</div>
 				</div>
 	        </div>
 	        
-
+			<script type='text/javascript'>
+			function showFileSize() {
+			    var input, file;
+			    // (Can't use `typeof FileReader === "function"` because apparently
+			    // it comes back as "object" on some browsers. So just see if it's there
+			    // at all.)
+			    if (!window.FileReader) {
+			        bodyAppend("p", "The file API isn't supported on this browser yet.");
+			        return;
+			    }
+			
+			    input = document.getElementById('imagen');
+			    
+			    if (input.files[0]){
+			    	file = input.files[0];
+			    		if(file.size > <%=Constantes.IMG_MAX_FILE_SIZE%>){
+			    			alert("Demasiado grande la imágen");
+			    			//También se puede crear un alert dinámicamente y darle formato con Bootstrap
+			    			document.getElementById('btn_submit').classList.toggle("disabled"); //Si está quitada la pone y sino la quita 
+			    		}else{
+			    			document.getElementById('btn_submit').classList.remove("disabled");
+			    		}
+			    }
+			    
+			    /*if (!input) {
+			        bodyAppend("p", "Um, couldn't find the fileinput element.");
+			    }
+			    else if (!input.files) {
+			        bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
+			    }
+			    else if (!input.files[0]) {
+			        bodyAppend("p", "Please select a file before clicking 'Load'");
+			    }
+			    else {
+			        file = input.files[0];
+			        bodyAppend("p", "File " + file.name + " is " + file.size + " bytes in size");
+			    }*/
+			}
+			
+			/*
+			* Crea dinámicamente un elemento dentro del documento
+			*/
+			function bodyAppend(tagName, innerHTML) {
+			    var elm;
+			    
+				//Crea dinámicamente un elemento dentro del documento
+			    elm = document.createElement(tagName); //Crea un elemento con el tag que lo paso
+			    elm.innerHTML = innerHTML; //Meto un texto
+			    document.body.appendChild(elm); //Lo mete dentro del documento
+			}
+			</script>
 			
 			<!-- Botonera -->
 			<div class="form-group">
 								
 				<% if(sector.getId()!= -1){ %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Modificar">
+						<input type="submit" id="btn_submit" class="btn btn-outline btn-primary" value="Modificar">
   						<!-- Trigger the modal with a button -->
 						<button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#myModal">Eliminar</button>
 						
@@ -122,7 +181,7 @@
 			
 				
 				<% } else { %>
-						<input type="submit" class="btn btn-outline btn-primary" value="Guardar">
+						<input type="submit" id="btn_submit" class="btn btn-outline btn-primary" value="Guardar">
 						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
 				<% } %>
 	

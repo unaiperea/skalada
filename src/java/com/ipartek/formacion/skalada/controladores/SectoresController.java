@@ -16,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.ipartek.formacion.skalada.Constantes;
+import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
+import com.mysql.jdbc.EscapeTokenizer;
 
 /**
  * Servlet implementation class SectoresController
@@ -143,7 +146,10 @@ public class SectoresController extends HttpServlet {
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		      
+		    
+			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,  "Excepción al modificar");
+			
+			try{
 			//recoger parametros del formulario y subida de imágen
 			getParametersForm(request);
 
@@ -154,20 +160,41 @@ public class SectoresController extends HttpServlet {
 			crearObjeto();
 			
 			//Guardar/Modificar Objeto Via
-			if (pID == -1){
-				if( modeloSector.save(sector) != -1){	
-					request.setAttribute("msg-success", "Registro creado con exito");
+			if (pID == -1) {
+				if (modeloSector.save(sector) != -1) {
+					msg.setTipo(Mensaje.MSG_SUCCESS);
+					msg.setTexto("Registro creado con exito");
+					
 				} else {
-					request.setAttribute("msg-danger", "Error al guardar el nuevo registro");
+					msg.setTipo(Mensaje.MSG_DANGER);
+					msg.setTexto("Error al guardar el nuevo registro");														
 				}
 			} else {
-				if(modeloSector.update(sector)){
-					request.setAttribute("msg-success", "Modificado correctamente el registro [id(" + pID + ")]");
+				if (modeloSector.update(sector)) {
+					msg.setTipo(Mensaje.MSG_SUCCESS);
+					msg.setTexto("Modificado correctamente el registro [id(" + pID
+							+ ")]");						
 				} else {
-					request.setAttribute("msg-danger", "Error al modificar el registro [id(" + pID + ")]");
+					msg.setTipo(Mensaje.MSG_DANGER);
+					msg.setTexto("Error al modificar el registro [id(" + pID + ")]");			
 				}
 			}
 			
+			request.setAttribute("msg", msg);
+			
+			}catch( FileSizeLimitExceededException e){		
+				e.printStackTrace();
+				msg = new Mensaje( Mensaje.MSG_DANGER , "La imágen excede del tamaño maximo permitido " + Constantes.IMG_MAX_FILE_SIZE + " bytes" );
+				request.setAttribute("msg", msg);	
+			}catch(Exception e){
+				e.printStackTrace();
+				msg = new Mensaje( Mensaje.MSG_DANGER , e.getMessage() );
+				request.setAttribute("msg", msg);
+			}	
+			
+			listar(request, response);
+			dispatcher.forward(request, response);
+		      
 			listar(request,response);
 			
 			dispatcher.forward(request, response);
@@ -205,13 +232,17 @@ public class SectoresController extends HttpServlet {
 				sector = (Sector)modeloSector.getById(pID);
 				sector.setNombre(pNombre);
 				sector.setZona(zona);
-				sector.setImagen(file.getName());
+				if(file!=null){
+					sector.setImagen(file.getName());
+				}
 				
 			//nuevo sector	
 			}else{
 				sector = new Sector(pNombre, zona);
 				sector.setId(pID);
-				sector.setImagen(file.getName());
+				if(file!=null){
+					sector.setImagen(file.getName());
+				}
 			}	
 			
 		}
@@ -223,15 +254,14 @@ public class SectoresController extends HttpServlet {
 		* @param request
 		 * @throws UnsupportedEncodingException 
 		*/
-		private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
+		private void getParametersForm(HttpServletRequest request) throws Exception {
 
-			try{
 				request.setCharacterEncoding("UTF-8");
 				
 				DiskFileItemFactory factory = new DiskFileItemFactory(); //Factoría para trabajar con ficheros
 			    // maximum size that will be stored in memory
 				//TODO Cambiar este valor para que falle
-			    factory.setSizeThreshold(Constantes.IMG_MAX_MEM_SIZE); //Memoria para trabajar con ficheros
+			    factory.setSizeThreshold(Constantes.IMG_MAX_MEM_SIZE); //Memoria para trabajar con ficheros. 
 			    // Location to save data that is larger than maxMemSize.
 			    //TODO Comprobar si no existe carpeta
 			    factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER)); //Directorio temporal del propio Tomcat para guardarlo ahí
@@ -252,63 +282,67 @@ public class SectoresController extends HttpServlet {
 			    
 			    	//Parámetro formulario
 			    	if(item.isFormField()){ //CampoDeFormulario se refiere a los parámetros. Los metemos al HashMap
-			    		dataParameters.put(item.getFieldName(), item.getString() ); //Nombre del item y valor del item, uséase key y value
+			    		//Nombre del item y valor del item, uséase key y value
+			    		dataParameters.put(item.getFieldName(), item.getString("UTF-8") ); //UTF-8 para solucionar al cojer los string con acentos
 			    	
 			    	//Si no es campoDeFormulario, uséase imágen
 			    	}else{
 				    	//Atributos de la imágen
 			            String fileName = item.getName();
-			            String contentType = item.getContentType();
-			            boolean isInMemory = item.isInMemory();
-			            long sizeInBytes = item.getSize();
-			            
-			            //comprobar 'size' y 'contentType' (tipo de extensión)
-			            if (sizeInBytes <= Constantes.IMG_MAX_FILE_SIZE){
-			            	
-			            	//No repetir nombre imágenes
-			            	File carpetaUploads = new File(Constantes.IMG_UPLOAD_FOLDER);
-			            	if (carpetaUploads.exists()){
-				                File[] ficherosUploads = carpetaUploads.listFiles();
-				                
-				                //Recorro los ficheros y compruebo su nombre por si es igual que el nombre del fichero a subuir
-				                for (int i=0; i<ficherosUploads.length; i++ ){
-				                	if (ficherosUploads[i].isFile()){
-				                		//Si el nombre es igual
-				                		if (item.getName().equalsIgnoreCase(ficherosUploads[i].getName())){
-				                			//Añadimos la fecha
-				                			Date fecha = new Date();
-				                			SimpleDateFormat formato = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss");
-				                			
-				                			int indicePunto = fileName.indexOf(".");
-				                			if (indicePunto != -1);
-				                				String nombre = fileName.substring(0, indicePunto);
-				                				String extension = fileName.substring(indicePunto + 1);
-				                				fileName =  nombre + "_" + formato.format(fecha).toString().replace(" ", "-").replace(":", "_") + "." + extension;
-				                			break;
-				                		}
-				                	}
-				                } //End for: ficherosUploads
-			            	} //End: exists()
-			            } //End: sizeInBytes
+			            if ("".equals(fileName)){ //Si está vacío subo la imágen Qué no modifique la imágen cuando está
+				            String fileContentType = item.getContentType();
+				            if (Constantes.IMG_CONTENT_TYPES.contains(fileContentType)){ //Si contiene los tipos de archivo jpg o png
+					            boolean isInMemory = item.isInMemory();
+					            long sizeInBytes = item.getSize();
+					            
+					            //comprobar 'size' y 'contentType' (tipo de extensión)
+
+					            //No repetir nombre imágenes
+				            	File carpetaUploads = new File(Constantes.IMG_UPLOAD_FOLDER);
+				            	if (carpetaUploads.exists()){
+					                File[] ficherosUploads = carpetaUploads.listFiles();
+					                
+					                //Recorro los ficheros y compruebo su nombre por si es igual que el nombre del fichero a subuir
+					                for (int i=0; i<ficherosUploads.length; i++ ){
+					                	if (ficherosUploads[i].isFile()){
+					                		//Si el nombre es igual
+					                		if (item.getName().equalsIgnoreCase(ficherosUploads[i].getName())){
+					                			//Añadimos la fecha
+					                			Date fecha = new Date();
+					                			SimpleDateFormat formato = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss");
+					                			
+					                			int indicePunto = fileName.indexOf(".");
+					                			if (indicePunto != -1);
+					                				String nombre = fileName.substring(0, indicePunto);
+					                				String extension = fileName.substring(indicePunto + 1);
+					                				fileName =  nombre + "_" + formato.format(fecha).toString().replace(" ", "-").replace(":", "_") + "." + extension;
+					                			break;
+					                		}
+					                	}
+					                } //End for: ficherosUploads
+				            	} //End: exists()
+				            }else{
+				            	throw new Exception("[" + fileContentType + "] Extensión de imágen no permitida");
+				            } //End: fileContentType
+			            }else{
+			            	file = null;
+			            }//End: fileName vacío
 			            
 			            file = new File(Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName);
 			            item.write( file );
-				            
+				    
 			    	} //End: fileName
 			    } //End: for items<FileItem>
 		            
+			    //Se comprueba el tamaño del fichero desde el form.jsp en javascript
+			    
 			    //Cojo los parámetros pero del propio HashMap dataParameters
 			    pID = Integer.parseInt(dataParameters.get("id"));
 				pNombre = dataParameters.get("nombre");	
 				pIDZona = Integer.parseInt(dataParameters.get("zona"));
 		            
 		        //TODO actualizar modelo
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-			
-			
+
 		}
 
 

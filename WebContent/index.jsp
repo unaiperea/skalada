@@ -1,4 +1,5 @@
 <!-- Para que me salgan los acentos -->
+<%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
@@ -99,19 +100,26 @@
         <!-- Ultimas Vias -->
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">Ultimas Vias</h2>
+                <h2 class="page-header">Últimos Vias</h2>
             </div>
             <%
-            	ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("ultimas_vias");            	
-            	Via v = null;
-       			for(int i = 0 ; i < vias.size() ; i++){
-       				v = vias.get(i);
-            
+            	ArrayList<Sector> sectores = (ArrayList<Sector>)request.getAttribute("ultimos_sectores");            	
+            	Sector s = null;
+       			for(int i = 0 ; i < sectores.size() ; i++){
+       				s = sectores.get(i);
+       				String img_path = Constantes.IMG_DEFAULT_SECTOR;
+					if ( !img_path.equals(s.getImagen()) ){ //Si la imágen es diferente a la de por defecto personalizar
+						img_path = Constantes.IMG_WEB_PATH + s.getImagen();
+					}else{
+						img_path = "img/" + img_path; //Carga la imágen por defecto
+					}
+
             %>
             <div class="col-md-4 col-sm-6">
                <figure>
-                    <img class="img-responsive img-portfolio img-hover" src="imagen" alt="">
+                    <img class="img-responsive img-portfolio img-hover" src="<%=img_path%>" alt="">
                 	<figcaption class="text-center">
+                		<p><%=s.getNombre()+" ("+s.getZona().getNombre()+")"%></p>
 <%-- 						<a href="<%=Constantes.CONTROLLER_VIA%>?id=<%=v.getId()%>" ><%=v.getNombre()%></a> --%>
 					</figcaption>
 				</figure>
