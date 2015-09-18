@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Via;
+import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
 /**
@@ -22,7 +23,7 @@ import com.ipartek.formacion.skalada.modelo.ModeloVia;
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ModeloVia modelo = null;
+	private ModeloSector modeloSector = null;
 	
        
     /**
@@ -30,7 +31,7 @@ public class HomeController extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		modelo = new ModeloVia();
+		modeloSector = new ModeloSector();
 	}
 
 	/**
@@ -46,28 +47,18 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		/*
-//		 * Se puede dibujar html a pelo
-//		 */
-//		PrintWriter out = response.getWriter();		
-//		out.println("<h1>HOME</h1>");		
-//		out.flush();
 		
+		//recuperar las ultimas 6 sectores del modelo
+		//TODO usar LIMIT en la select y order bu id desc
+		ArrayList<Object> sectores = modeloSector.getAll();
+		if ( sectores.size() > 6 ){
+			sectores = new ArrayList<Object>(sectores.subList(0, 6));
+		}
 		
-//		if ( modelo.getAll().size() > 6 ){
-//			request.setAttribute("ultimas_vias", modelo.getAll().subList(0, 6));
-//		}
+		//enviarlas como atributo en la request
+		request.setAttribute("ultimos_sectores", sectores);
 		
-		//recuperar las ultimas 6 vias del modelo
-//		ArrayList<Object> vias = modelo.getAll();
-//		if ( vias.size() > 6 ){
-//			vias = new ArrayList<Object>(vias.subList(0, 6));
-//		}
-//		
-//		//enviarlas como atributo en la request
-//		request.setAttribute("ultimas_vias", vias);
-//		
-//		//ir a index
+		//ir a index
 		request.getRequestDispatcher(Constantes.VIEW_PUBLIC_INDEX).forward(request, response);
 		
 		
