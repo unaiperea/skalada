@@ -194,10 +194,7 @@ public class SectoresController extends HttpServlet {
 			
 			listar(request, response);
 			dispatcher.forward(request, response);
-		      
-			listar(request,response);
-			
-			dispatcher.forward(request, response);
+
 		}
 		
 		private void uploadFile(HttpServletRequest request) {
@@ -289,7 +286,7 @@ public class SectoresController extends HttpServlet {
 			    	}else{
 				    	//Atributos de la imágen
 			            String fileName = item.getName();
-			            if ("".equals(fileName)){ //Si está vacío subo la imágen Qué no modifique la imágen cuando está
+			            if (!"".equals(fileName)){ //Si está vacío subo la imágen. Qué no modifique la imágen cuando está
 				            String fileContentType = item.getContentType();
 				            if (Constantes.IMG_CONTENT_TYPES.contains(fileContentType)){ //Si contiene los tipos de archivo jpg o png
 					            boolean isInMemory = item.isInMemory();
@@ -302,7 +299,7 @@ public class SectoresController extends HttpServlet {
 				            	if (carpetaUploads.exists()){
 					                File[] ficherosUploads = carpetaUploads.listFiles();
 					                
-					                //Recorro los ficheros y compruebo su nombre por si es igual que el nombre del fichero a subuir
+					                //Recorro los ficheros y compruebo su nombre por si es igual que el nombre del fichero a subir
 					                for (int i=0; i<ficherosUploads.length; i++ ){
 					                	if (ficherosUploads[i].isFile()){
 					                		//Si el nombre es igual
@@ -317,9 +314,15 @@ public class SectoresController extends HttpServlet {
 					                				String extension = fileName.substring(indicePunto + 1);
 					                				fileName =  nombre + "_" + formato.format(fecha).toString().replace(" ", "-").replace(":", "_") + "." + extension;
 					                			break;
+					                			
+					                			
 					                		}
 					                	}
 					                } //End for: ficherosUploads
+					                
+					                file = new File(Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName);
+							        item.write( file );
+							        
 				            	} //End: exists()
 				            }else{
 				            	throw new Exception("[" + fileContentType + "] Extensión de imágen no permitida");
@@ -327,9 +330,6 @@ public class SectoresController extends HttpServlet {
 			            }else{
 			            	file = null;
 			            }//End: fileName vacío
-			            
-			            file = new File(Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName);
-			            item.write( file );
 				    
 			    	} //End: fileName
 			    } //End: for items<FileItem>
