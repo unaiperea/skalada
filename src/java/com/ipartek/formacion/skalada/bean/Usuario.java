@@ -2,6 +2,8 @@ package com.ipartek.formacion.skalada.bean;
 
 import java.io.Serializable;
 
+import com.ipartek.formacion.skalada.Constantes;
+
 public class Usuario implements Serializable{
 	private static final long serialVersionUID = -6253794296547129164L;
 	
@@ -31,7 +33,11 @@ public class Usuario implements Serializable{
 		this.setNombre(nombre);
 		this.setEmail(email);
 		this.setPassword(password);
-		this.setRol(rol);
+		if (rol != null){
+			this.setRol(rol);
+		} else {
+			this.setRol(new Rol(Constantes.ROLE_USER));
+		}
 	}
 
 	
