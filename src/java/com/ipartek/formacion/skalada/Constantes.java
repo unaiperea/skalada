@@ -43,6 +43,8 @@ public class Constantes {
 	public static final String CONTROLLER_ZONAS           = ROOT_APP + "zonas";
 	public static final String CONTROLLER_ZONAS_JSON      = ROOT_APP + "zonas-json";
 	public static final String CONTROLLER_SECTORES        = ROOT_APP + "sectores";
+	public static final String CONTROLLER_ROLES           = ROOT_APP + "roles";
+	public static final String CONTROLLER_USUARIOS        = ROOT_APP + "usuarios";
 	
 	//acciones
 	public static final int ACCION_NUEVO	= 0;
