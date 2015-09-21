@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Rol"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%> 
@@ -46,6 +47,9 @@
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
+	                <th>Email</th>
+	                <th>Validado</th>
+	                <th>Rol</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -53,7 +57,7 @@
 	           <%
 	           		// recoger el atributo "zonas" que nos llegara del Servlet con una coleccion de zonas(ArrayList<Zona>)
 	           		ArrayList<Usuario> usuarios = (ArrayList<Usuario>)request.getAttribute("usuarios");
-	           		
+
 	           		Usuario u = null;
 	           		for(int i = 0 ; i < usuarios.size() ; i++){
 	           			u = usuarios.get(i);
@@ -66,7 +70,6 @@
 		                	</a>
 		                </td>
 		                <td><%=u.getEmail()%></td>
-		                <td><%=u.getNombre()%></td>
 		                <td><%=u.getValidado()%></td>
 		               	<td><%=u.getRol().getNombre()%></td>
 		            </tr>           

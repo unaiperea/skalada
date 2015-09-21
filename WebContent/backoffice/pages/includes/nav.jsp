@@ -76,6 +76,20 @@
                         <li>
                             <a href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_LISTAR%>"><i class="fa fa-picture-o fa-fw"></i> Sectores</a>
                         </li>
+<!--                         <li> -->
+<%--                             <a href="<%=Constantes.CONTROLLER_USUARIOS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i class="fa fa-picture-o fa-fw"></i> Usuarios</a> --%>
+<!--                         </li> -->
+<!--                         <li> -->
+<%--                             <a href="<%=Constantes.CONTROLLER_ROLES%>?accion=<%=Constantes.ACCION_LISTAR%>"><i class="fa fa-picture-o fa-fw"></i> Roles</a> --%>
+<!--                         </li> -->
+                        
+                        <li>
+                            <a href="pages/usuarios/index.jsp"><i class="fa fa-picture-o fa-fw"></i> Usuarios</a>
+                        </li>
+                        <li>
+                            <a href="pages/roles/index.jsp"><i class="fa fa-picture-o fa-fw"></i> Roles</a>
+                        </li>
+                        
                         
                     </ul>
                 </div>

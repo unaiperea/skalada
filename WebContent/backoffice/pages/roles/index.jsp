@@ -45,6 +45,7 @@
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
+	                <th>Descripcion</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -52,7 +53,7 @@
 	           <%
 	           		// recoger el atributo "zonas" que nos llegara del Servlet con una coleccion de zonas(ArrayList<Zona>)
 	           		ArrayList<Rol> roles = (ArrayList<Rol>)request.getAttribute("roles");
-	           		
+	   
 	           		Rol r = null;
 	           		for(int i = 0 ; i < roles.size() ; i++){
 	           			r = roles.get(i);

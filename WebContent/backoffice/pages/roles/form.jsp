@@ -8,7 +8,7 @@
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger atributos (Objeto Zona)"zona" y (String)"titulo"
+// 	recoger atributos (Objeto Zona)"zona" y (String)"titulo"
 	Rol rol = (Rol)request.getAttribute("rol");
 	String titulo = request.getAttribute("titulo").toString();
 %>
@@ -17,7 +17,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo%></h1>
+            <h1 class="page-header"><%=titulo %></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -28,7 +28,7 @@
 	
 		<form action="<%=Constantes.CONTROLLER_ROLES%>" method="post" role="form">
 			
-			<div class="row">
+			<div class="row col-lg-12">
 				
 				<div class="form-group">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
