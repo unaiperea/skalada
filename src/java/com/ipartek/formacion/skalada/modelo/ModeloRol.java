@@ -188,7 +188,7 @@ public class ModeloRol implements Persistable{
 	}
 	
 	/**
-	 * Mapea un ResultSet a Grado
+	 * Mapea un ResultSet a Rol
 	 * @param rs
 	 * @return
 	 * @throws SQLException 
