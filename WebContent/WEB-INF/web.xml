@@ -104,4 +104,14 @@
     <servlet-name>ZonasJsonController</servlet-name>
     <url-pattern>/zonas-json</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <description>Controlador para retornar las Zonas en formato Json, preparado para recibir llamadas por Ajax</description>
+    <display-name>RolesController</display-name>
+    <servlet-name>RolesJsonController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.json.ZonasJsonController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RolesJsonController</servlet-name>
+    <url-pattern>/rolesController</url-pattern>
+  </servlet-mapping>
 </web-app>
