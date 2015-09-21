@@ -1,0 +1,26 @@
+﻿CREATE TABLE `Rol` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(50) NOT NULL DEFAULT '0',
+	`descripcion` VARCHAR(250) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `usuario` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`email` VARCHAR(100) NOT NULL DEFAULT '0',
+	`nombre` VARCHAR(100) NOT NULL DEFAULT '0',
+	`password` VARCHAR(30) NOT NULL DEFAULT '0',
+	`id_rol` INT NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`),
+	CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+
+INSERT INTO `eskalada`.`rol` (`nombre`, `descripcion`) VALUES ('Administrador', 'Administrador del sistema');
+INSERT INTO `eskalada`.`usuario` (`email`, `nombre`, `password`, `id_rol`) VALUES ('aaa@aaa.com', 'AAA', '1234', 1);
