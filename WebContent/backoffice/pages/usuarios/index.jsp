@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
@@ -66,7 +67,7 @@
 		                </td>
 		                <td><%=u.getEmail()%></td>
 		                <td><%=u.getNombre()%></td>
-		                <td><%=u.isValidado()%></td>
+		                <td><%=u.getValidado()%></td>
 		               	<td><%=u.getRol().getNombre()%></td>
 		            </tr>           
 	           <%

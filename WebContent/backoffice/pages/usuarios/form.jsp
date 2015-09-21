@@ -1,3 +1,5 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Rol"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 

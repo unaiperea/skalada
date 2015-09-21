@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Rol"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
