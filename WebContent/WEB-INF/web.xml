@@ -111,7 +111,7 @@
     <servlet-class>com.ipartek.formacion.skalada.controladores.json.RolesController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>RolesJsonController</servlet-name>
+    <servlet-name>RolesController</servlet-name>
     <url-pattern>/roles</url-pattern>
   </servlet-mapping>
 </web-app>
