@@ -104,4 +104,34 @@
     <servlet-name>ZonasJsonController</servlet-name>
     <url-pattern>/zonas-json</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Controlador de roles de usuarios</description>
+    <display-name>RolesController</display-name>
+    <servlet-name>RolesController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.RolesController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RolesController</servlet-name>
+    <url-pattern>/roles</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Controlador de los Usuarios</description>
+    <display-name>UserController</display-name>
+    <servlet-name>UserController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserController</servlet-name>
+    <url-pattern>/usuarios</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Controlador de registro de usuarios</description>
+    <display-name>SignupController</display-name>
+    <servlet-name>SignupController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.SignupController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignupController</servlet-name>
+    <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
 </web-app>
