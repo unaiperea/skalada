@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Rol;
 
 public class ModeloRol implements Persistable{
@@ -26,23 +24,23 @@ public class ModeloRol implements Persistable{
 	@Override
 	public int save(Object o) {
 		int resul = -1;
-		Grado g = null;	
+		Rol r = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
 		if(o != null){
 			try{
-				g = (Grado)o;
+				r = (Rol)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());		
+				pst.setString(1, r.getNombre());
+				pst.setString(2, r.getDescripcion());		
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						g.setId(resul);
+						r.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -130,17 +128,17 @@ public class ModeloRol implements Persistable{
 	@Override
 	public boolean update(Object o) {
 		boolean resul = false;
-		Grado g = null;
+		Rol r = null;
 		PreparedStatement pst = null;
 		if (o != null){
 			try{
-				g = (Grado)o;
+				r = (Rol)o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(1, g.getNombre());
-				pst.setString(2, g.getDescripcion());
-				pst.setInt(3, g.getId());				
+				pst.setString(1, r.getNombre());
+				pst.setString(2, r.getDescripcion());
+				pst.setInt(3, r.getId());				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
