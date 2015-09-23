@@ -28,18 +28,22 @@
 							} 
 						%>
 			    
-                        <form role="form" action="<%=Constantes.CONTROLLER_SIGNUP%>" method="post">
+                        <form role="form" action="<%=Constantes.CONTROLLER_SIGNUP%>" method="post" onSubmit="return validar();" >
                             <fieldset>
+                            
+                            	<!-- Mensajes error de validación -->
                             	<div id="div-msg" class="alert alert-danger alert-dismissible fade in hide" role="alert">
 								    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								    	<span aria-hidden="true">×</span>
 								    </button>
-								    <h4>Error !!</h4>
+								    <h4>Por favor revisa los campos del formulario</h4>
 								    <p>
 								    	<span id="span-msg" value=""></span>
 								    </p>
 								    <!-- <p><button type="button" class="btn btn-danger">Cerrar</button></p> -->
 							    </div>
+							    
+							    <!-- Campos de formulario -->
                             	<div class="form-group">
                                     <input class="form-control" placeholder="Nombre" name="nombre" id="nombre" type="text" required autofocus tabindex="1">
                                 </div>
@@ -52,33 +56,29 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Confirmar Contraseña" name="password2" id="pw2" type="password" required value="" tabindex="4">
                                 </div>
-                                <input class="btn btn-lg btn-block btn-primary"  onClick="return validar();" type="submit" tabindex="5" value="Registrate"> 
+                                <input class="btn btn-lg btn-block btn-primary"  type="submit" tabindex="5" value="Registrate"> 
                             </fieldset>
                             
                               <script> 
 								function validar(){
 									
 									var resul = false;
-									
+									//Inputs formulario
 									var nombre = document.getElementById("nombre");
 									var mail = document.getElementById("email");
 								   	var p1 = document.getElementById("pw1").value;
 								   	var p2 = document.getElementById("pw2").value;
+								   	//div mensaje
 								   	var dm = document.getElementById("div-msg");
 								   	var sm = document.getElementById("span-msg");
-								   	
-								   	
-								   	//$('#alerta').on('closed.bs.alert', function () {}
 								   	
 								   	if ( nombre.value.length >= 4  ){
 								   		if (mail.value != ""){
 									   		if (p1.length >= 6){
 									   			if (p1 == p2){
-									   				sm.value = "Las dos claves son iguales...";
-									   				dm.classList.remove("hide");
 									   				resul = true;
 											   	}else{
-											   		sm.value = "Las dos claves han de ser iguales";
+											   		sm.innerHTML = "Las dos claves han de ser iguales";
 											   		dm.classList.remove("hide");
 											   	}
 									   		}else{
@@ -92,11 +92,6 @@
 								   	}else{
 								   		sm.innerHTML = "El campo Nombre ha de tener 4 caracteres mínimo";
 								   		dm.classList.remove("hide");
-								   	}
-
-								   	if (resul){
-								   		sm.innerHTML = "";
-							   			dm.classList.add("hide");
 								   	}
 								   	
 								    return resul;

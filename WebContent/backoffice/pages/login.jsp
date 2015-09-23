@@ -15,7 +15,8 @@
                         <h3 class="panel-title">Entrar</h3>
                     </div>
                     <div class="panel-body">                    
-                
+                		
+                		<!-- Podríamos meterlo en un include para no copiar y pegarlo siempre -->
   						<% 
 				            Mensaje msg = (Mensaje)request.getAttribute("msg");	
 							if (msg != null){

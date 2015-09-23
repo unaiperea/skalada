@@ -125,7 +125,7 @@
     <url-pattern>/usuarios</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description>Controlador de registro de usuarios</description>
+    <description>Registro y Alta de nuevos usuarios</description>
     <display-name>SignupController</display-name>
     <servlet-name>SignupController</servlet-name>
     <servlet-class>com.ipartek.formacion.skalada.controladores.SignupController</servlet-class>

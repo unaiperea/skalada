@@ -1,5 +1,7 @@
 package com.ipartek.formacion.skalada.controladores;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +18,6 @@ import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloRol;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.util.EnviarEmails;
-import com.ipartek.formacion.skalada.util.SendEmail;
 
 /**
  * Servlet implementation class RegistroController
@@ -26,11 +27,13 @@ public class SignupController extends HttpServlet {
 	
 	private RequestDispatcher dispatcher = null;
 	
+	//Por Post
 	private String pNombre;
 	private String pEmail;
 	private String pPass;
 	
-	private int pIdRol = 2; //Valor por defecto de un nuevo usuario (Rol = Usuario)
+	//Valor por defecto de un nuevo usuario (Rol = Usuario)
+	private int pIdRol = 2; //Deberíamos ponerlo en Constantes por si cambia un día el id
 	
 	private Usuario usuario = null;
 	private Rol rol = null;
@@ -38,6 +41,8 @@ public class SignupController extends HttpServlet {
 	private ModeloRol modeloRol = null;
 	private Mensaje msg = null;
 	
+	//Por Get
+	private int accion = -1;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -58,7 +63,11 @@ public class SignupController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		//Recibimos la validación
+		if (accion == 4){
+			//Modificar el campo validar a 1 
+		}
 	}
 
 	/**
@@ -72,22 +81,26 @@ public class SignupController extends HttpServlet {
 			pEmail = (String)request.getParameter("email");
 			pPass = (String)request.getParameter("password");
 			
-			if (!modeloUsuario.checkUser(pNombre, pEmail)){ //Comprobamos si existe el usuario
-				//Guardar usuario
-				crearUsuario(); //Creamos el objeto Usuario
+			//Comprobamos si existe el usuario
+			if (!modeloUsuario.checkUser(pNombre, pEmail)){
+				//Creamos el objeto Usuario
+				rol = (Rol)modeloRol.getById(pIdRol);
+				usuario = new Usuario(pNombre, pEmail, pPass, rol);
+				//Guardar en bbdd
 				if (modeloUsuario.save(usuario) == -1){
 					msg = new Mensaje( Mensaje.MSG_DANGER , "Ha habido un error al guardar el usuario");
-					request.setAttribute("msg", msg);
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 				}else{
 					//Enviar email de validación
-					EnviarEmails.
-					msg = new Mensaje( Mensaje.MSG_SUCCESS , "Te has dado de alta con éxito");
-					request.setAttribute("msg", msg);
+					if (enviarEmail()){
+						msg = new Mensaje( Mensaje.MSG_SUCCESS , "Por favor revisa tu email para validar tu registro");
+					}else{
+						msg = new Mensaje( Mensaje.MSG_SUCCESS , "Error al enviar email, por favor ponte en contacto con nosotros " + EnviarEmails.direccionOrigen);
+					}
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 				}
 			}else{
-				request.setAttribute("msg-warning", "El usuario ya existe");
+				request.setAttribute("msg", "El usuario o email ya existe");
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 				
 			}
@@ -97,17 +110,30 @@ public class SignupController extends HttpServlet {
 			msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al guardar el usuario. " + e.getMessage());
 			request.setAttribute("msg", msg);
 		}finally{
+			request.setAttribute("msg", msg);
 			dispatcher.forward(request, response);
 		}
 	}
 
-	private void crearUsuario(){
-		rol = (Rol)modeloRol.getById(pIdRol);
-		usuario = new Usuario(pNombre, pEmail, pPass, rol);
+
+	private boolean enviarEmail(){
+		boolean resul = false;
+		
+		EnviarEmails correo = new EnviarEmails();
+		correo.setDireccionFrom("skalada.ipartek@gmail.com"); //Sin espacios
+		correo.setDireccionDestino(usuario.getEmail());
+		correo.setMessageSubject("Por favor valida tu email");
+		String cuerpo = "<h1>Validar cuenta usuario</h1>";
+		cuerpo += "<p>Pulsa este enlace para validar:</p>";
+		cuerpo += Constantes.SERVER + Constantes.CONTROLLER_SIGNUP+"?accion="+Constantes.ACCION_VALIDAR+"&email="+usuario.getEmail();
+		
+		correo.setMessageText(cuerpo); //Se pueden tener plantillas de html y enviarlas
+		
+		resul = correo.enviar();
+		
+		//Validar lo recogeremos en este mismo controlador y por GET
+		return resul;
 	}
-
-
-	
 	
 	
 	

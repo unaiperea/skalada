@@ -14,7 +14,7 @@ import javax.mail.internet.MimeUtility;
 
 public class EnviarEmails {
 	
-	private String direccionOrigen = "skalada.ipartek@gmail.com";
+	public static final String direccionOrigen = "skalada.ipartek@gmail.com";
 	private String passwordOrigen = "123ABC123";
 	private String direccionFrom ="";
 	private String direccionDestino ="";
@@ -132,7 +132,6 @@ public class EnviarEmails {
 			resul = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			//throw new RuntimeException(e);
 		}
 		return resul; //Así controlamos si ha funcionado o no y se lo hacemos saber al usuario
 	}
