@@ -134,4 +134,14 @@
     <servlet-name>SignupController</servlet-name>
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>sendEmail</display-name>
+    <servlet-name>sendEmail</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.util.sendEmail</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>sendEmail</servlet-name>
+    <url-pattern>/sendEmail</url-pattern>
+  </servlet-mapping>
 </web-app>
