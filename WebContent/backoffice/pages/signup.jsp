@@ -28,23 +28,18 @@
 							} 
 						%>
 			    
-                        <form role="form" name="f1"  method="post">
+                        <form role="form" action="<%=Constantes.CONTROLLER_SIGNUP%>" method="post">
                             <fieldset>
-                            	<div class="alert alert-danger alert-dismissible fade in" role="alert">
+                            	<div id="div-msg" class="alert alert-danger alert-dismissible fade in hide" role="alert">
 								    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								    	<span aria-hidden="true">×</span>
 								    </button>
 								    <h4>Error !!</h4>
 								    <p>
-								    	<span id="msg" value=""></span>
+								    	<span id="span-msg" value=""></span>
 								    </p>
-								    <p>
-								      <button type="button" class="btn btn-danger">Take this action</button>
-								    </p>
+								    <!-- <p><button type="button" class="btn btn-danger">Cerrar</button></p> -->
 							    </div>
-		                        <button id="alerta" type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
                             	<div class="form-group">
                                     <input class="form-control" placeholder="Nombre" name="nombre" id="nombre" type="text" required autofocus tabindex="1">
                                 </div>
@@ -69,7 +64,8 @@
 									var mail = document.getElementById("email");
 								   	var p1 = document.getElementById("pw1").value;
 								   	var p2 = document.getElementById("pw2").value;
-								   	var m = document.getElementById("msg");
+								   	var dm = document.getElementById("div-msg");
+								   	var sm = document.getElementById("span-msg");
 								   	
 								   	
 								   	//$('#alerta').on('closed.bs.alert', function () {}
@@ -78,21 +74,31 @@
 								   		if (mail.value != ""){
 									   		if (p1.length >= 6){
 									   			if (p1 == p2){
-											      	m.value = "Las dos claves son iguales...";
+									   				sm.value = "Las dos claves son iguales...";
+									   				dm.classList.remove("hide");
+									   				resul = true;
 											   	}else{
-											   		resul = true;
-											   		m.value = "Las dos claves son distintas...";
+											   		sm.value = "Las dos claves han de ser iguales";
+											   		dm.classList.remove("hide");
 											   	}
 									   		}else{
-									   			m.value = "El password ha de tener 6 caracteres mínimo";
+									   			sm.innerHTML = "El password ha de tener 6 caracteres mínimo";
+									   			dm.classList.remove("hide");
 									   		}
 								   		}else{
-								   			m.value = "Email No puede estar vacío";
+								   			sm.innerHTML = "Email No puede estar vacío";
+								   			dm.classList.remove("hide");
 								   		}
 								   	}else{
-								   		m.value = "El campo Nombre ha de tener 4 caracteres mínimo";
+								   		sm.innerHTML = "El campo Nombre ha de tener 4 caracteres mínimo";
+								   		dm.classList.remove("hide");
 								   	}
 
+								   	if (resul){
+								   		sm.innerHTML = "";
+							   			dm.classList.add("hide");
+								   	}
+								   	
 								    return resul;
 								}
 								

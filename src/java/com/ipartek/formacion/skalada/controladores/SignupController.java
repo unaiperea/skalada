@@ -13,7 +13,10 @@ import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
+import com.ipartek.formacion.skalada.modelo.ModeloRol;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
+import com.ipartek.formacion.skalada.util.EnviarEmails;
+import com.ipartek.formacion.skalada.util.SendEmail;
 
 /**
  * Servlet implementation class RegistroController
@@ -27,9 +30,12 @@ public class SignupController extends HttpServlet {
 	private String pEmail;
 	private String pPass;
 	
+	private int pIdRol = 2; //Valor por defecto de un nuevo usuario (Rol = Usuario)
+	
 	private Usuario usuario = null;
 	private Rol rol = null;
 	private ModeloUsuario modeloUsuario = null;
+	private ModeloRol modeloRol = null;
 	private Mensaje msg = null;
 	
 	
@@ -45,6 +51,7 @@ public class SignupController extends HttpServlet {
   	public void init(ServletConfig config) throws ServletException {
     	super.init(config);
     	modeloUsuario = new ModeloUsuario();
+    	modeloRol = new ModeloRol();
     }
 
 	/**
@@ -61,9 +68,9 @@ public class SignupController extends HttpServlet {
 		try{
 			request.setCharacterEncoding("UTF-8");
 			
-			pNombre = (String)request.getAttribute("nombre");
-			pEmail = (String)request.getAttribute("email");
-			pPass = (String)request.getAttribute("password");
+			pNombre = (String)request.getParameter("nombre");
+			pEmail = (String)request.getParameter("email");
+			pPass = (String)request.getParameter("password");
 			
 			if (!modeloUsuario.checkUser(pNombre, pEmail)){ //Comprobamos si existe el usuario
 				//Guardar usuario
@@ -73,8 +80,9 @@ public class SignupController extends HttpServlet {
 					request.setAttribute("msg", msg);
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 				}else{
-					//TODO enviar email de confirmación
-					msg = new Mensaje( Mensaje.MSG_SUCCESS , "Te has dado de alta con �xito");
+					//Enviar email de validación
+					EnviarEmails.
+					msg = new Mensaje( Mensaje.MSG_SUCCESS , "Te has dado de alta con éxito");
 					request.setAttribute("msg", msg);
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 				}
@@ -83,7 +91,6 @@ public class SignupController extends HttpServlet {
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 				
 			}
-			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -95,7 +102,7 @@ public class SignupController extends HttpServlet {
 	}
 
 	private void crearUsuario(){
-		rol = new Rol("Usuario");
+		rol = (Rol)modeloRol.getById(pIdRol);
 		usuario = new Usuario(pNombre, pEmail, pPass, rol);
 	}
 

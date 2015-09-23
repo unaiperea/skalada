@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
@@ -15,17 +16,17 @@
                     </div>
                     <div class="panel-body">                    
                 
-  								<% 
-  									String msg = (String)request.getAttribute("msg");	
-  									if (msg != null){
-  										out.print("<div class='alert alert-danger alert-dismissible' role='alert'>");
-  											out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-  												out.print("<span aria-hidden='true'>&times;</span>");
-  											out.print("</button>");
-  											out.print("<strong>"+ msg +"</strong>");
-  										out.print("</div>");
-  									}  								
-  								%>                
+  						<% 
+				            Mensaje msg = (Mensaje)request.getAttribute("msg");	
+							if (msg != null){
+								out.print("<div class='alert alert-"+ msg.getTipo() +" alert-dismissible' role='alert'>");
+									out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
+										out.print("<span aria-hidden='true'>&times;</span>");
+									out.print("</button>");
+									out.print("<strong>"+ msg.getTexto() +"</strong>");
+								out.print("</div>");
+							} 
+						%>              
                     
                         <form role="form" action="<%=Constantes.CONTROLLER_LOGIN%>" method="post">
                             <fieldset>
