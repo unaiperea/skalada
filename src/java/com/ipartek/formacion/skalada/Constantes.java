@@ -16,6 +16,7 @@ public class Constantes {
 	public static final String ROOT_BACK = ROOT_APP + "backoffice/";
 	
 	public static final String VIEW_BACK_LOGIN = "backoffice/pages/login.jsp";
+	public static final String VIEW_BACK_SIGNUP = "backoffice/pages/signup.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
 	
 	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
@@ -39,8 +40,11 @@ public class Constantes {
 	public static final String VIEW_BACK_USUARIOS_INDEX = "backoffice/pages/usuarios/index.jsp";
 	public static final String VIEW_BACK_USUARIOS_FORM = "backoffice/pages/usuarios/form.jsp";
 	
+	public static final String VIEW_BACK_RECUPERAR_PASS = "backoffice/pages/recupera-pass.jsp";
+	
 	//controladores
 	public static final String CONTROLLER_LOGIN           = ROOT_APP + "login";
+	public static final String CONTROLLER_SIGNUP          = ROOT_APP + "signup";
 	public static final String CONTROLLER_LOGOUT          = ROOT_APP + "logout";	
 	public static final String CONTROLLER_VIAS            = ROOT_APP + "vias";
 	public static final String CONTROLLER_HOME            = ROOT_APP + "home";
@@ -58,6 +62,14 @@ public class Constantes {
 	public static final int ACCION_LISTAR	= 2;
 	public static final int ACCION_ELIMINAR = 3;
 	
+	//acciones signup
+	public static final int ACCION_CONFIRM					= 1;
+	public static final int ACCION_MOSTRAR_REGENERAR_PASS	= 2;
+	public static final int ACCION_REGISTRAR_USUARIO		= 3;
+	public static final int ACCION_PASS_OLVIDADO			= 4;
+	public static final int ACCION_REGENERAR_PASS			= 5;
+	
+	
 	//Imagenes y Ficheros
 	public static final String IMG_UPLOAD_FOLDER        = "C:\\desarrollo\\apache-tomcat-6.0.44\\webapps\\uploads";
 	public static final String IMG_UPLOAD_TEMP_FOLDER   = "C:\\desarrollo\\apache-tomcat-6.0.44\\temp";
@@ -74,7 +86,14 @@ public class Constantes {
 	//Usuarios
 	public static final int USER_VALIDATE    = 1;
 	public static final int USER_NO_VALIDATE = 0;
+	public static final String EMAIL_TEMPLATE_REGISTRO = "file/plantilla-mail.html";
+	public static final String URL_VALIDATE = "http://localhost:8080/skalada/signup?action=1&id=";
+	public static final String URL_PASS_OLVIDADO = "http://localhost:8080/skalada/signup?action=2&email=";
 	
+	//Mails
+	public static final String VALIDACION = "validacion";
+	public static final String RECUPERACION = "recuperacion";
+	public static final String SERVER = "http://localhost:8080";
 	
 
 }

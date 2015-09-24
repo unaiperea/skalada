@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
@@ -20,8 +21,10 @@ public class ModeloUsuario implements Persistable{
 	private static final String SQL_GETONE  = SQL_GETALL + " WHERE u.`id`= ?;";
 	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ? WHERE `id`= ?;";
 	
-	private static final String SQL_CHECK_USER  = "SELECT * FROM `usuario` WHERE `nombre` = ? OR `email` = ?";
-	
+	private static final String SQL_CHECK_USER  = "SELECT * FROM `usuario` WHERE `nombre` = ? OR `email` = ?;";
+	private static final String SQL_CHECK_EMAIL = "SELECT id, validado FROM `usuario` WHERE `email` like ?;";
+	private static final String SQL_VALIDATE = "UPDATE `usuario` SET `validado`= ? WHERE `id`= ?;";
+	private static final String SQL_RESET_PASS = "UPDATE `usuario` SET `password`= ? WHERE `email`= ?;";
 	
 	@Override
 	public int save(Object o) {
@@ -251,5 +254,101 @@ public class ModeloUsuario implements Persistable{
 	}
 	
 
+	/**
+	 * Funcion para comprobar la activacion de usuarios. Busca en la BBDD si existe un email dado.
+	 * @param email Email a buscar en la BBDD
+	 * @return Devuelve un HashMap con el id y el validao correspondiente al usuario con el email buscado. En caso de no existir el email devuelve un HashMap vacio
+	 */
+	
+	public HashMap<String,Integer> checkEmail (String email){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;		
+		try{
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_CHECK_EMAIL);
+			pst.setString(1, email);
+	    	rs = pst.executeQuery(); 
+	    	if (rs.next()){
+	    		map.put("id", rs.getInt("id"));
+	    		map.put("validado", rs.getInt("validado"));
+	    	}   	
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(pst != null){
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();			
+			}catch(Exception e){
+				e.printStackTrace();
+			}			
+		}	
+		
+		return map;
+	}
+	
+	public boolean validate (int id){
+		boolean resul=false;
+		
+		PreparedStatement pst = null;
+		try{
+			Connection con = DataBaseHelper.getConnection();
+			String sql = SQL_VALIDATE;
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, 1);
+			pst.setInt(2, id);	
+	    	if ( pst.executeUpdate() == 1 ){
+	    		resul = true;	    		
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pst != null){
+					pst.close();
+				}				
+				DataBaseHelper.closeConnection();									
+			}catch(Exception e){
+				e.printStackTrace();
+			}				
+		}		
+		
+		return resul;
+	}
+	
+	public boolean resetPass (String email, String pass){
+		boolean resul = false;
+		
+		PreparedStatement pst = null;
+		try{
+			Connection con = DataBaseHelper.getConnection();
+			String sql = SQL_RESET_PASS;
+			pst = con.prepareStatement(sql);
+			pst.setString(1, pass);
+			pst.setString(2, email);	
+	    	if ( pst.executeUpdate() == 1 ){
+	    		resul = true;	    		
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pst != null){
+					pst.close();
+				}				
+				DataBaseHelper.closeConnection();									
+			}catch(Exception e){
+				e.printStackTrace();
+			}				
+		}		
+		
+		return resul;
+	}
+	
 }
 

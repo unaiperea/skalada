@@ -126,5 +126,24 @@
     <servlet-name>UserController</servlet-name>
     <url-pattern>/usuarios</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <description>Registro de usuarios</description>
+    <display-name>SignupController</display-name>
+    <servlet-name>SignupController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.SignupController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignupController</servlet-name>
+    <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Validar usuario</description>
+    <display-name>ValidarController</display-name>
+    <servlet-name>ValidarController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ValidarController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ValidarController</servlet-name>
+    <url-pattern>/validar</url-pattern>
+  </servlet-mapping>
 </web-app>
