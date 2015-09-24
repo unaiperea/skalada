@@ -163,7 +163,12 @@ public class SignupController extends HttpServlet {
 						SendMail mail = new SendMail();
 						mail.setDestinatario(usuario.getEmail());
 						mail.setAsunto("Confirmacion de registro");
-						mail.setMensaje(mail.generarPlantilla(usuario.getNombre(), Constantes.URL_VALIDATE+pId+"&email="+pEmail, Constantes.VALIDACION));
+						HashMap<String, String> params = new HashMap<String, String>();
+						params.put("{usuario}", usuario.getNombre());
+						params.put("{url}", Constantes.URL_VALIDATE+pId+"&email="+pEmail);
+						params.put("{contenido}", "Gracias por registrarte. Para activar el usuario y verificar el email, clica en el enlace de debajo.");
+						params.put("{txt_btn}", "Activa tu cuenta y logeate");
+						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params)); 
 						mail.enviarMail();
 						msg = new Mensaje( Mensaje.MSG_SUCCESS , "Por favor revise su correo electronico para validar su usuario");
 						dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
@@ -181,7 +186,12 @@ public class SignupController extends HttpServlet {
 						SendMail mail = new SendMail();
 						mail.setDestinatario(pEmail);
 						mail.setAsunto("Recuperacion de password");
-						mail.setMensaje(mail.generarPlantilla(pEmail, Constantes.URL_PASS_OLVIDADO+pEmail, Constantes.RECUPERACION));
+						HashMap<String, String> params = new HashMap<String, String>();
+						params.put("{usuario}", pEmail);
+						params.put("{url}", Constantes.URL_PASS_OLVIDADO+pEmail);
+						params.put("{contenido}", "Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
+						params.put("{txt_btn}", "Recupera tu contraseña");
+						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params));
 						mail.enviarMail();
 						msg = new Mensaje(Mensaje.MSG_INFO, "Se ha enviado un mensaje a su cuenta de correo electronico en el que puede recuperar su contraseña");
 						dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
@@ -196,7 +206,6 @@ public class SignupController extends HttpServlet {
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 				break;
 			case Constantes.ACCION_REGENERAR_PASS:
-				//TODO regenerar password
 				pEmail = (String)request.getParameter("email");
 				pPass = (String)request.getParameter("password");
 				

@@ -1,6 +1,9 @@
 package com.ipartek.formacion.skalada.util;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,8 +16,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.io.IOUtils;
 
-import com.ipartek.formacion.skalada.Constantes;
-
 public class SendMail {
 
 	private Properties props = new Properties();
@@ -23,9 +24,6 @@ public class SendMail {
 	private String destinatario = "";
 	private String emisor = "skalada.ipartek@gmail.com";
 	private Session session = null;
-
-	private final String validacion = "Gracias por registrarte. Para activar el usuario y verificar el email, clica en el enlace de debajo.";
-	private final String recuperacion = "Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.";
 
 	public SendMail() {
 		super();
@@ -159,25 +157,19 @@ public class SendMail {
 		return resul;
 	}
 
-	public String generarPlantilla(String usuario, String url, String tipo)
+	public String generarPlantilla(String plantilla, HashMap<String,String> parametros)
 			throws IOException {
 		String resul = "";
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		resul = (IOUtils.toString(classLoader
-				.getResourceAsStream(Constantes.EMAIL_TEMPLATE_REGISTRO)));
+				.getResourceAsStream(plantilla),"UTF-8"));
 
-		resul = (this.mensaje.replace("{usuario}", usuario));
-		resul = (this.mensaje.replace("{url}", url));
-
-		if (tipo.equals(Constantes.VALIDACION)) {
-			resul = (this.mensaje.replace("{contenido}", validacion));
-			resul = (this.mensaje.replace("{txt_btn}",
-					"Activa tu cuenta y logeate"));
-		} else {
-			resul = (this.mensaje.replace("{contenido}", recuperacion));
-			resul = (this.mensaje
-					.replace("{txt_btn}", "Recupera tu contraseña"));
+		Iterator<Map.Entry<String, String>> it = parametros.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String,String> e = (Map.Entry<String,String>)it.next();
+			resul = resul.replace(e.getKey(), e.getValue());
+		
 		}
 		return resul;
 	}
