@@ -123,8 +123,8 @@ public class SignupController extends HttpServlet {
 		correo.setDireccionFrom("skalada.ipartek@gmail.com"); //Sin espacios
 		correo.setDireccionDestino(usuario.getEmail());
 		correo.setMessageSubject("Por favor valida tu email");
-		String cuerpo = "<h1>Validar cuenta usuario</h1>";
-		cuerpo += "<p>Pulsa este enlace para validar:</p>";
+		String cuerpo = "Validar cuenta de usuario \n";
+		cuerpo += "Pulsa este enlace para validar: \n";
 		cuerpo += Constantes.SERVER + Constantes.CONTROLLER_SIGNUP+"?accion="+Constantes.ACCION_VALIDAR+"&email="+usuario.getEmail();
 		
 		correo.setMessageText(cuerpo); //Se pueden tener plantillas de html y enviarlas

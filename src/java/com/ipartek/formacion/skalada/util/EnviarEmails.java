@@ -15,11 +15,13 @@ import javax.mail.internet.MimeUtility;
 public class EnviarEmails {
 	
 	public static final String direccionOrigen = "skalada.ipartek@gmail.com";
-	private String passwordOrigen = "123ABC123";
-	private String direccionFrom ="";
-	private String direccionDestino ="";
-	private String messageSubject=""; //Asunto
-	private String messageText=""; //Cuerpo
+	private String passwordOrigen 	= "123ABC123";
+	private String direccionFrom 	= "";
+	private String direccionDestino = "";
+	private String messageSubject	= ""; //Asunto
+	private String messageText		= ""; //Cuerpo Texto plano
+	private String messageContent   = ""; //Cuerpo Html
+	
 	private Session session; //Para construir el mensaje
 	
 		/**	Construye el objeto {@code EnviarEmails} 
@@ -84,6 +86,13 @@ public class EnviarEmails {
 		this.direccionDestino = direccionDestino;
 	}
 
+	public String getMessageContent() {
+		return messageContent;
+	}
+
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
 
 	public String getMessageSubject() {
 		return messageSubject;
@@ -127,12 +136,24 @@ public class EnviarEmails {
 			message.setFrom(new InternetAddress(direccionFrom));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(direccionDestino)); //Destinatarios
 			message.setSubject(MimeUtility.encodeText(messageSubject,"UTF-8","B"));
-			message.setText(messageText); //Mensaje
+			
+			if ( !"".equals(messageText) ){
+				message.setText(messageText); //Enviar como texto plano
+			}else{
+				message.setContent(messageContent,"text/html; charset=utf-8"); //Enviar como texto plano
+			}	
 			Transport.send(message);
 			resul = true;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resul; //Así controlamos si ha funcionado o no y se lo hacemos saber al usuario
 	}
+	
+	
+	
+	
+	
+	
 }

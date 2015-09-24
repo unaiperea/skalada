@@ -79,4 +79,7 @@ public class Constantes {
 	//Usuarios
 	public static final int USER_VALIDATE    = 1;
 	public static final int USER_NO_VALIDATE = 0;
+	
+	//Emails
+	public static final String EMAIL_TEMPLATE_REGISTRO = ROOT_APP + "emails/registro.html";
 }
