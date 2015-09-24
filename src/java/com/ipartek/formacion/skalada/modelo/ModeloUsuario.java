@@ -18,6 +18,7 @@ public class ModeloUsuario implements Persistable{
 											+ "FROM `usuario` AS u "
 											+ "INNER JOIN `rol` as r ON (u.`id_rol` = r.`id`)";
 	private static final String SQL_GETONE  = SQL_GETALL + " WHERE u.`id`= ?;";
+	private static final String SQL_GET_BY_EMAIL  = SQL_GETALL + " WHERE u.`email`= ?;";
 	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ? WHERE `id`= ?;";
 	
 	private static final String SQL_CHECK_USER  = "SELECT * FROM `usuario` WHERE `nombre` = ? OR `email` = ?";
@@ -99,6 +100,43 @@ public class ModeloUsuario implements Persistable{
 		return resul;		
 	}
 
+	
+	/**
+	 ****		READ BY EMAIL		****
+	 * Recupera Objeto por su Email
+	 * @param id {@code String} Email del objeto a recuperar
+	 * @return {@code Object} objeto encontrado o null en caso contrario
+	 */
+	public Object getByEmail(String email) {
+		Object resul = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;		
+		try{
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GET_BY_EMAIL);
+			pst.setString(1, email);
+	    	rs = pst.executeQuery();	      	   	
+	    	while(rs.next()){
+	    		resul = mapeo(rs);
+	    	}	
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(pst != null){
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();			
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}		
+		return resul;		
+	}
+	
 	@Override
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();

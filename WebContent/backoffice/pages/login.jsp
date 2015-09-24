@@ -44,6 +44,7 @@
                                 </div>
                                 <input class="btn btn-lg btn-block btn-success" type="submit" value="login">
                                 <a href="pages/signup.jsp" class="btn btn-lg btn-block btn-primary">¿No estás registrado?</a>
+                                <a href="pages/recuperar.jsp">¿Has olvidado la contraseña?</a>
                             </fieldset>
                         </form>
                     </div>                    

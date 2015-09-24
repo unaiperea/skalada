@@ -1,11 +1,16 @@
 package com.ipartek.formacion.skalada.modelo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
-import junit.framework.Assert;
-
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -18,6 +23,8 @@ public class TestEnviarEmails {
 	public static void tearDownAfterClass() throws Exception {
 	}
 
+	private static final String TEST_EMAIL_TEMPLATE_REGISTRO = "C:\\Home\\Proyectos\\eclipse\\skalada\\WebContent\\emails\\registro.html";
+	
 	@Test
 	public void testEnviar() {
 		
@@ -45,6 +52,10 @@ public class TestEnviarEmails {
 		String email   = "unaiperea@gmail.com";
 		String url     = Constantes.SERVER + Constantes.CONTROLLER_SIGNUP+"?accion="+Constantes.ACCION_VALIDAR+"&email="+email;
 		String usuario = "Antton Gorriti";
+		String cuerpo  = "";
+		String linea   = "";
+		
+		File archivo = null;
 		
 		/*
 		 * Variables a reemplazar en la plantilla:
@@ -52,26 +63,36 @@ public class TestEnviarEmails {
 		 * ${url}      =>  Enlace para validar la cuenta del usuario  
 		 * 
 		 * */
-		
-		
-		File file = new File (Constantes.EMAIL_TEMPLATE_REGISTRO);
-		//String cuerpo = file.toString();
-		cuerpo.replace("{usuario}", usuario);
-		cuerpo.replace("{url}", url);
-		
-		EnviarEmails correo = new EnviarEmails();
-		
-		correo.setDireccionFrom("skalada.ipartek@gmail.com");
-		correo.setDireccionDestino("ander.ipartek@gmail.com");
-		correo.setMessageSubject("Confirmar registro usuario");
-		correo.setMessageContent( cuerpo );
-		
-		assertTrue(
-				 "Email no enviado " + correo.toString() ,
-				  correo.enviar()
+		try {		
+			archivo = new File (TEST_EMAIL_TEMPLATE_REGISTRO);
+			//fr = new FileReader(archivo);
+			//br = new BufferedReader(fr);
+			
+			cuerpo = FileUtils.readFileToString(archivo, "UTF-8");
+			//while( (linea=br.readLine()) != null){
+			//	cuerpo += linea;
+			//}
+			
+			cuerpo = cuerpo.replace("{usuario}", usuario); //Los {} pueden ser $ &, cualquier símbolo
+			cuerpo = cuerpo.replace("{url}", url);
+			
+			EnviarEmails correo = new EnviarEmails();
+			
+			correo.setDireccionFrom("skalada.ipartek@gmail.com");
+			correo.setDireccionDestino("unaiperea@gmail.com");
+			correo.setMessageSubject("Confirmar registro usuario");
+			correo.setMessageContent( cuerpo );
+			
+			assertTrue(
+					 "Email no enviado " + correo.toString() ,
+					  correo.enviar()
 				);
-		
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+			
+			
+			
+			
 }

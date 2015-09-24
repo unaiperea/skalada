@@ -60,8 +60,9 @@ public class Constantes {
 	public static final int ACCION_DETALLE	= 1;
 	public static final int ACCION_LISTAR	= 2;
 	public static final int ACCION_ELIMINAR = 3;
-	public static final int ACCION_VALIDAR = 4;
-	public static final int ACCION_RECUPERAR = 5;
+	public static final int ACCION_RECUPERAR = 4;
+	public static final int ACCION_LOGIN = 5;
+	public static final int ACCION_VALIDAR = 6;
 	
 	//Im�genes
 	public static final String IMG_UPLOAD_FOLDER      = "C:\\Home\\apache-tomcat-6.0.44\\webapps\\uploads";
@@ -81,5 +82,6 @@ public class Constantes {
 	public static final int USER_NO_VALIDATE = 0;
 	
 	//Emails
-	public static final String EMAIL_TEMPLATE_REGISTRO = ROOT_APP + "emails/registro.html";
+	public static final String TEST_EMAIL_TEMPLATE_REGISTRO = "C:\\Home\\Proyectos\\eclipse\\skalada\\WebContent\\emails\\registro.html";
+	
 }

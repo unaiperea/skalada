@@ -2,7 +2,12 @@ package com.ipartek.formacion.skalada.controladores;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -10,6 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
@@ -42,7 +50,8 @@ public class SignupController extends HttpServlet {
 	private Mensaje msg = null;
 	
 	//Por Get
-	private int accion = -1;
+	private Usuario usuarioParaValidar = null;
+	private String pEmailParaValidar   = "";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -64,10 +73,36 @@ public class SignupController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//Recibimos la validación
-		if (accion == 4){
-			//Modificar el campo validar a 1 
+		try{
+			//Recibimos la validación
+			pEmailParaValidar = request.getParameter("email");
+			
+			//Accedemos al usuario por el email. No comprobamos nada ya que el email es único en la tabla usuarios
+			usuarioParaValidar = (Usuario)modeloUsuario.getByEmail(pEmailParaValidar);
+			if (usuarioParaValidar != null){
+				usuarioParaValidar.setValidado(1);
+				if ( modeloUsuario.update(usuarioParaValidar) ){
+					msg = new Mensaje( Mensaje.MSG_SUCCESS , "Enhorabuena " + usuarioParaValidar.getNombre() + ", has sido validado. Ahora puedes logarte");
+					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+				}else{
+					msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario");
+					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+				}
+			}else{
+				msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario");
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario. " + e.getMessage());
+			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			request.setAttribute("msg", msg);
+		}finally{
+			request.setAttribute("msg", msg);
+			dispatcher.forward(request, response);
 		}
+		
 	}
 
 	/**
@@ -88,7 +123,7 @@ public class SignupController extends HttpServlet {
 				usuario = new Usuario(pNombre, pEmail, pPass, rol);
 				//Guardar en bbdd
 				if (modeloUsuario.save(usuario) == -1){
-					msg = new Mensaje( Mensaje.MSG_DANGER , "Ha habido un error al guardar el usuario");
+					msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al guardar el usuario");
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 				}else{
 					//Enviar email de validación
@@ -118,16 +153,45 @@ public class SignupController extends HttpServlet {
 
 	private boolean enviarEmail(){
 		boolean resul = false;
+		File archivo = null;
+		String linea   = "";
+		String cuerpo  = "";
 		
 		EnviarEmails correo = new EnviarEmails();
 		correo.setDireccionFrom("skalada.ipartek@gmail.com"); //Sin espacios
-		correo.setDireccionDestino(usuario.getEmail());
+		correo.setDireccionDestino(usuario.getEmail()); //unaiperea@gmail.com
 		correo.setMessageSubject("Por favor valida tu email");
-		String cuerpo = "Validar cuenta de usuario \n";
-		cuerpo += "Pulsa este enlace para validar: \n";
-		cuerpo += Constantes.SERVER + Constantes.CONTROLLER_SIGNUP+"?accion="+Constantes.ACCION_VALIDAR+"&email="+usuario.getEmail();
 		
-		correo.setMessageText(cuerpo); //Se pueden tener plantillas de html y enviarlas
+		//Leemos la plantilla del fichero registro.html (email)
+		try {		
+			archivo = new File (Constantes.TEST_EMAIL_TEMPLATE_REGISTRO);
+			//fr = new FileReader(archivo);
+			//br = new BufferedReader(fr);
+			
+			cuerpo = FileUtils.readFileToString(archivo, "UTF-8");
+			//while( (linea=br.readLine()) != null){
+			//	cuerpo += linea;
+			//}
+		}catch (Exception e) {
+			e.printStackTrace();
+			resul = false;
+			return resul;
+		}
+		
+		//Creamos un hashmap para sustituir todos los campos que queramos. Un array de dos dimensiones para guardar todos los items de la p�gina con la key su valor
+	    HashMap<String, String> mapa = new HashMap<String, String>();
+	    mapa.put("{usuario}", usuario.getNombre());
+	    mapa.put("{url}", Constantes.SERVER + Constantes.CONTROLLER_SIGNUP+"?email="+usuario.getEmail());
+		
+	    //recogemos los valores de las keys metidas en el hashmap
+	    Iterator it = mapa.entrySet().iterator();
+	    while(it.hasNext()){
+	    	Map.Entry entrada = (Map.Entry)it.next();
+	    	cuerpo = cuerpo.replace(entrada.getKey().toString(), entrada.getValue().toString()); //Los {} pueden ser $, &, ... cualquier símbolo
+	    }
+
+		correo.setMessageContent( cuerpo ); //Para html y texto plano
+		//correo.setMessageText(cuerpo); //Para texto plano
 		
 		resul = correo.enviar();
 		
