@@ -17,6 +17,10 @@
                     <div class="panel-body">                    
 
 						<% 
+							//Parámetros
+						 	String email = (String)request.getParameter("email");
+							String token = (String)request.getParameter("token");
+							
 				            Mensaje msg = (Mensaje)request.getAttribute("msg");	
 							if (msg != null){
 								out.print("<div class='alert alert-"+ msg.getTipo() +" alert-dismissible' role='alert'>");
@@ -29,7 +33,7 @@
 						%>
 			    		
 			    		 <!-- Entrará por POST -->
-                        <form role="form" action="<%=Constantes.CONTROLLER_LOGIN%>" method="post" onSubmit="return validar();" >
+                        <form role="form" action="<%=Constantes.CONTROLLER_FORGOT_PASS%>" method="post" onSubmit="return validar();"> <!-- Si validar() devuelve true submita -->
                             <fieldset>
                             
                             	<!-- Mensajes error de validación -->
@@ -46,20 +50,18 @@
 							    
 							    <!-- Campos de formulario -->
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" id="email" type="email" required tabindex="1">
+                                    <input class="form-control" placeholder="E-mail" name="email" id="email" type="hidden" value="<%=email%>">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Contraseña" name="password" id="pw1" type="password" required value="" tabindex="2">
+                                    <input class="form-control" placeholder="token" name="token" id="token" type="hidden" value="<%=token%>">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Confirmar Contraseña" name="password2" id="pw2" type="password" required value="" tabindex="3">
+                                    <input class="form-control" placeholder="Contraseña" name="password" id="pw1" type="password" required value="" tabindex="1">
                                 </div>
-                                <!--
-                                	Enviamos la acción mediante un input oculto ya que ésto no se podría hacer, da error:
-                                	action="<=Constantes.CONTROLLER_LOGIN%>+"?accion="+<=Constantes.ACCION_RECUPERAR%>"
-                                 -->
-                                <input name="accion" type="hidden">
-                                <input class="btn btn-lg btn-block btn-primary"  type="submit" tabindex="4" value="Enviar"> 
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Confirmar Contraseña" name="password2" id="pw2" type="password" required value="" tabindex="2">
+                                </div>
+                                <input class="btn btn-lg btn-block btn-primary"  type="submit" tabindex="3" value="Enviar"> 
                             </fieldset>
                             
                               <script> 

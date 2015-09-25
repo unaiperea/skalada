@@ -44,9 +44,39 @@
                                 </div>
                                 <input class="btn btn-lg btn-block btn-success" type="submit" value="login">
                                 <a href="pages/signup.jsp" class="btn btn-lg btn-block btn-primary">¿No estás registrado?</a>
-                                <a href="pages/recuperar.jsp">¿Has olvidado la contraseña?</a>
+                                <a href="#" data-toggle="modal" data-target="#myModal">¿Has olvidado la contraseña?</a>
                             </fieldset>
                         </form>
+                        
+                        <div class="bs-example">
+						    <!-- Button HTML (to Trigger Modal) -->
+						    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-title="Feedback">¿Has olvidado la contraseña?</button> -->
+						    
+						    <!-- Modal HTML -->
+						    <div id="myModal" class="modal fade">
+						        <div class="modal-dialog">
+						            <div class="modal-content">
+						                <div class="modal-header">
+						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						                    <h4 class="modal-title">Recuperar contraseña</h4>
+						                </div>
+						                <div class="modal-body">
+						                    <form role="form" action="<%=Constantes.CONTROLLER_FORGOT_PASS%>" method="get"> <!-- Lo enviamos por GET queriendo -->
+						                        <div class="form-group">
+						                            <label for="recipient-name" class="control-label">Email:</label>
+						                            <input class="form-control" placeholder="E-mail" name="email-forget" type="email" tabindex="1" required autofocus>
+						                        </div>
+						                        <div class="modal-footer">
+								                    <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="3">Cancelar</button>
+								                    <input class="btn btn-primary"  type="submit" tabindex="2" value="Enviar">
+						                		</div>
+						                    </form>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+
                     </div>                    
                 </div>
             </div>

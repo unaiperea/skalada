@@ -18,6 +18,7 @@ public class Constantes {
 	
 	public static final String VIEW_BACK_LOGIN = "backoffice/pages/login.jsp";
 	public static final String VIEW_BACK_SIGNUP = "backoffice/pages/signup.jsp";
+	public static final String VIEW_BACK_RECUPERAR_PASS = "pages/recuperarpass.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
 	
 	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
@@ -44,6 +45,7 @@ public class Constantes {
 	//controladores
 	public static final String CONTROLLER_LOGIN         = ROOT_APP + "login";
 	public static final String CONTROLLER_SIGNUP        = ROOT_APP + "signup";
+	public static final String CONTROLLER_FORGOT_PASS   = ROOT_APP + "forgotPass";
 	public static final String CONTROLLER_LOGOUT 		= ROOT_APP + "logout";	
 	public static final String CONTROLLER_VIAS   		= ROOT_APP + "vias";
 	public static final String CONTROLLER_HOME   		= ROOT_APP + "home";
@@ -60,9 +62,9 @@ public class Constantes {
 	public static final int ACCION_DETALLE	= 1;
 	public static final int ACCION_LISTAR	= 2;
 	public static final int ACCION_ELIMINAR = 3;
-	public static final int ACCION_RECUPERAR = 4;
-	public static final int ACCION_LOGIN = 5;
-	public static final int ACCION_VALIDAR = 6;
+	public static final int ACCION_VALIDAR = 4;
+	//public static final int ACCION_RECUPERAR = 4;
+	//public static final int ACCION_LOGIN = 5;
 	
 	//Im�genes
 	public static final String IMG_UPLOAD_FOLDER      = "C:\\Home\\apache-tomcat-6.0.44\\webapps\\uploads";
@@ -82,6 +84,6 @@ public class Constantes {
 	public static final int USER_NO_VALIDATE = 0;
 	
 	//Emails
-	public static final String TEST_EMAIL_TEMPLATE_REGISTRO = "C:\\Home\\Proyectos\\eclipse\\skalada\\WebContent\\emails\\registro.html";
+	public static final String EMAIL_TEMPLATE_REGISTRO = "emails/registro.html";
 	
 }

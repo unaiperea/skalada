@@ -144,4 +144,14 @@
     <servlet-name>sendEmail</servlet-name>
     <url-pattern>/sendEmail</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Controlador para recuperar la pass</description>
+    <display-name>ForgotPassController</display-name>
+    <servlet-name>ForgotPassController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.ForgotPassController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ForgotPassController</servlet-name>
+    <url-pattern>/forgotPass</url-pattern>
+  </servlet-mapping>
 </web-app>

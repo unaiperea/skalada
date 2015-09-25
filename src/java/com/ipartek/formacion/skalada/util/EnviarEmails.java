@@ -1,6 +1,10 @@
 package com.ipartek.formacion.skalada.util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -11,6 +15,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
+
+import org.apache.commons.io.IOUtils;
 
 public class EnviarEmails {
 	
@@ -152,7 +158,30 @@ public class EnviarEmails {
 	}
 	
 	
-	
+	/**
+	 * Genera un String a partir de una plantilla y un hashmap de parámetros
+	 * @param plantilla Ruta donse encuentra del email. Debe estar en "src/resources"
+	 * @param parametros hashmap con las variables a sustituir en la plantilla
+	 * @return retorna String con HTML listo para enviar
+	 * @throws IOException
+	 */
+	public String generarPlantilla(String plantilla, HashMap<String,String> parametros)
+			throws IOException {
+		String resul = "";
+
+		ClassLoader classLoader = getClass().getClassLoader(); //Recurso
+		resul = (IOUtils.toString(classLoader
+				.getResourceAsStream(plantilla),"UTF-8")); //El recurso lo convertimos a String de tipo UTF-8
+
+		//recogemos los valores de las keys metidas en el hashmap
+		Iterator<Map.Entry<String, String>> it = parametros.entrySet().iterator(); //es como un for en una colección de datos (HashMap o array de dos dimensiones)
+		while (it.hasNext()) {
+			Map.Entry<String,String> entrada = (Map.Entry<String,String>)it.next();
+			resul = resul.replace(entrada.getKey(), entrada.getValue()); //Los {} pueden ser $, &, ... cualquier símbolo
+		
+		}
+		return resul;
+	}
 	
 	
 	

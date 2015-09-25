@@ -28,7 +28,7 @@
 							} 
 						%>
 			    
-                        <form role="form" action="<%=Constantes.CONTROLLER_SIGNUP%>" method="post" onSubmit="return validar();" >
+                        <form role="form" action="<%=Constantes.CONTROLLER_SIGNUP%>" method="post" onSubmit="return validar();"> <!-- Si validar() devuelve true submita -->
                             <fieldset>
                             
                             	<!-- Mensajes error de validación -->
