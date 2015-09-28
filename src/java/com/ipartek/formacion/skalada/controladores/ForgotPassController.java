@@ -50,8 +50,8 @@ public class ForgotPassController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// Recibo parámetros del mail para reenviarle al formulario de 'Cambio de Pass'
-		
-		msg = new Mensaje( Mensaje.MSG_DANGER , "Error sin definir");
+		msg.setTipo(Mensaje.MSG_DANGER);
+		msg.setTexto("Error sin definir");
 
 		try{
 			pEmail = (String)request.getParameter("email-forget");
@@ -105,7 +105,7 @@ public class ForgotPassController extends HttpServlet {
 			
 			if(usuario!=null){
 				//Comprobar no se haya cambiado el email. Luego se podría coger la IP del usuario y guardarla, etc, ...
-				if ( pToken.equals(usuario.getToken()) ){ //NO COGE NAAAAAADDDDAAAAAA **********************************
+				if ( pToken.equals(usuario.getToken()) ){
 					//Guardo Pass y modifico en la bbdd
 					usuario.setPassword(pPass);
 					if (modeloUsuario.update(usuario)){

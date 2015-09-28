@@ -19,7 +19,7 @@ public class ModeloUsuario implements Persistable{
 											+ "INNER JOIN `rol` as r ON (u.`id_rol` = r.`id`)";
 	private static final String SQL_GETONE  = SQL_GETALL + " WHERE u.`id`= ?;";
 	private static final String SQL_GET_BY_EMAIL  = SQL_GETALL + " WHERE u.`email`= ?;";
-	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ?, 'token'= ? WHERE `id`= ?;";
+	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ?, `token`= ? WHERE `id`= ?;";
 	
 	private static final String SQL_CHECK_USER  = "SELECT * FROM `usuario` WHERE `nombre` = ? OR `email` = ?";
 	
