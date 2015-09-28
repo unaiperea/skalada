@@ -48,7 +48,7 @@ public class SectoresController extends HttpServlet {
 		private int pIDZona;
 		
 
-		//Imágen File
+		//Imï¿½gen File
 		private File file ;
 	    
 	    /**
@@ -147,13 +147,13 @@ public class SectoresController extends HttpServlet {
 		 */
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		    
-			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,  "Excepción al modificar");
+			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,  "Excepciï¿½n al modificar");
 			
 			try{
-			//recoger parametros del formulario y subida de imágen
+			//recoger parametros del formulario y subida de imï¿½gen
 			getParametersForm(request);
 
-			//Subida de imágen
+			//Subida de imï¿½gen
 			uploadFile(request);
 			
 			//Crear Objeto Sector
@@ -184,7 +184,7 @@ public class SectoresController extends HttpServlet {
 			
 			}catch( FileSizeLimitExceededException e){		
 				e.printStackTrace();
-				msg = new Mensaje( Mensaje.MSG_DANGER , "La imágen excede del tamaño maximo permitido " + Constantes.IMG_MAX_FILE_SIZE + " bytes" );
+				msg = new Mensaje( Mensaje.MSG_DANGER , "La imï¿½gen excede del tamaï¿½o maximo permitido " + Constantes.IMG_MAX_FILE_SIZE + " bytes" );
 				request.setAttribute("msg", msg);	
 			}catch(Exception e){
 				e.printStackTrace();
@@ -197,20 +197,15 @@ public class SectoresController extends HttpServlet {
 
 		}
 		
-		private void uploadFile(HttpServletRequest request) {
-			// TODO Realizar comprobaciones y guardar imágen en PC
-			
-		}
-
+		
 		/**
-		 * Se encarga de guardar la imágen del formulario en la carpeta de subidas
+		 * Se encarga de guardar la imï¿½gen del formulario en la carpeta de subidas
 		 * @param request
 		 */
-		//private void uploadFile(HttpServletRequest request) {
+		private void uploadFile(HttpServletRequest request) {
+			// TODO Realizar comprobaciones y guardar imï¿½gen en PC
 			
-			
-			
-		//}
+		}
 		
 		/**
 		 * Crea un Objeto {@code Sector} Con los parametros recibidos
@@ -221,7 +216,7 @@ public class SectoresController extends HttpServlet {
 			//zona.setId(pIDZona);
 			zona = (Zona)modeloZona.getById(pIDZona);
 			
-			//TODO controlar si cambiamos el sector pero no la imágen
+			//TODO controlar si cambiamos el sector pero no la imï¿½gen
 			
 			//existe sector
 			if ( pID != -1 ){
@@ -255,46 +250,46 @@ public class SectoresController extends HttpServlet {
 
 				request.setCharacterEncoding("UTF-8");
 				
-				DiskFileItemFactory factory = new DiskFileItemFactory(); //Factoría para trabajar con ficheros
+				DiskFileItemFactory factory = new DiskFileItemFactory(); //Factorï¿½a para trabajar con ficheros
 			    // maximum size that will be stored in memory
 				//TODO Cambiar este valor para que falle
 			    factory.setSizeThreshold(Constantes.IMG_MAX_MEM_SIZE); //Memoria para trabajar con ficheros. 
 			    // Location to save data that is larger than maxMemSize.
 			    //TODO Comprobar si no existe carpeta
-			    factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER)); //Directorio temporal del propio Tomcat para guardarlo ahí
+			    factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER)); //Directorio temporal del propio Tomcat para guardarlo ahï¿½
 				
 			    // Create a new file upload handler
-			    ServletFileUpload upload = new ServletFileUpload(factory); //Objeto para la gestión de estos datos
+			    ServletFileUpload upload = new ServletFileUpload(factory); //Objeto para la gestiï¿½n de estos datos
 			    // maximum file size to be uploaded.
-			    //TODO Cambiar valor no dejar subir más de 1MB
+			    //TODO Cambiar valor no dejar subir mï¿½s de 1MB
 			    upload.setSizeMax(Constantes.IMG_MAX_FILE_SIZE);
 			    
-			    //Parámetros de la request del formulario, No la imágen. Creamos un array de dos dimensiones para guardar todos los items de la página con la key su valor 
+			    //Parï¿½metros de la request del formulario, No la imï¿½gen. Creamos un array de dos dimensiones para guardar todos los items de la pï¿½gina con la key su valor 
 			    HashMap<String, String> dataParameters = new HashMap<String, String>();
 			    
 			    // Parse the request to get file items.
-			    List<FileItem> items = upload.parseRequest(request); //Todo lo que se ha subido se parsea. Imágenes y parámetros que se han subido
+			    List<FileItem> items = upload.parseRequest(request); //Todo lo que se ha subido se parsea. Imï¿½genes y parï¿½metros que se han subido
 			    // Process the uploaded file items
-			    for(FileItem item : items){ //Recorro  todos los items de la página form.jsp para buscar la imágen
+			    for(FileItem item : items){ //Recorro  todos los items de la pï¿½gina form.jsp para buscar la imï¿½gen
 			    
-			    	//Parámetro formulario
-			    	if(item.isFormField()){ //CampoDeFormulario se refiere a los parámetros. Los metemos al HashMap
-			    		//Nombre del item y valor del item, uséase key y value
+			    	//Parï¿½metro formulario
+			    	if(item.isFormField()){ //CampoDeFormulario se refiere a los parï¿½metros. Los metemos al HashMap
+			    		//Nombre del item y valor del item, usï¿½ase key y value
 			    		dataParameters.put(item.getFieldName(), item.getString("UTF-8") ); //UTF-8 para solucionar al cojer los string con acentos
 			    	
-			    	//Si no es campoDeFormulario, uséase imágen
+			    	//Si no es campoDeFormulario, usï¿½ase imï¿½gen
 			    	}else{
-				    	//Atributos de la imágen
+				    	//Atributos de la imï¿½gen
 			            String fileName = item.getName();
-			            if (!"".equals(fileName)){ //Si está vacío subo la imágen. Qué no modifique la imágen cuando está
+			            if (!"".equals(fileName)){ //Si estï¿½ vacï¿½o subo la imï¿½gen. Quï¿½ no modifique la imï¿½gen cuando estï¿½
 				            String fileContentType = item.getContentType();
 				            if (Constantes.IMG_CONTENT_TYPES.contains(fileContentType)){ //Si contiene los tipos de archivo jpg o png
 					            boolean isInMemory = item.isInMemory();
 					            long sizeInBytes = item.getSize();
 					            
-					            //comprobar 'size' y 'contentType' (tipo de extensión)
+					            //comprobar 'size' y 'contentType' (tipo de extensiï¿½n)
 
-					            //No repetir nombre imágenes
+					            //No repetir nombre imï¿½genes
 				            	File carpetaUploads = new File(Constantes.IMG_UPLOAD_FOLDER);
 				            	if (carpetaUploads.exists()){
 					                File[] ficherosUploads = carpetaUploads.listFiles();
@@ -304,7 +299,7 @@ public class SectoresController extends HttpServlet {
 					                	if (ficherosUploads[i].isFile()){
 					                		//Si el nombre es igual
 					                		if (item.getName().equalsIgnoreCase(ficherosUploads[i].getName())){
-					                			//Añadimos la fecha
+					                			//Aï¿½adimos la fecha
 					                			Date fecha = new Date();
 					                			SimpleDateFormat formato = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss");
 					                			
@@ -325,18 +320,18 @@ public class SectoresController extends HttpServlet {
 							        
 				            	} //End: exists()
 				            }else{
-				            	throw new Exception("[" + fileContentType + "] Extensión de imágen no permitida");
+				            	throw new Exception("[" + fileContentType + "] Extensiï¿½n de imï¿½gen no permitida");
 				            } //End: fileContentType
 			            }else{
 			            	file = null;
-			            }//End: fileName vacío
+			            }//End: fileName vacï¿½o
 				    
 			    	} //End: fileName
 			    } //End: for items<FileItem>
 		            
-			    //Se comprueba el tamaño del fichero desde el form.jsp en javascript
+			    //Se comprueba el tamaï¿½o del fichero desde el form.jsp en javascript
 			    
-			    //Cojo los parámetros pero del propio HashMap dataParameters
+			    //Cojo los parï¿½metros pero del propio HashMap dataParameters
 			    pID = Integer.parseInt(dataParameters.get("id"));
 				pNombre = dataParameters.get("nombre");	
 				pIDZona = Integer.parseInt(dataParameters.get("zona"));

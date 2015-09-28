@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
@@ -29,6 +32,8 @@ import com.ipartek.formacion.skalada.util.EnviarEmails;
 public class LoginController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private final static Logger log = Logger.getLogger(LoginController.class); //Se pone el nombre de la clase (LOG)
 	
 	private RequestDispatcher dispatcher = null;
 	private HttpSession session = null;
@@ -51,12 +56,12 @@ public class LoginController extends HttpServlet {
 	//RECUPERAR CONTRASEÑA
 	private String pEmailRecuperar = "";
 		
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginController() {
-        super();
-        modeloUsuario = new ModeloUsuario();
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+    	super.init(config);
+    	//Fichero de configuración de Log4j TODO crearlo (LOG)
+    	
+    	PropertyConfigurator.configure("log4j.properties");
     }
 
 	/**
@@ -76,6 +81,8 @@ public class LoginController extends HttpServlet {
 	
 	
 	private void login(HttpServletRequest request, HttpServletResponse response){
+		
+		log.info("Entrado al Post ..."); // (LOG)
 		System.out.println("Login entrando....");
 		
 		//recoger la sesion
@@ -116,6 +123,8 @@ public class LoginController extends HttpServlet {
 			}
 			
 		}
+		
+		log.info("Saliendo del Post ..."); // (LOG)
 	}
 	
 	

@@ -74,30 +74,33 @@ public class SignupController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try{
+			msg.setTexto("Error sin definir");
+			msg.setTipo(Mensaje.MSG_DANGER);
+			
 			//Recibimos la validación
 			pEmailParaValidar = request.getParameter("email");
 			
 			//Accedemos al usuario por el email. No comprobamos nada ya que el email es único en la tabla usuarios
 			usuarioParaValidar = (Usuario)modeloUsuario.getByEmail(pEmailParaValidar);
-			if (usuarioParaValidar != null){
-				usuarioParaValidar.setValidado(Constantes.USER_VALIDATE);
-				if ( modeloUsuario.update(usuarioParaValidar) ){
-					msg = new Mensaje( Mensaje.MSG_SUCCESS , "Enhorabuena " + usuarioParaValidar.getNombre() + ", has sido validado. Ahora puedes logarte");
-					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			if (usuarioParaValidar == null){
+				msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario " + pEmailParaValidar);
+				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+			//Usuario encontrado
+			}else {
+				if( usuario.getValidado() == Constantes.USER_VALIDATE ){
+					msg.setTexto("Ya estabas registrado");
+					msg.setTipo(Mensaje.MSG_WARNING);
 				}else{
-					msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario");
-					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+					usuario.setValidado( Constantes.USER_VALIDATE );
+					if( modeloUsuario.update(usuario) ){
+						msg.setTexto("Eskerrik asko por registrarte");
+						msg.setTipo(Mensaje.MSG_SUCCESS);
+					}
 				}
-			}else{
-				msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario");
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 			}
-			
 		}catch(Exception e){
 			e.printStackTrace();
-			msg = new Mensaje( Mensaje.MSG_WARNING , "Ha habido un error al validar el usuario. " + e.getMessage());
-			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
-			request.setAttribute("msg", msg);
 		}finally{
 			request.setAttribute("msg", msg);
 			dispatcher.forward(request, response);
