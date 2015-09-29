@@ -32,10 +32,10 @@
                         <form role="form" action="<%=Constantes.CONTROLLER_LOGIN%>" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="email" type="email" value="unaiperea@gmail.com" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Contraseña" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Contraseña" name="password" type="password" value="aaaaaa">
                                 </div>
                                 <div class="checkbox">
                                     <label>

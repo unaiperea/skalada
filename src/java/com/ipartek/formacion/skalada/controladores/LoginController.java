@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -23,6 +24,7 @@ import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
+import com.ipartek.formacion.skalada.modelo.ModeloRol;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.util.EnviarEmails;
 
@@ -34,6 +36,7 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private final static Logger log = Logger.getLogger(LoginController.class); //Se pone el nombre de la clase (LOG)
+	private static final String ROL_ADMIN = "Administrador";
 	
 	private RequestDispatcher dispatcher = null;
 	private HttpSession session = null;
@@ -43,12 +46,12 @@ public class LoginController extends HttpServlet {
 	private ModeloUsuario modeloUsuario = null;
 	private Usuario usuario = null;
 	
+	private ModeloRol modeloRol = null;
+	private Rol rol = null;
+	
 	//LOGIN
 	//Key para guardar el usuario en la session
 	public static final String KEY_SESSION_USER = "ss_user";
-	
-	private final String EMAIL = "admin@admin.com";
-	private final String PASS = "admin";
 	
 	private String pEmail;
 	private String pPassword;
@@ -59,9 +62,19 @@ public class LoginController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	//Fichero de configuración de Log4j TODO crearlo (LOG)
     	
-    	PropertyConfigurator.configure("log4j.properties");
+    	modeloUsuario = new ModeloUsuario();
+    	modeloRol = new ModeloRol();
+    	
+    	try {
+			//Fichero configuracion de Log4j
+			Properties props = new Properties();
+			props.load( getClass().getResourceAsStream("/log4j.properties"));
+			PropertyConfigurator.configure(props);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
 	/**
@@ -75,27 +88,20 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-	}
-	
-	
-	private void login(HttpServletRequest request, HttpServletResponse response){
 		
-		log.info("Entrado al Post ..."); // (LOG)
-		System.out.println("Login entrando....");
+		msg = new Mensaje(Mensaje.MSG_WARNING, "");
+		log.info("Login entrando"); // (LOG)
 		
 		//recoger la sesion
 		session = request.getSession();
-		String usuario = (String)session.getAttribute(KEY_SESSION_USER);
+		String sUsuario = (String)session.getAttribute(KEY_SESSION_USER);
 		
 		//Usuario logeado
-		if ( usuario != null && "".equals(usuario) ){
+		if ( sUsuario != null || "".equals(sUsuario) ){
 			
-			//
 			System.out.println("    Usuario YA logueado");
 			
-			//Ir a => index_back.jsp		
+			//Ir a => index_back.jsp
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
 			
 		//Usuario No logeado o caducada session
@@ -106,32 +112,37 @@ public class LoginController extends HttpServlet {
 			pEmail = request.getParameter("email");
 			pPassword = request.getParameter("password");
 					
-			//validar los datos
-
-			//comprobamos con la BBDD			
-			if(EMAIL.equals(pEmail)&&PASS.equals(pPassword)){
-				
-				//salvar session
-				session.setAttribute(KEY_SESSION_USER, pEmail);
-				
-				//Ir a => index_back.jsp		
-				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
-			} else {
+			//validar los datoscomprobando en la BBDD
+			usuario = (Usuario)modeloUsuario.getByEmail(pEmail);
+			if (usuario != null && usuario.getValidado()==1 ){
+				if ( pPassword.equals(usuario.getPassword()) && usuario.getRol().getNombre() == ROL_ADMIN){
+					
+					//salvar session
+					session.setAttribute(KEY_SESSION_USER, usuario.getNombre());
+					
+					//Ir a => index_back.jsp		
+					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+					
+				}else {
+					//Ir a => login.jsp
+					msg.setTipo(Mensaje.MSG_WARNING);
+					msg.setTexto("El email y/o contrase&ntilde;a incorrecta");
+					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+				}
+			}else{
 				//Ir a => login.jsp
-				request.setAttribute("msg", "El email y/o contrase&ntilde;a incorrecta");			
+				msg.setTipo(Mensaje.MSG_WARNING);
+				msg.setTexto("El usuario no existe");
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 			}
-			
+		
 		}
 		
-		log.info("Saliendo del Post ..."); // (LOG)
+		log.info("Login saliendo"); // (LOG)
+		
+		request.setAttribute("msg", msg);
+		dispatcher.forward(request, response);
 	}
-	
-	
-	
-	
-	
-	
 	
 }
 
