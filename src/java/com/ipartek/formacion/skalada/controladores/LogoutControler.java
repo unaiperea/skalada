@@ -33,10 +33,7 @@ public class LogoutControler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//
-		System.out.println("Logout.... ");
-		
+				
 		request.getSession().invalidate();
 		request.getRequestDispatcher("home").forward(request, response);
 		

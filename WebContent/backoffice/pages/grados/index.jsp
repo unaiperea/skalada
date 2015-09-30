@@ -5,6 +5,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
+
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <div id="page-wrapper">

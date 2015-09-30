@@ -29,6 +29,7 @@ public class SignupController extends HttpServlet {
 	
 	private String pNombre;
 	private String pEmail;
+	private String pToken;
 	private String pPass;
 	private int pId;
 	
@@ -38,7 +39,6 @@ public class SignupController extends HttpServlet {
 	private Mensaje msg = null;
 	
 	private HashMap<String,Integer> map = null;
-	
     
     @Override
   	public void init(ServletConfig config) throws ServletException {
@@ -50,6 +50,7 @@ public class SignupController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try{
 			msg = null;
 			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
@@ -77,7 +78,9 @@ public class SignupController extends HttpServlet {
 	
 	private void mostrar_recuperar_pass(HttpServletRequest request,
 			HttpServletResponse response) {
+		usuario = (Usuario) modeloUsuario.getByEmail(pEmail);
 		request.setAttribute("email", pEmail);
+		request.setAttribute("token", usuario.getToken());
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_RECUPERAR_PASS);
 	}
 
@@ -103,8 +106,7 @@ public class SignupController extends HttpServlet {
 	
 	private void confirmar(HttpServletRequest request,
 			HttpServletResponse response) {
-
-		
+	
 		map=modeloUsuario.checkEmail(pEmail);
 		if (map.get("id")!=null){
 			if (map.get("id")!=pId){
@@ -136,12 +138,11 @@ public class SignupController extends HttpServlet {
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 	}
 
-	
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try{
 			msg = null;
 			request.setCharacterEncoding("UTF-8");
@@ -180,15 +181,17 @@ public class SignupController extends HttpServlet {
 				break;
 			case Constantes.ACCION_PASS_OLVIDADO:
 				pEmail = (String)request.getParameter("email-olvidado");
-				map=modeloUsuario.checkEmail(pEmail);
-				if (map.get("id")!=null){
-					if (map.get("validado")==1){
+				usuario=(Usuario) modeloUsuario.getByEmail(pEmail);
+				usuario.setToken();
+				modeloUsuario.update(usuario);
+				if (usuario!=null){
+					if (usuario.getValidado()==1){
 						SendMail mail = new SendMail();
 						mail.setDestinatario(pEmail);
 						mail.setAsunto("Recuperacion de password");
 						HashMap<String, String> params = new HashMap<String, String>();
 						params.put("{usuario}", pEmail);
-						params.put("{url}", Constantes.URL_PASS_OLVIDADO+pEmail);
+						params.put("{url}", Constantes.URL_PASS_OLVIDADO+pEmail+"&tkn="+usuario.getToken());
 						params.put("{contenido}", "Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
 						params.put("{txt_btn}", "Recupera tu contraseña");
 						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params));
@@ -207,12 +210,18 @@ public class SignupController extends HttpServlet {
 				break;
 			case Constantes.ACCION_REGENERAR_PASS:
 				pEmail = (String)request.getParameter("email");
+				pToken = (String)request.getParameter("token");
 				pPass = (String)request.getParameter("password");
 				
-				if (modeloUsuario.resetPass(pEmail, pPass)){
-					msg = new Mensaje(Mensaje.MSG_SUCCESS, "Se ha cambiado su contraseña");
+				usuario = (Usuario) modeloUsuario.getByEmail(pEmail);
+				if (usuario.getToken().equals(pToken)){
+					if (modeloUsuario.resetPass(pEmail, pPass)){
+						msg = new Mensaje(Mensaje.MSG_SUCCESS, "Se ha cambiado su contraseña");
+					}else{
+						msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error al cambiar su contraseña, contacte con el administrador");
+					}
 				}else{
-					msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error al cambiar su contraseña, contacte con el administrador");
+					msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error.");
 				}
 				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 				break;
@@ -235,10 +244,6 @@ public class SignupController extends HttpServlet {
 		rol.setId(2);
 		usuario = new Usuario(pNombre, pEmail, pPass, rol);
 	}
-
-
-	
-	
 	
 	
 	

@@ -1,6 +1,8 @@
 package com.ipartek.formacion.skalada.bean;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 import com.ipartek.formacion.skalada.Constantes;
 
@@ -16,6 +18,7 @@ public class Usuario implements Serializable{
 	private String password;
 	private int validado;
 	private Rol rol;
+	private String token;
 	
 	
 	//**********************************
@@ -38,6 +41,7 @@ public class Usuario implements Serializable{
 		} else {
 			this.setRol(new Rol(Constantes.ROLE_USER));
 		}
+		this.setToken();
 	}
 
 	
@@ -82,6 +86,20 @@ public class Usuario implements Serializable{
 	}
 
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	public void setToken() {
+		SecureRandom random = new SecureRandom();
+		this.token = new BigInteger(130, random).toString(32);
+	}
+
+
 	//**********************************
 	//****		ToString()			****
 	//**********************************	

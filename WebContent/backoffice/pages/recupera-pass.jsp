@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
@@ -30,7 +31,8 @@
 
 
 					<%
-						String email = (String)request.getAttribute("email");
+						String email = (String)request.getParameter("email");
+						String token = (String)request.getParameter("tkn");
 						Mensaje msg = (Mensaje) request.getAttribute("msg");
 						if (msg != null) {
 							out.print("<div class='alert alert-" + msg.getTipo()
@@ -46,6 +48,7 @@
 					<form role="form" id="f1" action="<%=Constantes.CONTROLLER_SIGNUP%>?action=<%=Constantes.ACCION_REGENERAR_PASS%>" method="post"
 						onSubmit="return validateForm()">
 						<input type="hidden" name="email" value="<%=email%>">
+						<input type="hidden" name="token" value="<%=token%>">
 						<fieldset>
 							<div class="form-group">
 								<input class="form-control" placeholder="Contraseña"
