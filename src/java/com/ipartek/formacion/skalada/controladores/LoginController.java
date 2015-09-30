@@ -2,6 +2,7 @@ package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -53,8 +54,15 @@ public class LoginController extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	//TODO crear: Fichero de configuracion de Log4J
-    	PropertyConfigurator.configure("log4j.properties");
+    	try {
+			//Fichero configuracion de Log4j
+			Properties props = new Properties();		
+			props.load( getClass().getResourceAsStream("/log4j.properties"));
+			PropertyConfigurator.configure(props);
+			
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}		
     }
 
 	/**

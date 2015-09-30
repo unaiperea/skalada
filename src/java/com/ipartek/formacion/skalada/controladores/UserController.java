@@ -16,6 +16,7 @@ import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloRol;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 /**
  * Servlet implementation class UserController
@@ -66,6 +67,9 @@ public class UserController extends HttpServlet {
 		case Constantes.ACCION_ELIMINAR:
 			eliminar(request,response);
 			break;
+		case Constantes.ACCION_NO_VALIDADOS:
+			noValidados(request, response);
+			break;
 		default:
 			listar(request,response);
 			break;
@@ -94,6 +98,11 @@ public class UserController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("usuarios", modeloUsuario.getAll());
+		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);		
+	}
+	
+	private void noValidados(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("usuarios", modeloUsuario.getNoValidados());
 		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);		
 	}
 

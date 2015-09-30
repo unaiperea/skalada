@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <%@page import="com.ipartek.formacion.skalada.modelo.ModeloUsuario"%>
 <%@page import="com.ipartek.formacion.skalada.modelo.ModeloSector"%>
 <%@page contentType="text/html"%> 
@@ -16,7 +17,7 @@ ModeloUsuario modeloUsuario = new ModeloUsuario();
         
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard2</h1>
+                    <h1 class="page-header">Panel de control</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -40,7 +41,7 @@ ModeloUsuario modeloUsuario = new ModeloUsuario();
                     </a>
                 </div>
                 <div class="col-lg-6 col-md-6">
-                	<a href="#">
+                	<a href="<%=Constantes.CONTROLLER_SECTORES+ "?accion="	+ Constantes.ACCION_LISTAR%>">
 	                    <div class="panel panel-info">
 	                        <div class="panel-heading">
 	                            <div class="row">
@@ -57,7 +58,7 @@ ModeloUsuario modeloUsuario = new ModeloUsuario();
 					</a>
                 </div>
                 <div class="col-lg-6 col-md-6">
-	            	<a href="">
+	            	<a href="<%=Constantes.CONTROLLER_USUARIOS+ "?accion="+ Constantes.ACCION_NO_VALIDADOS%>">
 	                    <div class="panel panel-danger">
 	                        <div class="panel-heading">
 	                            <div class="row">
@@ -74,7 +75,7 @@ ModeloUsuario modeloUsuario = new ModeloUsuario();
 					</a>
                 </div>
                 <div class="col-lg-6 col-md-6">
-                	<a href="#">
+                	<a href="<%=Constantes.VIEW_BACK_CONTENT_LOGS%>">
 	                    <div class="panel panel-warning">
 	                        <div class="panel-heading">
 	                            <div class="row">

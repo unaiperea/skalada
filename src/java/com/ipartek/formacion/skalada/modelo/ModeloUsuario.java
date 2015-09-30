@@ -18,6 +18,7 @@ public class ModeloUsuario implements Persistable{
 	private static final String SQL_GETALL = "SELECT u.`id`, u.`email`, u.`nombre`, u.`password`, u.`validado`, u.`token`, u.`id_rol`, r.`nombre` AS nombre_rol "
 											+ "FROM `usuario` AS u "
 											+ "INNER JOIN `rol` as r ON (u.`id_rol` = r.`id`)";
+	private static final String SQL_GETNOVALIDADOS = SQL_GETALL	+ "WHERE `validado`=0";
 	private static final String SQL_GETONE  = SQL_GETALL + " WHERE u.`id`= ?;";
 	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ?, `token`=? WHERE `id`= ?;";
 	
@@ -143,6 +144,35 @@ public class ModeloUsuario implements Persistable{
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETALL);
+	    	rs = pst.executeQuery();   	   	
+	    	while(rs.next()){
+	    		resul.add(mapeo(rs));
+	    	}	
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(pst != null){
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();			
+			}catch(Exception e){
+				e.printStackTrace();
+			}			
+		}	
+		return resul;				
+	}
+	
+	public ArrayList<Object> getNoValidados() {
+		ArrayList<Object> resul = new ArrayList<Object>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;		
+		try{
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GETNOVALIDADOS);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
 	    		resul.add(mapeo(rs));
