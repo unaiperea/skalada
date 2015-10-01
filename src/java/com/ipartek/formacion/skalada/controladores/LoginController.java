@@ -94,7 +94,7 @@ public class LoginController extends HttpServlet {
 		
 		//recoger la sesion
 		session = request.getSession();
-		String sUsuario = (String)session.getAttribute(KEY_SESSION_USER);
+		Usuario sUsuario = (Usuario)session.getAttribute(KEY_SESSION_USER);
 		
 		//Usuario logeado
 		if ( sUsuario != null || "".equals(sUsuario) ){
@@ -113,12 +113,12 @@ public class LoginController extends HttpServlet {
 			pPassword = request.getParameter("password");
 					
 			//validar los datoscomprobando en la BBDD
-			usuario = (Usuario)modeloUsuario.getByEmail(pEmail);
+			usuario = modeloUsuario.getByEmail(pEmail); //No hace falta castearlo ya que el método nos devuelve un objeto de tipo Usuario ya porque en la interface lo declaramos como objeto genérico
 			if (usuario != null && usuario.getValidado()==1 ){
-				if ( pPassword.equals(usuario.getPassword()) && usuario.getRol().getNombre() == ROL_ADMIN){
+				if ( pPassword.equals(usuario.getPassword()) && ROL_ADMIN.equals(usuario.getRol().getNombre()) ){
 					
 					//salvar session
-					session.setAttribute(KEY_SESSION_USER, usuario.getNombre());
+					session.setAttribute(KEY_SESSION_USER, usuario);
 					
 					//Ir a => index_back.jsp		
 					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);

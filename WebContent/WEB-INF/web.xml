@@ -154,4 +154,13 @@
     <servlet-name>ForgotPassController</servlet-name>
     <url-pattern>/forgotPass</url-pattern>
   </servlet-mapping>
+  
+  <!-- REFERENCIAS A RESOURCES -->
+  <resource-ref>
+    <description>DataSource para la BBDD</description>
+    <res-ref-name>jdbc/skaladaDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth> <!-- Todos las clases de Tomcat van a poder acceder a este recurso -->
+  </resource-ref>
+  
 </web-app>

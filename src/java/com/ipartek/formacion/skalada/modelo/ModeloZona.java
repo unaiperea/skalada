@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloZona implements Persistable{
+public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previamente determinado en la interfaz
 	
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
@@ -22,24 +22,22 @@ public class ModeloZona implements Persistable{
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
 	@Override
-	public int save(Object o) {
+	public int save(Zona zona) {
 		int resul = -1;
-		Zona z = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if(o != null){
+		if(zona != null){
 			try{
-				z = (Zona)o;
-				Connection con = DataBaseHelper.getConnection();
+				Connection con = DataBaseHelper.getConnection(); //Al declararlo como static al llamar al objeto no se instancia. NombreDeLaClase.nombreDelMétodo(parámetros si los hay)
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, z.getNombre());		
+				pst.setString(1, zona.getNombre());		
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						z.setId(resul);
+						zona.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -64,8 +62,8 @@ public class ModeloZona implements Persistable{
 	}
 
 	@Override
-	public Object getById(int id) {
-		Object resul = null;
+	public Zona getById(int id) {
+		Zona resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -95,10 +93,10 @@ public class ModeloZona implements Persistable{
 	}
 
 	@Override
-	public ArrayList<Object> getAll() {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Zona> getAll() {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
 		PreparedStatement pst = null;
-		ResultSet rs = null;		
+		ResultSet rs = null;	
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETALL);
@@ -125,18 +123,16 @@ public class ModeloZona implements Persistable{
 	}
 
 	@Override
-	public boolean update(Object o) {
+	public boolean update(Zona zona) {
 		boolean resul = false;
-		Zona z = null;
 		PreparedStatement pst = null;
-		if (o != null){
+		if (zona != null){
 			try{
-				z = (Zona)o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(1, z.getNombre());
-				pst.setInt(2, z.getId());				
+				pst.setString(1, zona.getNombre());
+				pst.setInt(2, zona.getId());				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
@@ -199,8 +195,8 @@ public class ModeloZona implements Persistable{
 	}
 	
 	//TODO OBTENER SECTORES DE UNA VIA
-	public ArrayList<Object> getSectores(int id){
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Zona> getSectores(int id){
+		ArrayList<Zona> resul = new ArrayList<Zona>();
 		
 		
 		return resul;

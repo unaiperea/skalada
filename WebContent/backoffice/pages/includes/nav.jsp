@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.controladores.LoginController"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
@@ -16,10 +17,16 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 
+                <%
+                Usuario usuario = (Usuario)session.getAttribute("ss_user");
+                %>
+                
                 <!-- Perfil del usuario -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    	<%=session.getAttribute(LoginController.KEY_SESSION_USER)%>
+                    	<!-- < %=session.getAttribute(LoginController.KEY_SESSION_USER)%>-->
+                    	<!-- < %=usuario.getNombre()+" ("+usuario.getRol().getNombre()+")"%> -->
+                    	${sessionScope.ss_user.nombre} (${sessionScope.ss_user.rol.nombre}) <!-- Da el nombre a traves del getNombre de Java mediante lenguaje de expresiones -->
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">

@@ -1,6 +1,13 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
+<%@page errorPage="../error.jsp"%> <!-- En caso de error te redirije a esta página -->
+
+<%
+	Object o = null;
+	o.toString(); //Cascará
+
+%>
 
 <%@page import="com.ipartek.formacion.skalada.controladores.LoginController"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
 
-public class ModeloUsuario implements Persistable{
+public class ModeloUsuario implements Persistable<Usuario>{ //<Objeto genérico> previamente determinado en la interfaz
 
 	private static final String SQL_INSERT = "INSERT INTO `usuario` (`email`, `nombre`, `password`, `id_rol`) VALUES (?, ?, ?, ?);";
 	private static final String SQL_DELETE = "DELETE FROM `usuario` WHERE `id`= ? ;";
@@ -25,14 +25,12 @@ public class ModeloUsuario implements Persistable{
 	
 	
 	@Override
-	public int save(Object o) {
+	public int save(Usuario usuario) {
 		int resul = -1;
-		Usuario usuario = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if(o != null){
+		if(usuario != null){
 			try{
-				usuario = (Usuario)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, usuario.getEmail());
@@ -70,8 +68,8 @@ public class ModeloUsuario implements Persistable{
 	}
 
 	@Override
-	public Object getById(int id) {
-		Object resul = null;
+	public Usuario getById(int id) {
+		Usuario resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -107,8 +105,8 @@ public class ModeloUsuario implements Persistable{
 	 * @param id {@code String} Email del objeto a recuperar
 	 * @return {@code Object} objeto encontrado o null en caso contrario
 	 */
-	public Object getByEmail(String email) {
-		Object resul = null;
+	public Usuario getByEmail(String email) {
+		Usuario resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -138,8 +136,8 @@ public class ModeloUsuario implements Persistable{
 	}
 	
 	@Override
-	public ArrayList<Object> getAll() {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Usuario> getAll() {
+		ArrayList<Usuario> resul = new ArrayList<Usuario>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -168,13 +166,11 @@ public class ModeloUsuario implements Persistable{
 	}
 
 	@Override
-	public boolean update(Object o) {
+	public boolean update(Usuario usuario) {
 		boolean resul = false;
-		Usuario usuario = null;
 		PreparedStatement pst = null;
-		if (o != null){
+		if (usuario != null){
 			try{
-				usuario = (Usuario)o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);

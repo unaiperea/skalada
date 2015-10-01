@@ -2,6 +2,8 @@ package com.ipartek.formacion.skalada.modelo;
 
 import java.util.ArrayList;
 
+import com.ipartek.formacion.skalada.bean.Rol;
+
 /**
  * Interfaz para permitir guardar, recuperar, modificar y eliminar beans.
  * Soporta las operaciones basicas de CRUD:
@@ -13,15 +15,20 @@ import java.util.ArrayList;
  * @author Curso
  *
  */
-public interface Persistable {
-
+public interface Persistable<T> {
+/* T es un objeto genérico. Por no poner Object y evitar el casteo.
+ * De esta forma donde se implemente el código de cada método sólo tendremos que decirle
+ * la clase que debemos implementar en cada modelo. Ej.
+ * 		public class ModeloRol implements Persistable<Usuario>
+*/
 	/**
 	 **** 		CREATE		****
 	 * Persiste el Objeto y lo guarda
 	 * @param o {@code Object} objeto a guardar
 	 * @return {@code int} Identificador del objeto guardado, -1 en caso de error
 	 */
-	int save(Object o);
+	int save(T t);
+	//int save(Object o);
 	
 	/**
 	 ****		READ I		****
@@ -30,13 +37,15 @@ public interface Persistable {
 	 * @return {@code Object} objeto encontrado o null en caso contrario
 	 */
 	Object getById(int id);
+	//Object getById(int id);
 	
 	/**
 	 ****		READ II		****
 	 * Recupera una coleccion de  Objetos
 	 * @return {@code Object} coleccion de objetos, si no existen coleccion vacia
 	 */
-	ArrayList<Object> getAll();
+	ArrayList<T> getAll();
+	//ArrayList<Object> getAll();
 	
 	/**
 	 ****		UPDATE		****
@@ -44,7 +53,8 @@ public interface Persistable {
 	 * @param o {@code Object} Objeto a modificar
 	 * @return true si se modificaba bien, false en caso contrario
 	 */
-	boolean update(Object o);
+	boolean update(T t);
+	//boolean update(Object o);
 	
 	/**
 	 ****		DELETE		****
@@ -53,5 +63,6 @@ public interface Persistable {
 	 * @return true si se elimina, false en caso contrario
 	 */
 	boolean delete(int id);
+	//boolean delete(int id);
 	
 }

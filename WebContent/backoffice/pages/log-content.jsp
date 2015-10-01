@@ -9,10 +9,11 @@
 <div id="page-wrapper">
 
     <div class="row embed-responsive embed-responsive-4by3">
+
     	<h1>Logs</h1>
     	<!-- No permite incluir un jsp de un proyecto externo -->
     	<embed src="<%=Constantes.VIEW_BACK_LOGS%>">
-    	<p>Luego veremos como incluirlos</p>	
+
     </div> <!-- end: .row -->
 </div> <!-- end: #page-wrapper -->
 

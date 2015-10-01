@@ -9,6 +9,7 @@ public class Utilidades {
 	 * @param longitud
 	 * @return
 	 */
+	//Al poner static no hace falta instanciarlo desde donde se llama. NombreDeLaClase.nombreDelMétodo (parámetros si los hay);
 	public static String getCadenaAlfanumAleatoria (int longitud){
 		String cadenaAleatoria = "";
 		long milis = new java.util.GregorianCalendar().getTimeInMillis();

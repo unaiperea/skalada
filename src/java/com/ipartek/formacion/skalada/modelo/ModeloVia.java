@@ -20,7 +20,7 @@ import com.ipartek.formacion.skalada.bean.Zona;
  * @author ur00
  *
  */
-public class ModeloVia implements Persistable {
+public class ModeloVia implements Persistable<Via> { //<Objeto genÃ©rico> previamente determinado en la interfaz
 	
 	private static final String SQL_INSERT = "";
 	private static final String SQL_GETALL = "select v.`id`, v.`nombre`, v.`longitud`, v.`descripcion`, v.`id_grado`, g.`nombre` as `nombre_grado`, v.`id_sector`, s.`nombre` as `nombre_sector`, v.`id_tipo_escalada`, tp.`nombre` as `nombre_tipo_escalada`, s.`id_zona`, z.`nombre` as `nombre_zona` from `via` as v INNER JOIN `grado` as g ON v.`id_grado` = g.`id` INNER JOIN  `sector` as s ON v.`id_sector` = s.`id` INNER JOIN  `tipo_escalada` as tp ON v.`id_tipo_escalada` = tp.`id` INNER JOIN  `zona` as z ON s.`id_zona` = z.`id`";
@@ -43,24 +43,22 @@ from
 	private static final String SQL_DELETE = "";
 
 	@Override
-	public int save(Object o) {
+	public int save(Via via) {
 		int resul = -1;
-		Via v = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if(o != null){
+		if(via != null){
 			try{
-				v = (Via)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, v.getNombre());	
+				pst.setString(1, via.getNombre());	
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						v.setId(resul);
+						via.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -85,8 +83,8 @@ from
 	}
 
 	@Override
-	public Object getById(int id) {
-		Object resul = null;
+	public Via getById(int id) {
+		Via resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -116,8 +114,8 @@ from
 	}
 
 	@Override
-	public ArrayList<Object> getAll() {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Via> getAll() {
+		ArrayList<Via> resul = new ArrayList<Via>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -146,25 +144,23 @@ from
 	}
 
 	@Override
-	public boolean update(Object o) {
+	public boolean update(Via via) {
 		boolean resul = false;
-		Via v = null;
 		PreparedStatement pst = null;
-		if (o != null){
+		if (via != null){
 			try{
-				v = (Via)o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
 				//UPDATE `via` SET `nombre`= ?, `longitud`= ?, `descripcion`= ?, `id_grado`= ?, `id_tipo_escalada`= ?, `id_sector`= ? WHERE  `id`= ?;
-				pst.setString(1, v.getNombre());
-				pst.setInt(2, v.getLongitud());
-				pst.setString(3, v.getDescripcion());
-				pst.setInt(4, v.getGrado().getId());
-				pst.setInt(5, v.getTipoEscalada().getId());
-				pst.setInt(6, v.getSector().getId());
-				//pst.setInt(7, v.getSector().getZona().getId()); //Zona no está en la tabla. Habrá que hacer update directamente en la zona
-				pst.setInt(8, v.getId());
+				pst.setString(1, via.getNombre());
+				pst.setInt(2, via.getLongitud());
+				pst.setString(3, via.getDescripcion());
+				pst.setInt(4, via.getGrado().getId());
+				pst.setInt(5, via.getTipoEscalada().getId());
+				pst.setInt(6, via.getSector().getId());
+				//pst.setInt(7, v.getSector().getZona().getId()); //Zona no estï¿½ en la tabla. Habrï¿½ que hacer update directamente en la zona
+				pst.setInt(8, via.getId());
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
@@ -220,11 +216,11 @@ from
 	private Via mapeo (ResultSet rs) throws SQLException{
 		Via resul = null;
 		
-		//Vamos creando objetos según recorramos la bbdd y rellenándolos.
-		//Así lo tenemos en memoria y accederemos en cualquier momento
+		//Vamos creando objetos segï¿½n recorramos la bbdd y rellenï¿½ndolos.
+		//Asï¿½ lo tenemos en memoria y accederemos en cualquier momento
 		
 		//Tipo Escalada
-		TipoEscalada tipoEscalada = new TipoEscalada(rs.getString("nombre_tipo_escalada")); //Creamos el objeto tipoEscalada con su constructor dándole el campo del resulSet
+		TipoEscalada tipoEscalada = new TipoEscalada(rs.getString("nombre_tipo_escalada")); //Creamos el objeto tipoEscalada con su constructor dï¿½ndole el campo del resulSet
 		tipoEscalada.setId(rs.getInt("id_tipo_escalada")); //Seteamos el id del tipo_Escalada
 		
 		//Zona

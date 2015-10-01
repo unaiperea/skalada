@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloSector implements Persistable{
+public class ModeloSector implements Persistable<Sector>{ //<Objeto genÃ©rico> previamente determinado en la interfaz
 	
 	private static final String TABLA_SECTOR = "sector";
 	private static final String TABLA_ZONA = "zona";
@@ -37,26 +37,24 @@ public class ModeloSector implements Persistable{
 	
 	
 	@Override
-	public int save(Object o) {
+	public int save(Sector sector) {
 		int resul = -1;
-		Sector g = null;	
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if(o != null){
+		if(sector != null){
 			try{
-				g = (Sector)o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, g.getNombre());
-				pst.setInt(2, g.getZona().getId());
-				pst.setString(3, g.getImagen());
+				pst.setString(1, sector.getNombre());
+				pst.setInt(2, sector.getZona().getId());
+				pst.setString(3, sector.getImagen());
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
 						resul = rsKeys.getInt(1);
-						g.setId(resul);
+						sector.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
@@ -81,8 +79,8 @@ public class ModeloSector implements Persistable{
 	}
 
 	@Override
-	public Object getById(int id) {
-		Object resul = null;
+	public Sector getById(int id) {
+		Sector resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -112,8 +110,8 @@ public class ModeloSector implements Persistable{
 	}
 
 	@Override
-	public ArrayList<Object> getAll() {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Sector> getAll() {
+		ArrayList<Sector> resul = new ArrayList<Sector>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;		
 		try{
@@ -142,20 +140,18 @@ public class ModeloSector implements Persistable{
 	}
 
 	@Override
-	public boolean update(Object o) {
+	public boolean update(Sector sector) {
 		boolean resul = false;
-		Sector s = null;
 		PreparedStatement pst = null;
-		if (o != null){
+		if (sector != null){
 			try{
-				s = (Sector)o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(1, s.getNombre());
-				pst.setInt(2, s.getZona().getId());
-				pst.setString(3, s.getImagen());
-				pst.setInt(4, s.getId());
+				pst.setString(1, sector.getNombre());
+				pst.setInt(2, sector.getZona().getId());
+				pst.setString(3, sector.getImagen());
+				pst.setInt(4, sector.getId());
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
@@ -225,7 +221,7 @@ public class ModeloSector implements Persistable{
 	/**
 	 * Obtiene todos los sectores de una Zona {@code Zona}, <b> Cuidado: getZona() retorna <code>null</code>, se supone que ya la conocemos</b>
 	 * @param id_zona {@int} identificador de la {@code Zona}
-	 * @return ArrayList<Sector> colección de sectores de la Zona, si no existe ninguno colección inicializada con new() así no devolvemos un null
+	 * @return ArrayList<Sector> colecciï¿½n de sectores de la Zona, si no existe ninguno colecciï¿½n inicializada con new() asï¿½ no devolvemos un null
 	 */
 	public ArrayList<Sector> getAllByZona (int id_zona){
 		
