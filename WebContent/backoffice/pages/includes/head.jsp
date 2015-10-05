@@ -4,8 +4,8 @@
 <%@page errorPage="../error.jsp"%> <!-- En caso de error te redirije a esta página -->
 
 <%
-	Object o = null;
-	o.toString(); //Cascará
+	//Object o = null;
+	//o.toString(); //Cascará
 
 %>
 

@@ -21,7 +21,7 @@
     <title>Error 500</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
 <style type="text/css">
 	#contenedor{
@@ -32,7 +32,7 @@
 	}
 	
 	#img-alien{
-		padding-top: 20%;
+		padding-top: 10%;
 		padding-left: 10%;
 	}
 	
@@ -64,11 +64,13 @@
 				<img id="img-alien" src="img/alien500.png"></img>
 			</div>
 			
-			<div class="col-xs-2">
-				<h2>error </h2>
-			</div>
-			<div class="col-xs-4">
-				<h1>500</h1>
+			<div class="">
+				<div class="col-xs-2">
+					<h2>error </h2>
+				</div>
+				<div class="col-xs-4">
+					<h1>500</h1>
+				</div>
 			</div>
 
 		</div>

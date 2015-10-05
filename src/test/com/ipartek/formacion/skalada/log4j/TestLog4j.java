@@ -1,6 +1,7 @@
 package com.ipartek.formacion.skalada.log4j;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Properties;
 

@@ -4,7 +4,6 @@
 
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
-
 <jsp:include page="includes/head.jsp"></jsp:include>
 
     <div class="container">

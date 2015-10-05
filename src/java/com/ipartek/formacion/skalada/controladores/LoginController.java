@@ -1,11 +1,6 @@
 package com.ipartek.formacion.skalada.controladores;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
@@ -16,17 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
-import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
-import com.ipartek.formacion.skalada.modelo.ModeloRol;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
-import com.ipartek.formacion.skalada.util.EnviarEmails;
 
 /**
  * Servlet implementation class LoginController
@@ -46,26 +37,20 @@ public class LoginController extends HttpServlet {
 	private ModeloUsuario modeloUsuario = null;
 	private Usuario usuario = null;
 	
-	private ModeloRol modeloRol = null;
-	private Rol rol = null;
-	
 	//LOGIN
 	//Key para guardar el usuario en la session
 	public static final String KEY_SESSION_USER = "ss_user";
 	
 	private String pEmail;
 	private String pPassword;
-
-	//RECUPERAR CONTRASEÑA
-	private String pEmailRecuperar = "";
 		
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
     	
     	modeloUsuario = new ModeloUsuario();
-    	modeloRol = new ModeloRol();
     	
+    	//Inicializamos el logger
     	try {
 			//Fichero configuracion de Log4j
 			Properties props = new Properties();

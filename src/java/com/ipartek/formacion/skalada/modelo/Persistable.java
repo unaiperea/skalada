@@ -2,8 +2,6 @@ package com.ipartek.formacion.skalada.modelo;
 
 import java.util.ArrayList;
 
-import com.ipartek.formacion.skalada.bean.Rol;
-
 /**
  * Interfaz para permitir guardar, recuperar, modificar y eliminar beans.
  * Soporta las operaciones basicas de CRUD:

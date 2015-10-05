@@ -26,7 +26,6 @@ import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
-import com.mysql.jdbc.EscapeTokenizer;
 
 /**
  * Servlet implementation class SectoresController
@@ -261,7 +260,7 @@ public class SectoresController extends HttpServlet {
 			    // Create a new file upload handler
 			    ServletFileUpload upload = new ServletFileUpload(factory); //Objeto para la gesti�n de estos datos
 			    // maximum file size to be uploaded.
-			    //TODO Cambiar valor no dejar subir m�s de 1MB
+			    //TODO Cambiar valor no dejar subir m�s de 1MB. En JavaScript
 			    upload.setSizeMax(Constantes.IMG_MAX_FILE_SIZE);
 			    
 			    //Par�metros de la request del formulario, No la im�gen. Creamos un array de dos dimensiones para guardar todos los items de la p�gina con la key su valor 
@@ -284,8 +283,8 @@ public class SectoresController extends HttpServlet {
 			            if (!"".equals(fileName)){ //Si est� vac�o subo la im�gen. Qu� no modifique la im�gen cuando est�
 				            String fileContentType = item.getContentType();
 				            if (Constantes.IMG_CONTENT_TYPES.contains(fileContentType)){ //Si contiene los tipos de archivo jpg o png
-					            boolean isInMemory = item.isInMemory();
-					            long sizeInBytes = item.getSize();
+					            //boolean isInMemory = item.isInMemory();
+					            //long sizeInBytes = item.getSize();
 					            
 					            //comprobar 'size' y 'contentType' (tipo de extensi�n)
 

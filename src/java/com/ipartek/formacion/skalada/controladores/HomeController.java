@@ -1,10 +1,9 @@
 package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Sector;
-import com.ipartek.formacion.skalada.bean.Via;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
-import com.ipartek.formacion.skalada.modelo.ModeloVia;
 
 /**
  * Servlet implementation class HomeController
@@ -24,7 +20,6 @@ import com.ipartek.formacion.skalada.modelo.ModeloVia;
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ModeloVia modelo = null;
 	private ModeloSector modeloSector = null;
        
     /**
@@ -61,15 +56,6 @@ public class HomeController extends HttpServlet {
 		
 		//Ir a index
 		request.getRequestDispatcher(Constantes.VIEW_PUBLIC_INDEX).forward(request, response);
-		
-		
-		
-		
-		
-
-		
-		
-		
 		
 	}
 

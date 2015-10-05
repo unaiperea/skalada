@@ -3,15 +3,8 @@ package com.ipartek.formacion.skalada.modelo;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.Test;
 
