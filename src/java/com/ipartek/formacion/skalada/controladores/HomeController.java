@@ -19,6 +19,7 @@ import com.ipartek.formacion.skalada.modelo.ModeloSector;
  */
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final byte MAX_SECTORES = 6;
 
 	private ModeloSector modeloSector = null;
        
@@ -47,8 +48,8 @@ public class HomeController extends HttpServlet {
 		//Recuperar los 6 �ltimos 6 sectores del modelo
 		//Usar limit 6 en la select y order by id desc
 		ArrayList<Sector> sectores = modeloSector.getAll();
-		if (sectores.size() > 6){
-			sectores = new ArrayList<Sector>(sectores.subList(0, 6));
+		if (sectores.size() > MAX_SECTORES){
+			sectores = new ArrayList<Sector>(sectores.subList(0, MAX_SECTORES));
 		}
 		
 		//Enviarlas como atributo en la request

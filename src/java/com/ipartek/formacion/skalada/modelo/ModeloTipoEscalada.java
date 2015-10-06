@@ -18,9 +18,13 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 	
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_DESCRIPCION + "`) VALUES (?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
+	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `descripcion` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `descripcion` FROM " + TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_DESCRIPCION + "`= ? WHERE `" + COL_ID + "`= ? ;";
+	
+	private static final byte campo1 = 1;
+	private static final byte campo2 = 2;
+	private static final byte campo3 = 3;
 	
 	@Override
 	public int save(TipoEscalada tipoEscalada) {
@@ -31,14 +35,14 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 			try{
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, tipoEscalada.getNombre());
-				pst.setString(2, tipoEscalada.getDescripcion());		
+				pst.setString(campo1, tipoEscalada.getNombre());
+				pst.setString(campo2, tipoEscalada.getDescripcion());		
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
-						resul = rsKeys.getInt(1);
+						resul = rsKeys.getInt(campo1);
 						tipoEscalada.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
@@ -71,7 +75,7 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETONE);
-			pst.setInt(1, id);
+			pst.setInt(campo1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
 	    		resul = mapeo(rs);
@@ -133,9 +137,9 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(1, tipoEscalada.getNombre());
-				pst.setString(2, tipoEscalada.getDescripcion());
-				pst.setInt(3, tipoEscalada.getId());				
+				pst.setString(campo1, tipoEscalada.getNombre());
+				pst.setString(campo2, tipoEscalada.getDescripcion());
+				pst.setInt(campo3, tipoEscalada.getId());				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
@@ -162,7 +166,7 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_DELETE);
-			pst.setInt(1, id);			
+			pst.setInt(campo1, id);			
 			if ( pst.executeUpdate() == 1 ){
 				resul = true;
 			}			
@@ -188,7 +192,7 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 	 * @return
 	 * @throws SQLException 
 	 */
-	private TipoEscalada mapeo (ResultSet rs) throws SQLException{
+	private TipoEscalada mapeo(ResultSet rs) throws SQLException {
 		TipoEscalada resul = null;    
 		
 		resul = new TipoEscalada( rs.getString(COL_NOMBRE) );

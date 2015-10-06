@@ -300,7 +300,8 @@ public class SectoresController extends HttpServlet {
 					                		if (item.getName().equalsIgnoreCase(ficherosUploads[i].getName())){
 					                			//A�adimos la fecha
 					                			Date fecha = new Date();
-					                			SimpleDateFormat formato = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss");
+										SimpleDateFormat formato = new SimpleDateFormat(
+												"yyyy.MM.dd hh:mm:ss");
 					                			
 					                			int indicePunto = fileName.indexOf(".");
 					                			if (indicePunto != -1);

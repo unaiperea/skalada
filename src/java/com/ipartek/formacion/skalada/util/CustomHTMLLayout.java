@@ -20,21 +20,21 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 	// RegEx pattern looks for <tr> <td> nnn...nnn </td> (all whitespace
 	// ignored)
 
-	private static final String rxTimestamp = "\\s*<\\s*tr\\s*>\\s*<\\s*td\\s*>\\s*(\\d*)\\s*<\\s*/td\\s*>";
+	private static final String RX_TIMESTAMP = "\\s*<\\s*tr\\s*>\\s*<\\s*td\\s*>\\s*(\\d*)\\s*<\\s*/td\\s*>";
 
 	/*
 	 * The timestamp format. The format can be overriden by including the
 	 * following property in the Log4J configuration file:
-	 * 
+	 *
 	 * log4j.appender.<category>.layout.TimestampFormat
-	 * 
+	 *
 	 * using the same format string as would be specified with SimpleDateFormat.
 	 */
 
 	private String timestampFormat = "yyyy-MM-dd HH:mm:ss"; // Default
 	// 2008-11-21-18:35:21.472-0800
 
-	private SimpleDateFormat sdf = new SimpleDateFormat(timestampFormat);
+	private SimpleDateFormat sdf = new SimpleDateFormat(this.timestampFormat);
 
 	public CustomHTMLLayout() {
 		super();
@@ -44,9 +44,9 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 	public String getHeader() {
 		StringBuffer sbuf = new StringBuffer();
 		sbuf.append("<head>" + Layout.LINE_SEP);
-		
+
 		sbuf.append("</head>" + Layout.LINE_SEP);
-		
+
 		sbuf.append("<body>" + Layout.LINE_SEP);
 		sbuf.append("<hr size=\"1\" noshade>" + Layout.LINE_SEP);
 		sbuf.append("Log session start time " + new java.util.Date() + "<br>"
@@ -68,12 +68,13 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 
 	/** Override HTMLLayout's format() method */
 
+	@Override
 	public String format(LoggingEvent event) {
 		String record = super.format(event); // Get the log record in the
-												// default HTMLLayout format.
+		// default HTMLLayout format.
 
-		Pattern pattern = Pattern.compile(rxTimestamp); // RegEx to find the
-														// default timestamp
+		Pattern pattern = Pattern.compile(RX_TIMESTAMP); // RegEx to find the
+															// default timestamp
 		Matcher matcher = pattern.matcher(record);
 
 		// If default timestamp cannot be found,
@@ -84,21 +85,23 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 		StringBuffer buffer = new StringBuffer(record);
 
 		buffer.replace(matcher.start(1), // Replace the default timestamp with
-											// one formatted as desired.
-		matcher.end(1), sdf.format(new Date(event.timeStamp)));
+				// one formatted as desired.
+				matcher.end(1), this.sdf.format(new Date(event.timeStamp)));
 
 		return buffer.toString(); // Return the log record with the desired
-									// timestamp format.
+		// timestamp format.
 	}
 
 	@Override
 	public String getFooter() {
 		StringBuffer sbuf = new StringBuffer();
-		//librerias JavaScript
-		sbuf.append("<script src=\"https://code.jquery.com/jquery-1.11.3.min.js\"><script> " + Layout.LINE_SEP);
-		sbuf.append("<script src=\"https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js\"><script> " + Layout.LINE_SEP);
+		// librerias JavaScript
+		sbuf.append("<script src=\"https://code.jquery.com/jquery-1.11.3.min.js\"><script> "
+				+ Layout.LINE_SEP);
+		sbuf.append("<script src=\"https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js\"><script> "
+				+ Layout.LINE_SEP);
 		sbuf.append("<script>    </script>" + Layout.LINE_SEP);
-				
+
 		sbuf.append("</table>" + Layout.LINE_SEP);
 		sbuf.append("</body>" + Layout.LINE_SEP);
 		return sbuf.toString();

@@ -17,8 +17,8 @@ public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previ
 	
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`) VALUES (?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
+	private static final String SQL_GETONE = "SELECT `id`, `nombre` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre` FROM " + TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
 	@Override
@@ -185,7 +185,7 @@ public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previ
 	 * @return
 	 * @throws SQLException 
 	 */
-	private Zona mapeo (ResultSet rs) throws SQLException{
+	private Zona mapeo(ResultSet rs) throws SQLException {
 		Zona resul = null;    
 		
 		resul = new Zona( rs.getString(COL_NOMBRE) );

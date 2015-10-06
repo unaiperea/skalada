@@ -28,11 +28,11 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
  */
 public class ViasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+
 	private RequestDispatcher dispatcher = null;
 	private ModeloVia modeloVia = null;
 	private Via via = null;
-	
+
 	private ModeloGrado modeloGrado = null;
 	private Grado grado = null;
 	private ModeloTipoEscalada modeloTipoEscalada = null;
@@ -40,205 +40,232 @@ public class ViasController extends HttpServlet {
 	private ModeloSector modeloSector = null;
 	private Sector sector = null;
 	private ModeloZona modeloZona = null;
-	  
-	//parametros
-	private int pAccion = Constantes.ACCION_LISTAR;		//Accion por defecto
-	private int pID	= -1;		//ID no valido	
+
+	// parametros
+	private int pAccion = Constantes.ACCION_LISTAR; // Accion por defecto
+	private int pID = -1; // ID no valido
 	private String pNombre;
 	private int pLongitud;
 	private String pDescripcion;
 	private int pIDGrado;
 	private int pIDTipoEscalada;
 	private int pIDSector;
-	
-	private Mensaje msg;
-	
-    
-    /**
-     * Este metodo se ejecuta solo la primera vez que se llama al servlet
-     * Se suele usar para crear el modelo
-     */
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-    	super.init(config);
-    	modeloVia = new ModeloVia();
-    	modeloGrado = new ModeloGrado();
-    	modeloTipoEscalada = new ModeloTipoEscalada();
-    	modeloSector = new ModeloSector();
-    	modeloZona = new ModeloZona();
-    }
 
+	private Mensaje msg;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Este metodo se ejecuta solo la primera vez que se llama al servlet Se
+	 * suele usar para crear el modelo
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//recoger parametros
-		getParameters(request,response);
-		
-		//realizar accion solicitada
-		switch (pAccion) {
-		case Constantes.ACCION_NUEVO:
-			nuevo(request,response);
-			break;
-		case Constantes.ACCION_DETALLE:
-			detalle(request,response);
-			break;
-		case Constantes.ACCION_ELIMINAR:
-			eliminar(request,response);
-			break;
-		default:
-			listar(request,response);
-			break;
-		}
-			
-		dispatcher.forward(request, response);
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		this.modeloVia = new ModeloVia();
+		this.modeloGrado = new ModeloGrado();
+		this.modeloTipoEscalada = new ModeloTipoEscalada();
+		this.modeloSector = new ModeloSector();
+		this.modeloZona = new ModeloZona();
 	}
-	
-	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
-		
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		// recoger parametros
+		this.getParameters(request, response);
+
+		// realizar accion solicitada
+		switch (this.pAccion) {
+			case Constantes.ACCION_NUEVO :
+				this.nuevo(request, response);
+				break;
+			case Constantes.ACCION_DETALLE :
+				this.detalle(request, response);
+				break;
+			case Constantes.ACCION_ELIMINAR :
+				this.eliminar(request, response);
+				break;
+			default :
+				this.listar(request, response);
+				break;
+		}
+
+		this.dispatcher.forward(request, response);
+	}
+
+	private void getParameters(HttpServletRequest request,
+			HttpServletResponse response) {
+
 		try {
 			request.setCharacterEncoding("UTF-8");
-			pAccion = Integer.parseInt(request.getParameter("accion"));		
-			if(request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))){
-				pID = Integer.parseInt(request.getParameter("id"));
+			this.pAccion = Integer.parseInt(request.getParameter("accion"));
+			if (request.getParameter("id") != null
+					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Obtiene todas las vias del modelo y carga dispatch con index.jsp
+	 * 
 	 * @see backoffice/pages/via/index.jsp
 	 * @param request
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("vias", modeloVia.getAll());
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);		
+		request.setAttribute("vias", this.modeloVia.getAll());
+		this.dispatcher = request
+				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		if(modeloVia.delete(pID)){			
-			msg = new Mensaje(Mensaje.MSG_DANGER, "Registro eliminado correctamente");			
+	private void eliminar(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (this.modeloVia.delete(this.pID)) {
+			this.msg = new Mensaje(Mensaje.MSG_DANGER,
+					"Registro eliminado correctamente");
 		} else {
-			msg = new Mensaje(Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + pID + ")]");
+			this.msg = new Mensaje(Mensaje.MSG_WARNING,
+					"Error al eliminar el registro [id(" + this.pID + ")]");
 		}
-		request.setAttribute("msg", msg);
-		listar(request, response);
+		request.setAttribute("msg", this.msg);
+		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		via = new Via("");
-		via.setGrado(new Grado(""));
-		via.setTipoEscalada(new TipoEscalada(""));
-		via.setSector(new Sector("", new Zona("")));
-		request.setAttribute("via", via);
+		this.via = new Via("");
+		this.via.setGrado(new Grado(""));
+		this.via.setTipoEscalada(new TipoEscalada(""));
+		this.via.setSector(new Sector("", new Zona("")));
+		request.setAttribute("via", this.via);
 		request.setAttribute("titulo", "Crear nueva Via");
 		request.setAttribute("metodo", "Guardar");
-		request.setAttribute("grados", modeloGrado.getAll());
-		request.setAttribute("tipoEscaladas", modeloTipoEscalada.getAll());
-		request.setAttribute("sectores", modeloSector.getAll());
-		request.setAttribute("zonas", modeloZona.getAll());
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
-		
-	}
-	
-	private void detalle(HttpServletRequest request, HttpServletResponse response) {
-		via = (Via)modeloVia.getById(pID);
-		request.setAttribute("via", via);
-		request.setAttribute("titulo", via.getNombre().toUpperCase());
-		request.setAttribute("metodo", "Modificar");
-		request.setAttribute("grados", modeloGrado.getAll());
-		request.setAttribute("tipoEscaladas", modeloTipoEscalada.getAll());
-		request.setAttribute("sectores", modeloSector.getAllByZona( via.getSector().getZona().getId() )); //De la vía saco el sector, del sector saco la zona y de la zona el id
-		request.setAttribute("zonas", modeloZona.getAll());
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);		
+		request.setAttribute("zonas", this.modeloZona.getAll());
+		request.setAttribute("grados", this.modeloGrado.getAll());
+		request.setAttribute("tipoEscaladas", this.modeloTipoEscalada.getAll());
+		request.setAttribute("sectores", this.modeloSector.getAll());
+		request.setAttribute("zonas", this.modeloZona.getAll());
+		this.dispatcher = request
+				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
+
 	}
 
-	
+	private void detalle(HttpServletRequest request,
+			HttpServletResponse response) {
+		this.via = this.modeloVia.getById(this.pID);
+		request.setAttribute("via", this.via);
+		request.setAttribute("titulo", this.via.getNombre().toUpperCase());
+		request.setAttribute("metodo", "Modificar");
+		request.setAttribute("grados", this.modeloGrado.getAll());
+		request.setAttribute("tipoEscaladas", this.modeloTipoEscalada.getAll());
+		request.setAttribute(
+				"sectores",
+				this.modeloSector.getAllByZona(this.via.getSector().getZona()
+						.getId())); // De la vï¿½a saco el sector, del sector saco
+									// la zona y de la zona el id
+		request.setAttribute("zonas", this.modeloZona.getAll());
+		this.dispatcher = request
+				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
+	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//recoger parametros del formulario
-		getParametersForm(request);
-		
-		//Crear Objeto Via con el Grado, TipoEscalada, Zona y Sector
-		crearObjetoVia();
-		
-		//Guardar/Modificar Objeto Via
-		if (pID == -1){
-			if( modeloVia.save(via) != -1){
-				msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		// recoger parametros del formulario
+		this.getParametersForm(request);
+
+		// Crear Objeto Via con el Grado, TipoEscalada, Zona y Sector
+		this.crearObjetoVia();
+
+		// Guardar/Modificar Objeto Via
+		if (this.pID == -1) {
+			if (this.modeloVia.save(this.via) != -1) {
+				this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
+						"Registro creado con exito");
 			} else {
-				msg = new Mensaje(Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER,
+						"Error al guardar el nuevo registro");
 			}
 		} else {
-			if(modeloVia.update(via)){
-				msg = new Mensaje(Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + pID + ")]");
+			if (this.modeloVia.update(this.via)) {
+				this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
+						"Modificado correctamente el registro [id(" + this.pID
+								+ ")]");
 			} else {
-				msg = new Mensaje(Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + pID + ")]");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER,
+						"Error al modificar el registro [id(" + this.pID + ")]");
 			}
 		}
-		
-		listar(request,response);
-		
-		request.setAttribute("msg", msg);
-		dispatcher.forward(request, response);
-		
+
+		this.listar(request, response);
+
+		request.setAttribute("msg", this.msg);
+		this.dispatcher.forward(request, response);
+
 	}
-	
+
 	/**
 	 * Crea un Objeto {@code Via} Con los parametros recibidos
 	 */
 	private void crearObjetoVia() {
-		grado = (Grado)modeloGrado.getById(pIDGrado);
-		tipoEscalada = (TipoEscalada)modeloTipoEscalada.getById(pIDTipoEscalada);
-		sector = (Sector)modeloSector.getById(pIDSector);		
-		
-		if (pID != -1) {
-			via = (Via)modeloVia.getById(pID);
-			via.setNombre(pNombre);
-			via.setLongitud(pLongitud);
-			via.setGrado(grado);
-			via.setTipoEscalada(tipoEscalada);
-			via.setSector(sector);
-		}else{			
-			via = new Via(pNombre, pLongitud, grado, tipoEscalada, sector);
-			via.setId(pID);
-			via.setDescripcion(pDescripcion);
+		this.grado = this.modeloGrado.getById(this.pIDGrado);
+		this.tipoEscalada = this.modeloTipoEscalada
+				.getById(this.pIDTipoEscalada);
+		this.sector = this.modeloSector.getById(this.pIDSector);
+
+		if (this.pID != -1) {
+			this.via = this.modeloVia.getById(this.pID);
+			this.via.setNombre(this.pNombre);
+			this.via.setLongitud(this.pLongitud);
+			this.via.setGrado(this.grado);
+			this.via.setTipoEscalada(this.tipoEscalada);
+			this.via.setSector(this.sector);
+		} else {
+			this.via = new Via(this.pNombre, this.pLongitud, this.grado,
+					this.tipoEscalada, this.sector);
+			this.via.setId(this.pID);
+			this.via.setDescripcion(this.pDescripcion);
 		}
 	}
 
 	/**
-	* Recoger los parametros enviados desde el formulario
-	* @see backoffice\pages\vias\form.jsp
-	* @param request
-	 * @throws UnsupportedEncodingException 
-	*/
-	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
-		
-		request.setCharacterEncoding("UTF-8");
-	
-		pID = Integer.parseInt(request.getParameter("id"));
-		pNombre = request.getParameter("nombre");
-		if(request.getParameter("longitud") != null && !"".equals(request.getParameter("longitud"))){
-			pLongitud = Integer.parseInt(request.getParameter("longitud"));
-		} else {
-			pLongitud = 0;
-		}		
-		pDescripcion = request.getParameter("descripcion");
-		pIDGrado= Integer.parseInt(request.getParameter("grado"));
-		pIDTipoEscalada = Integer.parseInt(request.getParameter("tipo_escalada"));
-		pIDSector = Integer.parseInt(request.getParameter("sector"));
-	
-	}
+	 * Recoger los parametros enviados desde el formulario
+	 * 
+	 * @see backoffice\pages\vias\form.jsp
+	 * @param request
+	 * @throws UnsupportedEncodingException
+	 */
+	private void getParametersForm(HttpServletRequest request)
+			throws UnsupportedEncodingException {
 
+		request.setCharacterEncoding("UTF-8");
+
+		this.pID = Integer.parseInt(request.getParameter("id"));
+		this.pNombre = request.getParameter("nombre");
+		if (request.getParameter("longitud") != null
+				&& !"".equals(request.getParameter("longitud"))) {
+			this.pLongitud = Integer.parseInt(request.getParameter("longitud"));
+		} else {
+			this.pLongitud = 0;
+		}
+		this.pDescripcion = request.getParameter("descripcion");
+		this.pIDGrado = Integer.parseInt(request.getParameter("grado"));
+		this.pIDTipoEscalada = Integer.parseInt(request
+				.getParameter("tipo_escalada"));
+		this.pIDSector = Integer.parseInt(request.getParameter("sector"));
+
+	}
 
 }

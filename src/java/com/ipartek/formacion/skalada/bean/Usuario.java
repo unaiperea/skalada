@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 import com.ipartek.formacion.skalada.Constantes;
 
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = -6253794296547129164L;
-	
-	//**********************************
-	//****		Atributos			****
-	//**********************************
+
+	// **********************************
+	// **** Atributos ****
+	// **********************************
 	private int id;
 	private String nombre;
 	private String email;
@@ -18,10 +18,9 @@ public class Usuario implements Serializable{
 	private Rol rol;
 	private String token;
 
-
-	//**********************************
-	//****		Constructor			****
-	//**********************************
+	// **********************************
+	// **** Constructor ****
+	// **********************************
 	/**
 	 * @param nombre
 	 * @param email
@@ -30,73 +29,75 @@ public class Usuario implements Serializable{
 	 */
 	public Usuario(String nombre, String email, String password, Rol rol) {
 		super();
-		this.setId(-1);
-		this.setNombre(nombre);
-		this.setEmail(email);
-		this.setPassword(password);
-		if (rol != null){
-			this.setRol(rol);
+		this.setId(-1); // @Unai: PMD no lo permite por éso habrá que poner
+						// final en el método
+		this.setNombre(nombre); // PMD no lo permite
+		this.setEmail(email); // PMD no lo permite
+		this.setPassword(password); // PMD no lo permite
+		if (rol != null) {
+			this.setRol(rol); // PMD no lo permite
 		} else {
-			this.setRol(new Rol(Constantes.ROLE_USER));
+			this.setRol(new Rol(Constantes.ROLE_USER)); // PMD no lo permite
 		}
 	}
 
-	
-	//**********************************
-	//****		Getters/Setters		****
-	//**********************************	
+	// **********************************
+	// **** Getters/Setters ****
+	// **********************************
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(int id) {
+	public final void setId(int id) { // @Unai: Evitas que puedan
+										// sobreescribir/Override
+										// el método al ser extendido desde un
+										// hijo
 		this.id = id;
 	}
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
-	public void setNombre(String nombre) {
+	public final void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
-	public void setEmail(String email) {
+	public final void setEmail(String email) {
 		this.email = email;
 	}
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
-	public void setPassword(String password) {
+	public final void setPassword(String password) {
 		this.password = password;
 	}
 	public int getValidado() {
-		return validado;
+		return this.validado;
 	}
-	public void setValidado(int validado) {
+	public final void setValidado(int validado) {
 		this.validado = validado;
 	}
 	public Rol getRol() {
-		return rol;
+		return this.rol;
 	}
-	public void setRol(Rol rol) {
+	public final void setRol(Rol rol) {
 		this.rol = rol;
 	}
 	public String getToken() {
-		return token;
+		return this.token;
 	}
-	public void setToken(String token) {
+	public final void setToken(String token) {
 		this.token = token;
 	}
 
-	
-	//**********************************
-	//****		ToString()			****
-	//**********************************	
+	// **********************************
+	// **** ToString() ****
+	// **********************************
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email
-				+ ", password=" + password + ", validado=" + validado
-				+ ", rol=" + rol + "]";
+		return "Usuario [id=" + this.id + ", nombre=" + this.nombre
+				+ ", email=" + this.email + ", password=" + this.password
+				+ ", validado=" + this.validado + ", rol=" + this.rol + "]";
 	}
-	
+
 }

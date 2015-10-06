@@ -4,61 +4,68 @@ import java.io.Serializable;
 
 import com.ipartek.formacion.skalada.Constantes;
 
-public class Sector implements Serializable{
+public class Sector implements Serializable {
 	private static final long serialVersionUID = -2537948970066821711L;
-	
+
 	/**
 	 * Atributos
 	 */
 	private int id;
 	private String nombre;
 	private Zona zona;
-	private String imagen; //Path + nombre de la im�gen a mostrar
+	private String imagen; // Path + nombre de la im�gen a mostrar
 
 	/**
 	 * Constructor
 	 */
 	public Sector(String nombre, Zona zona) {
 		super();
-		this.setId(-1);
-		this.setNombre(nombre);
-		this.setZona(zona);
-		this.setImagen(Constantes.IMG_DEFAULT_SECTOR);
+		this.setId(-1); // PMD no lo permite por éso habrá que poner final en el
+						// método
+		this.setNombre(nombre); // PMD no lo permite
+		this.setZona(zona); // PMD no lo permite
+		this.setImagen(Constantes.IMG_DEFAULT_SECTOR); // PMD no lo permite
 	}
 
 	/**
 	 * Getters y Setters
 	 */
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(int id) {
+	public final void setId(int id) { // Evitas que puedan sobreescribir/Override el
+								// método al ser extendido desde un hijo
 		this.id = id;
 	}
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
-	public void setNombre(String nombre) {
+	public final void setNombre(String nombre) { // Evitas que puedan
+											// sobreescribir/Override el método
+											// al ser extendido desde un hijo
 		this.nombre = nombre;
 	}
 	public Zona getZona() {
-		return zona;
+		return this.zona;
 	}
-	public void setZona(Zona zona) {
+	public final void setZona(Zona zona) { // Evitas que puedan sobreescribir/Override
+										// el método al ser extendido desde un
+										// hijo
 		this.zona = zona;
 	}
 	public String getImagen() {
-		return imagen;
+		return this.imagen;
 	}
-	public void setImagen(String imagen) {
+	public final void setImagen(String imagen) { // Evitas que puedan
+											// sobreescribir/Override el método
+											// al ser extendido desde un hijo
 		this.imagen = imagen;
 	}
 
 	@Override
 	public String toString() {
-		return "Sector [id=" + id + ", nombre=" + nombre + ", zona=" + zona
-				+ ", imagen=" + imagen + "]";
-	}	
-	
+		return "Sector [id=" + this.id + ", nombre=" + this.nombre + ", zona="
+				+ this.zona + ", imagen=" + this.imagen + "]";
+	}
 
 }

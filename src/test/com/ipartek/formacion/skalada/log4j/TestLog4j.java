@@ -16,7 +16,7 @@ import org.junit.Test;
 public class TestLog4j {
 
 	private static final String PATH = "path";
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -31,7 +31,7 @@ public class TestLog4j {
 
 	@Test
 	public void test() {
-		//Configuración básica
+		// Configuración básica
 		BasicConfigurator.configure();
 
 		Logger log = Logger.getLogger("Logger de Test");
@@ -39,24 +39,25 @@ public class TestLog4j {
 		log.error("un error");
 		assertTrue("No funciona log4j BasicConfigurator", true);
 	}
-		
+
 	@Test
 	public void testFicheroPropiedades() {
-		try{
-			//Cargar properties. Fichero configuracion de Log4j
+		try {
+			// Cargar properties. Fichero configuracion de Log4j
 			Properties props = new Properties();
-			props.load( getClass().getResourceAsStream("/log4j.properties"));
+			props.load(this.getClass().getResourceAsStream("/log4j.properties"));
 			PropertyConfigurator.configure(props);
-			
-			//Escribir línea
+
+			// Escribir línea
 			Logger log = Logger.getLogger("Logger de Test");
 			log.info("un info");
-			
-			assertTrue("No encontrado fichero de propiedades log4j.properties", true);
-		}catch(Exception e){
+
+			assertTrue("No encontrado fichero de propiedades log4j.properties",
+					true);
+		} catch (Exception e) {
 			fail("No encontrado fichero de propiedades log4j.properties" + PATH);
 		}
-		
+
 	}
 
 }

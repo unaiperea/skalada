@@ -18,9 +18,13 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 	
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_DESCRIPCION + "`) VALUES (?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
+	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `descripcion` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `descripcion` FROM " + TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_DESCRIPCION + "`= ? WHERE `" + COL_ID + "`= ? ;";
+	
+	private static final byte campo1 = 1;
+	private static final byte campo2 = 2;
+	private static final byte campo3 = 3;
 	
 	@Override
 	public int save(Rol rol) {
@@ -31,8 +35,8 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 			try{
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, rol.getNombre());
-				pst.setString(2, rol.getDescripcion());		
+				pst.setString(campo1, rol.getNombre());
+				pst.setString(campo2, rol.getDescripcion());		
 		    	if ( pst.executeUpdate() != 1 ){
 					throw new Exception("No se ha realizado la insercion");
 				} else {		
@@ -71,7 +75,7 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETONE);
-			pst.setInt(1, id);
+			pst.setInt(campo1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
 	    		resul = mapeo(rs);
@@ -133,9 +137,9 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(1, rol.getNombre());
-				pst.setString(2, rol.getDescripcion());
-				pst.setInt(3, rol.getId());				
+				pst.setString(campo1, rol.getNombre());
+				pst.setString(campo2, rol.getDescripcion());
+				pst.setInt(campo3, rol.getId());				
 		    	if ( pst.executeUpdate() == 1 ){
 		    		resul = true;	    		
 				}
@@ -162,7 +166,7 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 		try{
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_DELETE);
-			pst.setInt(1, id);			
+			pst.setInt(campo1, id);			
 			if ( pst.executeUpdate() == 1 ){
 				resul = true;
 			}			
@@ -188,7 +192,7 @@ public class ModeloRol implements Persistable<Rol>{ //<Objeto genérico> previam
 	 * @return
 	 * @throws SQLException 
 	 */
-	private Rol mapeo (ResultSet rs) throws SQLException{
+	private Rol mapeo(ResultSet rs) throws SQLException {
 		Rol resul = null;    
 		
 		resul = new Rol( rs.getString(COL_NOMBRE) );

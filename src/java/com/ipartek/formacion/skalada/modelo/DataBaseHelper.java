@@ -86,8 +86,10 @@ public class DataBaseHelper {
 	 * Crea la Base Datos ejecutando un Script
 	 * @return {@code Boolean}
 	 */
-	void crear(){
+	public boolean crear(){
+		boolean resul = false;
 		
+		return resul;
 	}
 	
 	/**

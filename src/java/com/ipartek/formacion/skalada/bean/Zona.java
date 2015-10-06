@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zona implements Serializable{
+public class Zona implements Serializable {
 	private static final long serialVersionUID = 2585448916481098409L;
-	
+
 	/**
 	 * Atributos
 	 */
@@ -21,30 +21,29 @@ public class Zona implements Serializable{
 		super();
 		this.setId(-1);
 		this.setNombre(nombre);
-		this.setSectores(new ArrayList<Sector>());		
+		this.setSectores(new ArrayList<Sector>());
 	}
 
 	/**
 	 * Getters y Setters
 	 */
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(int id) {
+	public final void setId(int id) {
 		this.id = id;
 	}
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
-	public void setNombre(String nombre) {
+	public final void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	public List<Sector> getSectores() {
-		return sectores;
+		return this.sectores;
 	}
-	public void setSectores(List<Sector> sectores) {
+	public final void setSectores(List<Sector> sectores) {
 		this.sectores = sectores;
 	}
 
-	
 }

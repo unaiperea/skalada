@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * 		- Delete
  * 
  * @author Curso
- *
+ * @param <T> {@code <T>} Objeto genérico
  */
 public interface Persistable<T> {
-/* T es un objeto genérico. Por no poner Object y evitar el casteo.
+/* T es un objeto genérico, puede ser cualquier otra letra. Por no poner Object y evitar el casteo.
  * De esta forma donde se implemente el código de cada método sólo tendremos que decirle
  * la clase que debemos implementar en cada modelo. Ej.
  * 		public class ModeloRol implements Persistable<Usuario>
@@ -22,7 +22,7 @@ public interface Persistable<T> {
 	/**
 	 **** 		CREATE		****
 	 * Persiste el Objeto y lo guarda
-	 * @param o {@code Object} objeto a guardar
+	 * @param t {@code T} Objeto genérico a guardar
 	 * @return {@code int} Identificador del objeto guardado, -1 en caso de error
 	 */
 	int save(T t);
@@ -48,7 +48,7 @@ public interface Persistable<T> {
 	/**
 	 ****		UPDATE		****
 	 * Modificar un Objeto el cual debe tener un identificador definido
-	 * @param o {@code Object} Objeto a modificar
+	 * @param t {@code T} Objeto genérico a modificar
 	 * @return true si se modificaba bien, false en caso contrario
 	 */
 	boolean update(T t);
@@ -57,7 +57,7 @@ public interface Persistable<T> {
 	/**
 	 ****		DELETE		****
 	 * Eliminar un Objeto por su identificador
-	 * @param o {@code int} identificador del recurso a eliminar
+	 * @param id {@code int} identificador del recurso a eliminar
 	 * @return true si se elimina, false en caso contrario
 	 */
 	boolean delete(int id);

@@ -18,7 +18,13 @@
             <ul class="nav navbar-top-links navbar-right">
                 
                 <%
-                Usuario usuario = (Usuario)session.getAttribute("ss_user");
+                Usuario usuario = null;
+                //usuario = (Usuario) request.getSession().getAttribute(Constantes.KEY_SESSION_USER);
+                // o de esta manera
+                usuario = (Usuario) session.getAttribute(Constantes.KEY_SESSION_USER);
+                //En caso de que el usuario casque que al menos tenga el rol y que redirija a login
+                int rol = usuario.getRol().getId();
+                
                 %>
                 
                 <!-- Perfil del usuario -->
@@ -46,6 +52,13 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
+                
+                	<% if (rol == Constantes.ROLE_ID_ADMIN){ %>
+                		Administrador
+                	<% }else{ %>
+                		Usuario
+                	<% } %>
+                
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
