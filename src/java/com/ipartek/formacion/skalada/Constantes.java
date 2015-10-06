@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 /**
  * Clase con constantes
- * 
+ *
  * @author Curso
  *
  */
@@ -34,6 +34,7 @@ public final class Constantes {
 	public static final String VIEW_BACK_LOGIN = "backoffice/pages/login.jsp";
 	public static final String VIEW_BACK_SIGNUP = "backoffice/pages/signup.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
+	public static final String VIEW_BACK_DASHBOARD = "pages/index_back.jsp";
 
 	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
 	public static final String VIEW_BACK_VIAS_FORM = "backoffice/pages/vias/form.jsp";
@@ -79,6 +80,7 @@ public final class Constantes {
 	public static final int ACCION_LISTAR = 2;
 	public static final int ACCION_ELIMINAR = 3;
 	public static final int ACCION_NO_VALIDADOS = 4;
+	public static final int ACCION_CONECTADOS = 5;
 
 	// acciones signup
 	public static final int ACCION_CONFIRM = 1;
@@ -100,6 +102,8 @@ public final class Constantes {
 	// ROLES
 	public static final String ROLE_USER = "usuario";
 	public static final String ROLE_ADMIN = "administrador";
+	public static final int ROLE_ID_USER = 2;
+	public static final int ROLE_ID_ADMIN = 1;
 
 	// Usuarios
 	public static final int USER_VALIDATE = 1;
@@ -112,5 +116,7 @@ public final class Constantes {
 	public static final String VALIDACION = "validacion";
 	public static final String RECUPERACION = "recuperacion";
 	public static final String SERVER = "http://localhost:8080";
+
+	public static final String KEY_SESSION_USER = "ss_user";
 
 }

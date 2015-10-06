@@ -30,7 +30,6 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	// Key oara guardar el usuario en la session
-	public static final String KEY_SESSION_USER = "ss_user";
 	private static final ModeloUsuario MODELOUSUARIO = new ModeloUsuario();
 
 	private RequestDispatcher dispatcher = null;
@@ -77,7 +76,7 @@ public class LoginController extends HttpServlet {
 		// recoger la sesion
 		this.session = request.getSession(true);
 		Usuario user_session = (Usuario) this.session
-				.getAttribute(KEY_SESSION_USER);
+				.getAttribute(Constantes.KEY_SESSION_USER);
 
 		// Usuario logeado
 		if ((user_session != null) && "".equals(user_session.getNombre())) {
@@ -99,7 +98,7 @@ public class LoginController extends HttpServlet {
 						&& this.usuario.getPassword().equals(this.pPassword)) {
 					if (this.usuario.getValidado() != 0) {
 						// salvar session
-						this.session.setAttribute(KEY_SESSION_USER,
+						this.session.setAttribute(Constantes.KEY_SESSION_USER,
 								this.usuario);
 						// Ir a => index_back.jsp
 						this.dispatcher = request

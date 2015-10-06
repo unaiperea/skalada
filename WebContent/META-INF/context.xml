@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context docBase="C:/desarrollo/java/apache-tomcat-6.0.43/uploads" path="/uploads" />
+<Context> 
+
+	<Resource   name="jdbc/skaladaDB" 
+			    auth="Container" 
+				type="javax.sql.DataSource"
+				maxActive="50" 
+				maxIdle="3" 
+				maxWait="10000"
+				username="root" 
+				password="" 
+				driverClassName="com.mysql.jdbc.Driver"
+				url="jdbc:mysql://localhost:3306/eskalada"
+	/>
+	
+	
+	 
+</Context>

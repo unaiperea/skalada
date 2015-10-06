@@ -6,9 +6,13 @@
 	import="com.ipartek.formacion.skalada.controladores.LoginController"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
-	<%	
+<%	
 	Usuario usuario = null;
-	usuario = (Usuario) request.getSession().getAttribute("ss_user");
+	usuario = (Usuario) session.getAttribute(Constantes.KEY_SESSION_USER);
+	int rol = 0;
+	if (usuario!=null){
+		rol = usuario.getRol().getId();	
+	}
 	%>
 
 <!-- Navigation -->
@@ -30,8 +34,9 @@
 
 		<!-- Perfil del usuario -->
 		<li class="dropdown"><a class="dropdown-toggle"
-			data-toggle="dropdown" href="#"> ${sessionScope.ss_user.nombre} (${sessionScope.ss_user.rol.nombre})
-				<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+			data-toggle="dropdown" href="#"> ${sessionScope.ss_user.nombre}
+				(${sessionScope.ss_user.rol.nombre}) <i class="fa fa-user fa-fw"></i>
+				<i class="fa fa-caret-down"></i>
 		</a>
 			<ul class="dropdown-menu dropdown-user">
 				<li><a href="#"><i class="fa fa-user fa-fw"></i> User
@@ -58,84 +63,11 @@
 						</span>
 					</div> <!-- /input-group -->
 				</li>
-				<%
-					if (usuario.getRol().getId() == 1) {
-						out.print("<li><a href='"
-								+ Constantes.CONTROLLER_HOME
-								+ "'><i class='fa fa-globe fa-fw'></i> Web Publica</a></li><li><a href='"
-								+ Constantes.ROOT_APP + Constantes.VIEW_BACK_INDEX
-								+ "'><i class='fa fa-dashboard fa-fw'></i> Dashboard</a></li><li><a href='"
-								+ Constantes.CONTROLLER_VIAS
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-map-signs fa-fw'></i> Vias</a></li><li><a href='"
-								+ Constantes.CONTROLLER_GRADOS
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-graduation-cap fa-fw'></i> Grados</a></li><li><a href='"
-								+ Constantes.CONTROLLER_TIPO_ESCALADA
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-bar-chart-o fa-fw'></i> Tipos Escalada</a></li><li><a href='"
-								+ Constantes.CONTROLLER_ZONAS
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-globe fa-fw'></i> Zonas</a></li><li><a href='"
-								+ Constantes.CONTROLLER_SECTORES
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-map-o fa-fw'></i> Sectores</a></li><li><a href='"
-								+ Constantes.CONTROLLER_USUARIOS
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-users fa-fw'></i> Usuarios</a></li><li><a href='"
-								+ Constantes.CONTROLLER_ROLES + "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-cogs fa-fw'></i> Roles</a></li>");
-					} else {
-						out.print("<li><a href='"
-								+ Constantes.CONTROLLER_HOME
-								+ "'><i class='fa fa-globe fa-fw'></i> Web Publica</a></li><li><a href='"
-								+ Constantes.VIEW_BACK_INDEX
-								+ "'><i class='fa fa-dashboard fa-fw'></i> Dashboard</a></li><li><a href='"
-								+ Constantes.CONTROLLER_VIAS
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-map-signs fa-fw'></i> Vias</a></li><li><a href='"
-								+ Constantes.CONTROLLER_SECTORES
-								+ "?accion="
-								+ Constantes.ACCION_LISTAR
-								+ "'><i class='fa fa-map-o fa-fw'></i> Sectores</a></li>");
-					}
-				%>
-
-
-				<%-- 				<li><a href="<%=Constantes.CONTROLLER_HOME%>"><i --%>
-				<!-- 						class="fa fa-globe fa-fw"></i> Web Publica</a></li> -->
-				<%-- 				<li><a href="<%=Constantes.VIEW_BACK_INDEX%>"><i --%>
-				<!-- 						class="fa fa-dashboard fa-fw"></i> Dashboard</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_VIAS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-map-signs fa-fw"></i> Vias</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_GRADOS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-graduation-cap fa-fw"></i> Grados</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_TIPO_ESCALADA%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-bar-chart-o fa-fw"></i> Tipos Escalada</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_ZONAS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-picture-o fa-fw"></i> Zonas</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_SECTORES%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-picture-o fa-fw"></i> Sectores</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_USUARIOS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-picture-o fa-fw"></i> Usuarios</a></li> -->
-				<!-- 				<li><a -->
-				<%-- 					href="<%=Constantes.CONTROLLER_ROLES%>?accion=<%=Constantes.ACCION_LISTAR%>"><i --%>
-				<!-- 						class="fa fa-picture-o fa-fw"></i> Roles</a></li> -->
-
+				<%	if (rol == Constantes.ROLE_ID_ADMIN) {	%>
+				<jsp:include page="nav-admin.jsp"></jsp:include>
+				<%	} else { %>
+				<jsp:include page="nav-user.jsp"></jsp:include>
+				<%} %>
 			</ul>
 		</div>
 		<!-- /.sidebar-collapse -->
