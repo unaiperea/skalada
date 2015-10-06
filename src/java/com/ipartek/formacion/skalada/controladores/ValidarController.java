@@ -8,18 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 
 /**
  * Servlet implementation class ValidarController
+ * @author Curso
  */
 public class ValidarController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private ModeloUsuario modeloUsuario = null;
-       
-    /**
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public ValidarController() {
@@ -27,10 +25,10 @@ public class ValidarController extends HttpServlet {
         super();
     }
     
-    @Override
+    @Override()
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	modeloUsuario = new ModeloUsuario();
+    	new ModeloUsuario();
     }
 
 	/**

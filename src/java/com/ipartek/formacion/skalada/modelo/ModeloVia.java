@@ -22,14 +22,6 @@ import com.ipartek.formacion.skalada.bean.Zona;
  */
 public class ModeloVia implements Persistable {
 	
-	private static final String TABLA_VIA = "via";
-	private static final String TABLA_GRADO = "grado";
-	private static final String TABLA_TIPO_ESCALADA = "tipo_escalada";
-	private static final String TABLA_ZONA = "zona";
-	private static final String TABLA_SECTOR = "sector";
-	
-	
-	
 	
 	private static final String SQL_INSERT = "";
 	
@@ -56,7 +48,7 @@ public class ModeloVia implements Persistable {
 	private static final String SQL_DELETE = "";
 	
 
-	@Override
+	@Override()
 	public int save(Object o) {
 		int resul = -1;
 		Via v = null;	
@@ -98,7 +90,7 @@ public class ModeloVia implements Persistable {
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public Object getById(int id) {
 		Object resul = null;
 		PreparedStatement pst = null;
@@ -109,7 +101,7 @@ public class ModeloVia implements Persistable {
 			pst.setInt(1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
-	    		resul = mapeo(rs);
+	    		resul = this.mapeo(rs);
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -129,7 +121,7 @@ public class ModeloVia implements Persistable {
 		return resul;		
 	}
 
-	@Override
+	@Override()
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
 		PreparedStatement pst = null;
@@ -139,7 +131,7 @@ public class ModeloVia implements Persistable {
 			pst = con.prepareStatement(SQL_GETALL);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
+	    		resul.add(this.mapeo(rs));
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -159,7 +151,7 @@ public class ModeloVia implements Persistable {
 		return resul;				
 	}
 
-	@Override
+	@Override()
 	public boolean update(Object o) {
 		boolean resul = false;
 		Via v = null;
@@ -191,7 +183,7 @@ public class ModeloVia implements Persistable {
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;

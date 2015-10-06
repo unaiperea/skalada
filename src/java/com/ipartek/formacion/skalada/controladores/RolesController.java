@@ -16,6 +16,7 @@ import com.ipartek.formacion.skalada.modelo.ModeloRol;
 
 /**
  * Servlet implementation class RolesController
+ * @author Curso
  */
 public class RolesController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,10 +36,10 @@ public class RolesController extends HttpServlet {
      * Este metodo se ejecuta solo la primera vez que se llama al servlet
      * Se usa para crear el modelo
      */
-    @Override
+    @Override()
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	modelo = new ModeloRol();   	
+    	this.modelo = new ModeloRol();   	
     }
 
 	/**
@@ -46,33 +47,33 @@ public class RolesController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//recoger parametros
-		getParameters(request,response);
+		this.getParameters(request, response);
 		
 		//realizar accion solicitada
-		switch (pAccion) {
+		switch (this.pAccion) {
 		case Constantes.ACCION_NUEVO:
-			nuevo(request,response);
+			this.nuevo(request, response);
 			break;
 		case Constantes.ACCION_DETALLE:
-			detalle(request,response);
+			this.detalle(request, response);
 			break;
 		case Constantes.ACCION_ELIMINAR:
-			eliminar(request,response);
+			this.eliminar(request, response);
 			break;
 		default:
-			listar(request,response);
+			this.listar(request, response);
 			break;
 		}
 			
-		dispatcher.forward(request, response);
+		this.dispatcher.forward(request, response);
 	}
 		
 	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
-			pAccion = Integer.parseInt(request.getParameter("accion"));		
+			this.pAccion = Integer.parseInt(request.getParameter("accion"));		
 			if(request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))){
-				pID = Integer.parseInt(request.getParameter("id"));
+				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
 		} catch(Exception e){
 			e.printStackTrace();
@@ -86,34 +87,34 @@ public class RolesController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("roles", modelo.getAll());
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_INDEX);		
+		request.setAttribute("roles", this.modelo.getAll());
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_INDEX);		
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		if(modelo.delete(pID)){
+		if(this.modelo.delete(this.pID)){
 			request.setAttribute("msg-danger", "Registro eliminado correctamente");
 		} else {
-			request.setAttribute("msg-warning", "Error al eliminar el registro [id(" + pID + ")]");
+			request.setAttribute("msg-warning", "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
-		listar(request, response);
+		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		rol = new Rol("");
-		request.setAttribute("rol", rol);
+		this.rol = new Rol("");
+		request.setAttribute("rol", this.rol);
 		request.setAttribute("titulo", "Crear nuevo Rol");
 		request.setAttribute("metodo", "Guardar");
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);
 		
 	}
 	
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
-		rol = (Rol)modelo.getById(pID);
-		request.setAttribute("rol", rol);
-		request.setAttribute("titulo", rol.getNombre().toUpperCase());
+		this.rol = (Rol)this.modelo.getById(this.pID);
+		request.setAttribute("rol", this.rol);
+		request.setAttribute("titulo", this.rol.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
-		dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);		
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);		
 	}
 
 	/**
@@ -121,29 +122,29 @@ public class RolesController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//recoger parametros del formulario
-		getParametersForm(request);
+		this.getParametersForm(request);
 		
 		//Crear Objeto Grado
-		crearObjeto();
+		this.crearObjeto();
 		
 		//Guardar/Modificar Objeto Via
-		if (pID == -1){
-			if( modelo.save(rol) != -1){	
+		if (this.pID == -1){
+			if( this.modelo.save(this.rol) != -1){	
 				request.setAttribute("msg-success", "Registro creado con exito");
 			} else {
 				request.setAttribute("msg-danger", "Error al guardar el nuevo registro");
 			}
 		} else {
-			if(modelo.update(rol)){
-				request.setAttribute("msg-success", "Modificado correctamente el registro [id(" + pID + ")]");
+			if(this.modelo.update(this.rol)){
+				request.setAttribute("msg-success", "Modificado correctamente el registro [id(" + this.pID + ")]");
 			} else {
-				request.setAttribute("msg-danger", "Error al modificar el registro [id(" + pID + ")]");
+				request.setAttribute("msg-danger", "Error al modificar el registro [id(" + this.pID + ")]");
 			}
 		}
 		
-		listar(request,response);
+		this.listar(request,response);
 		
-		dispatcher.forward(request, response);
+		this.dispatcher.forward(request, response);
 		
 	}
 	
@@ -151,9 +152,9 @@ public class RolesController extends HttpServlet {
 	 * Crea un Objeto {@code Grado} Con los parametros recibidos
 	 */
 	private void crearObjeto() {
-		rol = new Rol(pNombre);
-		rol.setId(pID);
-		rol.setDescripcion(pDescripcion);
+		this.rol = new Rol(this.pNombre);
+		this.rol.setId(this.pID);
+		this.rol.setDescripcion(this.pDescripcion);
 	}
 
 
@@ -165,9 +166,9 @@ public class RolesController extends HttpServlet {
 	*/
 	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
-		pID = Integer.parseInt(request.getParameter("id"));
-		pNombre = request.getParameter("nombre");	
-		pDescripcion = request.getParameter("desc");
+		this.pID = Integer.parseInt(request.getParameter("id"));
+		this.pNombre = request.getParameter("nombre");	
+		this.pDescripcion = request.getParameter("desc");
 	}
 
 

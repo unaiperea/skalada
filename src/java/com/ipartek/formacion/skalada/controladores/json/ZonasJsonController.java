@@ -16,43 +16,44 @@ import com.ipartek.formacion.skalada.modelo.ModeloSector;
 
 /**
  * Servlet implementation class ZonasJsonController
+ * 
+ * @author Curso
  */
 public class ZonasJsonController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-       
-	private static ModeloSector modeloSectores = null;
-   	
-	@Override
-	public void init(ServletConfig config) throws ServletException {		
+
+	private ModeloSector modeloSectores = null;
+
+	@Override()
+	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		modeloSectores = new ModeloSector();
+		this.modeloSectores = new ModeloSector();
 	}
-	
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
-
-		//recoger parametros
+		// recoger parametros
 		int id_zona = Integer.parseInt(request.getParameter("id_zona"));
-		
-		//llamar al modelo
-		ArrayList<Sector> sectores = modeloSectores.getAllByZona(id_zona);
-		
-		
-		//responder
-		response.setContentType("application/json");		
+
+		// llamar al modelo
+		ArrayList<Sector> sectores = this.modeloSectores.getAllByZona(id_zona);
+
+		// responder
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
-		PrintWriter out = response.getWriter();		
-		String jsonReponse = new Gson().toJson(sectores);		
+
+		PrintWriter out = response.getWriter();
+		String jsonReponse = new Gson().toJson(sectores);
 		out.print(jsonReponse);
 		out.flush();
-		
-		
-		
+
 	}
 
 }

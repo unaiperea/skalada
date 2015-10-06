@@ -9,32 +9,30 @@ import org.junit.Test;
 
 public class TestModeloVia {
 	
-	private static final String LOREM_IPSUM_1 = "Bacon ipsum dolor amet jowl meatloaf tenderloin beef ribs turducken pork belly boudin meatball picanha. Prosciutto frankfurter picanha, boudin ham capicola turkey shankle landjaeger salami bresaola pork biltong strip steak. Bresaola pastrami doner, short loin pig boudin alcatra swine rump short ribs hamburger bacon ham hock porchetta ribeye. Pork belly turkey ball tip ribeye spare ribs, sausage biltong cupim.";
-	
-	static ModeloVia modelo = null;
+	private static ModeloVia modelo = null;
 
-	@BeforeClass
+	@BeforeClass()
 	public static void setUpBeforeClass() throws Exception {
 			
 		modelo = new ModeloVia();
 			
 	}
 
-	@AfterClass
+	@AfterClass()
 	public static void tearDownAfterClass() throws Exception {
 		modelo = null;
 	}
 
-	@Before
+	@Before()
 	public void setUp() throws Exception {
 	}
 
-	@After
+	@After()
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	@Ignore
+	@Test()
+	@Ignore()
 	public void test() {
 		
 

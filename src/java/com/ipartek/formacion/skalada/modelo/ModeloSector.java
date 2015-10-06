@@ -34,7 +34,7 @@ public class ModeloSector implements Persistable{
 	
 	private static final String SQL_SECTORES_PUBLICADOS = "SELECT COUNT(`id`) as `sectores` FROM `SECTOR`;";
 	
-	@Override
+	@Override()
 	public int save(Object o) {
 		int resul = -1;
 		Sector g = null;	
@@ -78,7 +78,7 @@ public class ModeloSector implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public Object getById(int id) {
 		Object resul = null;
 		PreparedStatement pst = null;
@@ -89,7 +89,7 @@ public class ModeloSector implements Persistable{
 			pst.setInt(1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
-	    		resul = mapeo(rs);
+	    		resul = this.mapeo(rs);
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -109,7 +109,7 @@ public class ModeloSector implements Persistable{
 		return resul;		
 	}
 
-	@Override
+	@Override()
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
 		PreparedStatement pst = null;
@@ -119,7 +119,7 @@ public class ModeloSector implements Persistable{
 			pst = con.prepareStatement(SQL_GETALL);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
+	    		resul.add(this.mapeo(rs));
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -139,7 +139,7 @@ public class ModeloSector implements Persistable{
 		return resul;				
 	}
 
-	@Override
+	@Override()
 	public boolean update(Object o) {
 		boolean resul = false;
 		Sector s = null;
@@ -173,7 +173,7 @@ public class ModeloSector implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;

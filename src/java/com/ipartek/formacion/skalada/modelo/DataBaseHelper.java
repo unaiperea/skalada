@@ -26,7 +26,7 @@ public class DataBaseHelper {
 	 * Metodo para realizar la conexion
 	 * implementa un patron singleton (solo existira un unico objeto)
 	 * @return {@code Connection} la conexion abierta
-	 * @throws Exception
+	 * @throws Exception Excepcion
 	 */
 	public static Connection getConnection() throws Exception{		
 		if ( con == null ){
@@ -57,7 +57,6 @@ public class DataBaseHelper {
 	
 	/**
 	 * Crea la Base Datos ejecutando un Script
-	 * @return {@code Boolean}
 	 */
 	void crear(){
 		

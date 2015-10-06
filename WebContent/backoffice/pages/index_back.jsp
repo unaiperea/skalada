@@ -89,8 +89,9 @@ ModeloUsuario modeloUsuario = new ModeloUsuario();
 	                            </div>
 	                        </div>
 	                    </div>
-	                </div>
-				</a>
+	                </a>
+	            </div>
+				
             </div>
             <!-- /.row -->
         </div>

@@ -1,9 +1,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
+<%@page errorPage = "../error.jsp" %>
 
 <%@page import="com.ipartek.formacion.skalada.controladores.LoginController"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
 
 <!DOCTYPE html>
 <html lang="es">

@@ -22,14 +22,14 @@ public class ModeloUsuario implements Persistable{
 	private static final String SQL_GETONE  = SQL_GETALL + " WHERE u.`id`= ?;";
 	private static final String SQL_UPDATE = "UPDATE `usuario` SET `email`= ?, `nombre`= ?, `password`= ?, `validado`= ?, `id_rol`= ?, `token`=? WHERE `id`= ?;";
 	
-	private static final String SQL_CHECK_USER  = "SELECT * FROM `usuario` WHERE `nombre` = ? OR `email` = ?;";
+	private static final String SQL_CHECK_USER  = "SELECT `id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token` FROM `usuario` WHERE `nombre` = ? OR `email` = ?;";
 	private static final String SQL_CHECK_EMAIL = "SELECT id, validado FROM `usuario` WHERE `email` like ?;";
 	private static final String SQL_VALIDATE = "UPDATE `usuario` SET `validado`= ? WHERE `id`= ?;";
 	private static final String SQL_RESET_PASS = "UPDATE `usuario` SET `password`= ? WHERE `email`= ?;";
 	private static final String SQL_GET_BY_EMAIL = SQL_GETALL + " WHERE u.`EMAIL` LIKE ?;";
 	private static final String SQL_USUARIOS_NO_VALIDADOS = "SELECT COUNT(`id`) AS `noValidados` FROM `usuario` WHERE `validado`=0;";
 	
-	@Override
+	@Override()
 	public int save(Object o) {
 		int resul = -1;
 		Usuario usuario = null;	
@@ -75,7 +75,7 @@ public class ModeloUsuario implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public Object getById(int id) {
 		Object resul = null;
 		PreparedStatement pst = null;
@@ -86,7 +86,7 @@ public class ModeloUsuario implements Persistable{
 			pst.setInt(1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
-	    		resul = mapeo(rs);
+	    		resul = this.mapeo(rs);
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class ModeloUsuario implements Persistable{
 			pst.setString(1, email);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
-	    		resul = mapeo(rs);
+	    		resul = this.mapeo(rs);
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -136,7 +136,7 @@ public class ModeloUsuario implements Persistable{
 		return resul;		
 	}
 
-	@Override
+	@Override()
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
 		PreparedStatement pst = null;
@@ -146,7 +146,7 @@ public class ModeloUsuario implements Persistable{
 			pst = con.prepareStatement(SQL_GETALL);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
+	    		resul.add(this.mapeo(rs));
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -175,7 +175,7 @@ public class ModeloUsuario implements Persistable{
 			pst = con.prepareStatement(SQL_GETNOVALIDADOS);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
+	    		resul.add(this.mapeo(rs));
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -195,7 +195,7 @@ public class ModeloUsuario implements Persistable{
 		return resul;				
 	}
 
-	@Override
+	@Override()
 	public boolean update(Object o) {
 		boolean resul = false;
 		Usuario usuario = null;
@@ -232,7 +232,7 @@ public class ModeloUsuario implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;

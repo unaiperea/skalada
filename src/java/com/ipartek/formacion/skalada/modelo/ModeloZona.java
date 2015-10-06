@@ -17,11 +17,11 @@ public class ModeloZona implements Persistable{
 	
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`) VALUES (?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT * FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT * FROM " + TABLA;
+	private static final String SQL_GETONE = "SELECT `id`, `nombre` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre` FROM " + TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
-	@Override
+	@Override()
 	public int save(Object o) {
 		int resul = -1;
 		Zona z = null;	
@@ -63,7 +63,7 @@ public class ModeloZona implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public Object getById(int id) {
 		Object resul = null;
 		PreparedStatement pst = null;
@@ -74,7 +74,7 @@ public class ModeloZona implements Persistable{
 			pst.setInt(1, id);
 	    	rs = pst.executeQuery();	      	   	
 	    	while(rs.next()){
-	    		resul = mapeo(rs);
+	    		resul = this.mapeo(rs);
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -94,7 +94,7 @@ public class ModeloZona implements Persistable{
 		return resul;		
 	}
 
-	@Override
+	@Override()
 	public ArrayList<Object> getAll() {
 		ArrayList<Object> resul = new ArrayList<Object>();
 		PreparedStatement pst = null;
@@ -104,7 +104,7 @@ public class ModeloZona implements Persistable{
 			pst = con.prepareStatement(SQL_GETALL);
 	    	rs = pst.executeQuery();   	   	
 	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
+	    		resul.add(this.mapeo(rs));
 	    	}	
 		} catch (Exception e){
 			e.printStackTrace();
@@ -124,7 +124,7 @@ public class ModeloZona implements Persistable{
 		return resul;				
 	}
 
-	@Override
+	@Override()
 	public boolean update(Object o) {
 		boolean resul = false;
 		Zona z = null;
@@ -156,7 +156,7 @@ public class ModeloZona implements Persistable{
 		return resul;
 	}
 
-	@Override
+	@Override()
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;

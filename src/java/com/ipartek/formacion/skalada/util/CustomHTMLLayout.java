@@ -13,6 +13,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * HTMLLayout formatter and replaces the default timestamp (milliseconds,
  * relative to the start of the log) with a more readable timestamp (an example
  * of the default format is 2008-11-21-18:35:21.472-0800).
+ * @author Curso
  * */
 
 public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
@@ -20,7 +21,7 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 	// RegEx pattern looks for <tr> <td> nnn...nnn </td> (all whitespace
 	// ignored)
 
-	private static final String rxTimestamp = "\\s*<\\s*tr\\s*>\\s*<\\s*td\\s*>\\s*(\\d*)\\s*<\\s*/td\\s*>";
+	private static final String RXTIMESTAMP = "\\s*<\\s*tr\\s*>\\s*<\\s*td\\s*>\\s*(\\d*)\\s*<\\s*/td\\s*>";
 
 	/*
 	 * The timestamp format. The format can be overriden by including the
@@ -34,13 +35,16 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 	private String timestampFormat = "yyyy-MM-dd HH:mm:ss"; // Default
 	// 2008-11-21-18:35:21.472-0800
 
-	private SimpleDateFormat sdf = new SimpleDateFormat(timestampFormat);
+	private SimpleDateFormat sdf = new SimpleDateFormat(this.timestampFormat);
 
+	/**
+	 * Constructor
+	 */
 	public CustomHTMLLayout() {
 		super();
 	}
 
-	@Override
+	@Override()
 	public String getHeader() {
 		StringBuffer sbuf = new StringBuffer();
 		sbuf.append("<head>" + Layout.LINE_SEP);
@@ -67,12 +71,15 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 	}
 
 	/** Override HTMLLayout's format() method */
+	/**
+	 * @param event Evento
+	 */
 
 	public String format(LoggingEvent event) {
 		String record = super.format(event); // Get the log record in the
 												// default HTMLLayout format.
 
-		Pattern pattern = Pattern.compile(rxTimestamp); // RegEx to find the
+		Pattern pattern = Pattern.compile(RXTIMESTAMP); // RegEx to find the
 														// default timestamp
 		Matcher matcher = pattern.matcher(record);
 
@@ -85,13 +92,13 @@ public class CustomHTMLLayout extends org.apache.log4j.HTMLLayout {
 
 		buffer.replace(matcher.start(1), // Replace the default timestamp with
 											// one formatted as desired.
-		matcher.end(1), sdf.format(new Date(event.timeStamp)));
+		matcher.end(1), this.sdf.format(new Date(event.timeStamp)));
 
 		return buffer.toString(); // Return the log record with the desired
 									// timestamp format.
 	}
 
-	@Override
+	@Override()
 	public String getFooter() {
 		StringBuffer sbuf = new StringBuffer();
 		//librerias JavaScript

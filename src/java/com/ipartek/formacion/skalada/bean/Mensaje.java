@@ -27,7 +27,7 @@ public class Mensaje {
 	}
 
 	public String getTipo() {
-		return tipo;
+		return this.tipo;
 	}
 
 	public void setTipo(String tipo) {
@@ -35,16 +35,16 @@ public class Mensaje {
 	}
 
 	public String getTexto() {
-		return texto;
+		return this.texto;
 	}
 
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
 
-	@Override
+	@Override()
 	public String toString() {
-		return "Mensaje [tipo=" + tipo + ", texto=" + texto + "]";
+		return "Mensaje [tipo=" + this.tipo + ", texto=" + this.texto + "]";
 	}
 	
 	

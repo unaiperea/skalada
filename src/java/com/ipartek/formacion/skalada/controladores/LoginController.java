@@ -22,124 +22,141 @@ import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 
 /**
  * Servlet implementation class LoginController
+ * 
+ * @author Curso
  */
 public class LoginController extends HttpServlet {
-	
-	private static final Logger log = Logger.getLogger(LoginController.class);
-	
+
+	private static final Logger LOG = Logger.getLogger(LoginController.class);
+
 	private static final long serialVersionUID = 1L;
-	
-	//Key oara guardar el usuario en la session
+
+	// Key oara guardar el usuario en la session
 	public static final String KEY_SESSION_USER = "ss_user";
-	private static final ModeloUsuario modeloUsuario = new ModeloUsuario();
-       
+	private static final ModeloUsuario MODELOUSUARIO = new ModeloUsuario();
+
 	private RequestDispatcher dispatcher = null;
 	private HttpSession session = null;
-	
+
 	private String pEmail = "";
 	private String pPassword = "";
-	
+
 	private Usuario usuario = null;
 	private Mensaje msg = null;
-	
-
-		
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginController() {
-        super();
-    }
-    
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-    	super.init(config);
-    	try {
-			//Fichero configuracion de Log4j
-			Properties props = new Properties();		
-			props.load( getClass().getResourceAsStream("/log4j.properties"));
-			PropertyConfigurator.configure(props);
-			
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}		
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+	public LoginController() {
+		super();
+	}
+
+	@Override()
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		try {
+			// Fichero configuracion de Log4j
+			Properties props = new Properties();
+			props.load(this.getClass().getResourceAsStream("/log4j.properties"));
+			PropertyConfigurator.configure(props);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		this.doPost(request, response);
+	}
 
-		log.info("Entrando....");
-		
-		//recoger la sesion
-		session = request.getSession(true);
-		Usuario user_session = (Usuario)session.getAttribute(KEY_SESSION_USER);
-		
-		//Usuario logeado
-		if ( user_session != null && "".equals(user_session.getNombre()) ){		
-			//Ir a => index_back.jsp		
-			dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
-			
-		//Usuario No logeado o caducada session
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		LOG.info("Entrando....");
+
+		// recoger la sesion
+		this.session = request.getSession(true);
+		Usuario user_session = (Usuario) this.session
+				.getAttribute(KEY_SESSION_USER);
+
+		// Usuario logeado
+		if ((user_session != null) && "".equals(user_session.getNombre())) {
+			// Ir a => index_back.jsp
+			this.dispatcher = request
+					.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+
+			// Usuario No logeado o caducada session
 		} else {
-			//recoger parametros del formulario
-			getParameters(request);
-					
-			//validar los datos
-			//comprobamos con la BBDD
-			
-			usuario = (Usuario) modeloUsuario.getByEmail(pEmail);
-			if (usuario !=null){
-				if(usuario.getEmail().equals(pEmail)&&usuario.getPassword().equals(pPassword)){
-					if (usuario.getValidado()!=0){
-					//salvar session
-					session.setAttribute(KEY_SESSION_USER, usuario );
-					//Ir a => index_back.jsp		
-					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
-					}else{
-						msg = new Mensaje(Mensaje.MSG_WARNING, "El usuario no ha sido validado todavia, por favor revise su correo electronico");
-						dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+			// recoger parametros del formulario
+			this.getParameters(request);
+
+			// validar los datos
+			// comprobamos con la BBDD
+
+			this.usuario = (Usuario) MODELOUSUARIO.getByEmail(this.pEmail);
+			if (this.usuario != null) {
+				if (this.usuario.getEmail().equals(this.pEmail)
+						&& this.usuario.getPassword().equals(this.pPassword)) {
+					if (this.usuario.getValidado() != 0) {
+						// salvar session
+						this.session.setAttribute(KEY_SESSION_USER,
+								this.usuario);
+						// Ir a => index_back.jsp
+						this.dispatcher = request
+								.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+					} else {
+						this.msg = new Mensaje(
+								Mensaje.MSG_WARNING,
+								"El usuario no ha sido validado todavia, por favor revise su correo electronico");
+						this.dispatcher = request
+								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 					}
 				} else {
-					//Ir a => login.jsp
-					msg = new Mensaje(Mensaje.MSG_WARNING, "El email o la contraseña proporcionados no son validos.");
-					dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+					// Ir a => login.jsp
+					this.msg = new Mensaje(Mensaje.MSG_WARNING,
+							"El email o la contraseña proporcionados no son validos.");
+					this.dispatcher = request
+							.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
 				}
-			}else{
-				msg = new Mensaje(Mensaje.MSG_WARNING, "El usuario no existe, si lo desea registrese.");
-				dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+			} else {
+				this.msg = new Mensaje(Mensaje.MSG_WARNING,
+						"El usuario no existe, si lo desea registrese.");
+				this.dispatcher = request
+						.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
 			}
-			
+
 		}
-		
-		log.info("Saliendo...");
-		
-		request.setAttribute("msg", msg);		
-		dispatcher.forward(request, response);
-		
+
+		LOG.info("Saliendo...");
+
+		request.setAttribute("msg", this.msg);
+		this.dispatcher.forward(request, response);
+
 	}
-	
+
 	/**
-	* Recoger los parametros enviados
-	* @param request
-	 * @throws UnsupportedEncodingException 
-	*/
-	private void getParameters(HttpServletRequest request) throws UnsupportedEncodingException {
+	 * Recoger los parametros enviados
+	 * 
+	 * @param request
+	 * @throws UnsupportedEncodingException
+	 */
+	private void getParameters(HttpServletRequest request)
+			throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
-		pEmail = request.getParameter("email");
-		pPassword = request.getParameter("password");
-		
+		this.pEmail = request.getParameter("email");
+		this.pPassword = request.getParameter("password");
+
 	}
-	
+
 }
-
-
-

@@ -79,6 +79,7 @@
 	           		<label for="password">Contraseña</label>
 	           		<input type="password" required class="form-control" name="password" value="<%=usuario.getPassword()%>">
 	          	</div>
+	        </div>
 	        
 
 			

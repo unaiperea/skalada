@@ -33,8 +33,9 @@ public class SendMail {
 				"javax.net.ssl.SSLSocketFactory");
 		this.props.put("mail.smtp.auth", "true");
 		this.props.put("mail.smtp.port", "465");
-		session = Session.getDefaultInstance(this.props,
+		this.session = Session.getDefaultInstance(this.props,
 				new javax.mail.Authenticator() {
+					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(
 								"skalada.ipartek@gmail.com", "123ABC123");
@@ -44,7 +45,13 @@ public class SendMail {
 	}
 
 	/**
-	 * @param props
+	 *
+	 * @param destinatario
+	 *            Destinatario
+	 * @param asunto
+	 *            asunto
+	 * @param Mensaje
+	 *            mensaje
 	 */
 	public SendMail(String destinatario, String asunto, String Mensaje) {
 		super();
@@ -54,8 +61,9 @@ public class SendMail {
 				"javax.net.ssl.SSLSocketFactory");
 		this.props.put("mail.smtp.auth", "true");
 		this.props.put("mail.smtp.port", "465");
-		session = Session.getDefaultInstance(this.props,
+		this.session = Session.getDefaultInstance(this.props,
 				new javax.mail.Authenticator() {
+					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(
 								"skalada.ipartek@gmail.com", "123ABC123");
@@ -64,14 +72,14 @@ public class SendMail {
 
 		this.setAsunto(asunto);
 		this.setDestinatario(destinatario);
-		this.setMensaje(mensaje);
+		this.setMensaje(this.mensaje);
 	}
 
 	/**
 	 * @return the props
 	 */
 	public Properties getProps() {
-		return props;
+		return this.props;
 	}
 
 	/**
@@ -86,14 +94,14 @@ public class SendMail {
 	 * @return the mensaje
 	 */
 	public String getMensaje() {
-		return mensaje;
+		return this.mensaje;
 	}
 
 	/**
 	 * @param mensaje
 	 *            the mensaje to set
 	 */
-	public void setMensaje(String mensaje) {
+	public final void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
 
@@ -101,14 +109,14 @@ public class SendMail {
 	 * @return the asunto
 	 */
 	public String getAsunto() {
-		return asunto;
+		return this.asunto;
 	}
 
 	/**
 	 * @param asunto
 	 *            the asunto to set
 	 */
-	public void setAsunto(String asunto) {
+	public final void setAsunto(String asunto) {
 		this.asunto = asunto;
 	}
 
@@ -116,33 +124,33 @@ public class SendMail {
 	 * @return the destinatario
 	 */
 	public String getDestinatario() {
-		return destinatario;
+		return this.destinatario;
 	}
 
 	/**
 	 * @param destinatario
 	 *            the destinatario to set
 	 */
-	public void setDestinatario(String destinatario) {
+	public final void setDestinatario(String destinatario) {
 		this.destinatario = destinatario;
 	}
 
 	public String getEmisor() {
-		return emisor;
+		return this.emisor;
 	}
 
 	public void setEmisor(String emisor) {
 		this.emisor = emisor;
 	}
 
-	public boolean enviarMail() {
+	public boolean enviarMail() throws Exception {
 		boolean resul = false;
 		try {
 
 			if (this.mensaje == null) {
 
 			}
-			Message message = new MimeMessage(session);
+			Message message = new MimeMessage(this.session);
 			message.setFrom(new InternetAddress(this.getEmisor()));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(this.getDestinatario()));
@@ -150,26 +158,27 @@ public class SendMail {
 			message.setContent(this.getMensaje(), "text/html");
 
 			Transport.send(message);
-			resul=true;
+			resul = true;
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e);
 		}
 		return resul;
 	}
 
-	public String generarPlantilla(String plantilla, HashMap<String,String> parametros)
-			throws IOException {
+	public String generarPlantilla(String plantilla,
+			HashMap<String, String> parametros) throws IOException {
 		String resul = "";
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		resul = (IOUtils.toString(classLoader
-				.getResourceAsStream(plantilla),"UTF-8"));
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		resul = (IOUtils.toString(classLoader.getResourceAsStream(plantilla),
+				"UTF-8"));
 
-		Iterator<Map.Entry<String, String>> it = parametros.entrySet().iterator();
+		Iterator<Map.Entry<String, String>> it = parametros.entrySet()
+				.iterator();
 		while (it.hasNext()) {
-			Map.Entry<String,String> e = (Map.Entry<String,String>)it.next();
+			Map.Entry<String, String> e = it.next();
 			resul = resul.replace(e.getKey(), e.getValue());
-		
+
 		}
 		return resul;
 	}

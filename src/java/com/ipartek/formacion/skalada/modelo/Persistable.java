@@ -49,7 +49,7 @@ public interface Persistable {
 	/**
 	 ****		DELETE		****
 	 * Eliminar un Objeto por su identificador
-	 * @param o {@code int} identificador del recurso a eliminar
+	 * @param id {@code int} identificador del recurso a eliminar
 	 * @return true si se elimina, false en caso contrario
 	 */
 	boolean delete(int id);
