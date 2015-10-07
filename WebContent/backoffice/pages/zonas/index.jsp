@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
@@ -68,6 +69,10 @@
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
+	                <th>Creador</th>
+	                <th>Creado el</th>
+	                <th>Modificado el</th>
+	                <th>Publicado</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -87,6 +92,20 @@
 		                		<%=z.getNombre()%>
 		                	</a>
 		                </td>
+		                <td><%=z.getCreador().getNombre() %></td>
+		                <%
+		                	String fechaCreado = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(z.getFechaCreado());
+		                	String fechaModificado = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(z.getFechaModificado());
+		                %>
+		                <td><%=fechaCreado %></td>
+		                <td><%=fechaModificado %></td>
+		                <%
+		                String checked = "";
+		                if (z.isPublicado()){
+		                	checked="checked";
+		                }
+		                %>
+		                <td class="center-text"><input type="checkbox" disabled <%=checked%>></td>
 		            </tr>	            
 	           <%
 	           		} //end for

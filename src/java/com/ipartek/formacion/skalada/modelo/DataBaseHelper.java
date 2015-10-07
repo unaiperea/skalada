@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 /**
  * Clase especializada en trabajar con la Base Datos La usaran los DAOs para
  * abrir y cerrar conexiones
- * 
+ *
  * @author Curso
  *
  */
@@ -28,7 +28,7 @@ public class DataBaseHelper {
 	/**
 	 * Metodo para realizar la conexion implementa un patron singleton (solo
 	 * existira un unico objeto)
-	 * 
+	 *
 	 * @return {@code Connection} la conexion abierta
 	 * @throws Exception
 	 */
@@ -36,8 +36,8 @@ public class DataBaseHelper {
 
 		/*
 		 * Conexion usando DriverManager
-		 * 
-		 * 
+		 *
+		 *
 		 * if ( con == null ){ Class.forName(DRIVER); con =
 		 * DriverManager.getConnection ("jdbc:mysql://" + SERVER + "/" +
 		 * DATA_BASE, USER, PASS); } return con;
@@ -63,14 +63,16 @@ public class DataBaseHelper {
 	/**
 	 * Metodo para cerrar la conexion. Cuidado porque al cerrar una conexion con
 	 * el metodo .close() no la pone a null
-	 * 
+	 *
 	 * @return
 	 */
 	public static boolean closeConnection() {
 		boolean resul = false;
 		try {
-			con.close();
-			con = null;
+			if (con != null) {
+				con.close();
+				con = null;
+			}
 			resul = true;
 		} catch (SQLException e) {
 			con = null;
@@ -82,7 +84,7 @@ public class DataBaseHelper {
 
 	/**
 	 * Crea la Base Datos ejecutando un Script
-	 * 
+	 *
 	 * @return {@code Boolean}
 	 */
 	void crear() {

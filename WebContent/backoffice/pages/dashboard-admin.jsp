@@ -11,6 +11,7 @@
 	</div>
 	<!-- /.row -->
 <div class="row"><!-- Panel de control -->
+				<!-- Usuarios conectados -->
                 <div class="col-lg-6 col-md-6">
                 	<a href="<%=Constantes.CONTROLLER_USUARIOS+ "?accion="+ Constantes.ACCION_CONECTADOS%>">
                     	<div class="panel panel-success">
@@ -28,23 +29,7 @@
                     	</div>
                     </a>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                	<a href="<%=Constantes.CONTROLLER_SECTORES+ "?accion="	+ Constantes.ACCION_LISTAR%>">
-	                    <div class="panel panel-info">
-	                        <div class="panel-heading">
-	                            <div class="row">
-	                                <div class="col-xs-3">
-	                                    <i class="fa fa-picture-o fa-5x"></i>
-	                                </div>
-	                                <div class="col-xs-9 text-right">
-	                                    <div class="huge"><%=ModeloSector.sectoresPublicados()%></div>
-	                                    <div>Sectores Publicados</div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-					</a>
-                </div>
+                <!-- Usuarios no validados -->
                 <div class="col-lg-6 col-md-6">
 	            	<a href="<%=Constantes.CONTROLLER_USUARIOS+ "?accion="+ Constantes.ACCION_NO_VALIDADOS%>">
 	                    <div class="panel panel-danger">
@@ -62,9 +47,73 @@
 	                    </div>
 					</a>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                	<a href="<%=Constantes.VIEW_BACK_CONTENT_LOGS%>">
+                <!-- Vias pendientes -->
+                <div class="col-lg-4 col-md-4">
+                	<a href="<%=Constantes.CONTROLLER_SECTORES+ "?accion="	+ Constantes.ACCION_LISTAR%>">
+	                    <div class="panel panel-success">
+	                        <div class="panel-heading">
+	                            <div class="row">
+	                                <div class="col-xs-3">
+	                                	<span class="fa-stack fa-3x">
+		                                    <i class="fa fa-map-signs fa-stack-1x"></i>
+		                                    <i class="fa fa-ban fa-stack-2x"></i>
+	                                    </span>
+	                                </div>
+	                                <div class="col-xs-9 text-right">
+	                                    <div class="huge">0</div>
+	                                    <div>Vias No Aprobados</div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+					</a>
+                </div>
+                <!-- Zonas pendientes -->
+                <div class="col-lg-4 col-md-4">
+                	<a href="<%=Constantes.CONTROLLER_SECTORES+ "?accion="	+ Constantes.ACCION_LISTAR%>">
 	                    <div class="panel panel-warning">
+	                        <div class="panel-heading">
+	                            <div class="row">
+	                                <div class="col-xs-3">
+	                                <span class="fa-stack fa-3x">
+		                                    <i class="fa fa-globe fa-stack-1x"></i>
+		                                    <i class="fa fa-ban fa-stack-2x"></i>
+	                                    </span>
+	                                </div>
+	                                <div class="col-xs-9 text-right">
+	                                    <div class="huge">1</div>
+	                                    <div>Zonas No Aprobados</div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+					</a>
+                </div>
+                <!-- Sectores pendientes -->
+                <div class="col-lg-4 col-md-4">
+                	<a href="<%=Constantes.CONTROLLER_SECTORES+ "?accion="	+ Constantes.ACCION_LISTAR%>">
+	                    <div class="panel panel-danger">
+	                        <div class="panel-heading">
+	                            <div class="row">
+	                                <div class="col-xs-3">
+	                                <span class="fa-stack fa-3x">
+		                                    <i class="fa fa-map-o fa-stack-1x"></i>
+		                                    <i class="fa fa-ban fa-stack-2x"></i>
+	                                    </span>
+	                                </div>
+	                                <div class="col-xs-9 text-right">
+	                                    <div class="huge">3</div>
+	                                    <div>Sectores No Aprobados</div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+					</a>
+                </div>
+                <!-- Logs -->
+                <div class="col-lg-12 col-md-12">
+                	<a href="<%=Constantes.VIEW_BACK_CONTENT_LOGS%>">
+	                    <div class="panel panel-info">
 	                        <div class="panel-heading">
 	                            <div class="row">
 	                                <div class="col-xs-3">

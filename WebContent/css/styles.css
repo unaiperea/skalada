@@ -1,6 +1,14 @@
 @CHARSET "UTF-8";
 
-.align-left{
+.align-right{
 	float: right;
 	margin-bottom: 10px;
+}
+
+.right{
+	float: right;
+}
+
+.center-text{
+	text-align: center;
 }

@@ -43,7 +43,7 @@
 							<div class="checkbox">
 								<label> <input name="remember" type="checkbox"
 									value="Remember Me">Recordar
-								</label> <a class="btn btn-l btn-info align-left" id="btn-olvidado" data-toggle="modal" data-target="#modal-olvidado">¿Ha
+								</label> <a class="btn btn-l btn-info align-right" id="btn-olvidado" data-toggle="modal" data-target="#modal-olvidado">¿Ha
 									olvidado su contraseña?</a>
 							</div>
 							<input class="btn btn-lg btn-block btn-success" type="submit"
