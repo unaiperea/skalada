@@ -9,60 +9,72 @@ import java.util.ArrayList;
 
 import com.ipartek.formacion.skalada.bean.TipoEscalada;
 
-public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto genérico> previamente determinado en la interfaz
-	
+public class ModeloTipoEscalada implements Persistable<TipoEscalada> { // <Objeto
+																		// genérico>
+																		// previamente
+																		// determinado
+																		// en la
+																		// interfaz
+
 	private static final String TABLA = "tipo_escalada";
 	private static final String COL_ID = "id";
 	private static final String COL_NOMBRE = "nombre";
 	private static final String COL_DESCRIPCION = "descripcion";
-	
-	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_DESCRIPCION + "`) VALUES (?,?);";
-	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `descripcion` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `descripcion` FROM " + TABLA;
-	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? , `" + COL_DESCRIPCION + "`= ? WHERE `" + COL_ID + "`= ? ;";
-	
-	private static final byte campo1 = 1;
-	private static final byte campo2 = 2;
-	private static final byte campo3 = 3;
-	
+
+	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`"
+			+ COL_NOMBRE + "`, `" + COL_DESCRIPCION + "`) VALUES (?,?);";
+	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
+			+ "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `descripcion` FROM `"
+			+ TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `descripcion` FROM "
+			+ TABLA;
+	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
+			+ COL_NOMBRE + "`= ? , `" + COL_DESCRIPCION + "`= ? WHERE `"
+			+ COL_ID + "`= ? ;";
+
+	private static final byte CAMPO1 = 1;
+	private static final byte CAMPO2 = 2;
+	private static final byte CAMPO3 = 3;
+
 	@Override
 	public int save(TipoEscalada tipoEscalada) {
 		int resul = -1;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if(tipoEscalada != null){
-			try{
+		if (tipoEscalada != null) {
+			try {
 				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(campo1, tipoEscalada.getNombre());
-				pst.setString(campo2, tipoEscalada.getDescripcion());		
-		    	if ( pst.executeUpdate() != 1 ){
+				pst = con.prepareStatement(SQL_INSERT,
+						Statement.RETURN_GENERATED_KEYS);
+				pst.setString(CAMPO1, tipoEscalada.getNombre());
+				pst.setString(CAMPO2, tipoEscalada.getDescripcion());
+				if (pst.executeUpdate() != 1) {
 					throw new Exception("No se ha realizado la insercion");
-				} else {		
+				} else {
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
-						resul = rsKeys.getInt(campo1);
+						resul = rsKeys.getInt(CAMPO1);
 						tipoEscalada.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
 					}
-				}	    		    		
-			} catch (Exception e){
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				try {
-					if(rsKeys != null){
+					if (rsKeys != null) {
 						rsKeys.close();
 					}
-					if(pst != null){
+					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();			
-				}catch(Exception e){
+					DataBaseHelper.closeConnection();
+				} catch (Exception e) {
 					e.printStackTrace();
-				}			
-			}	
+				}
+			}
 		}
 		return resul;
 	}
@@ -71,90 +83,90 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 	public TipoEscalada getById(int id) {
 		TipoEscalada resul = null;
 		PreparedStatement pst = null;
-		ResultSet rs = null;		
-		try{
+		ResultSet rs = null;
+		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETONE);
-			pst.setInt(campo1, id);
-	    	rs = pst.executeQuery();	      	   	
-	    	while(rs.next()){
-	    		resul = mapeo(rs);
-	    	}	
-		} catch (Exception e){
+			pst.setInt(CAMPO1, id);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul = this.mapeo(rs);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(rs != null){
+				if (rs != null) {
 					rs.close();
 				}
-				if(pst != null){
+				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();			
-			}catch(Exception e){
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}		
-		return resul;		
+		}
+		return resul;
 	}
 
 	@Override
 	public ArrayList<TipoEscalada> getAll() {
 		ArrayList<TipoEscalada> resul = new ArrayList<TipoEscalada>();
 		PreparedStatement pst = null;
-		ResultSet rs = null;		
-		try{
+		ResultSet rs = null;
+		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETALL);
-	    	rs = pst.executeQuery();   	   	
-	    	while(rs.next()){
-	    		resul.add(mapeo(rs));
-	    	}	
-		} catch (Exception e){
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(rs != null){
+				if (rs != null) {
 					rs.close();
 				}
-				if(pst != null){
+				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();			
-			}catch(Exception e){
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
 				e.printStackTrace();
-			}			
-		}	
-		return resul;				
+			}
+		}
+		return resul;
 	}
 
 	@Override
 	public boolean update(TipoEscalada tipoEscalada) {
 		boolean resul = false;
 		PreparedStatement pst = null;
-		if (tipoEscalada != null){
-			try{
+		if (tipoEscalada != null) {
+			try {
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
-				pst.setString(campo1, tipoEscalada.getNombre());
-				pst.setString(campo2, tipoEscalada.getDescripcion());
-				pst.setInt(campo3, tipoEscalada.getId());				
-		    	if ( pst.executeUpdate() == 1 ){
-		    		resul = true;	    		
+				pst.setString(CAMPO1, tipoEscalada.getNombre());
+				pst.setString(CAMPO2, tipoEscalada.getDescripcion());
+				pst.setInt(CAMPO3, tipoEscalada.getId());
+				if (pst.executeUpdate() == 1) {
+					resul = true;
 				}
-			} catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				try {
-					if(pst != null){
+					if (pst != null) {
 						pst.close();
-					}				
-					DataBaseHelper.closeConnection();									
-				}catch(Exception e){
+					}
+					DataBaseHelper.closeConnection();
+				} catch (Exception e) {
 					e.printStackTrace();
-				}			
-			}	
+				}
+			}
 		}
 		return resul;
 	}
@@ -163,46 +175,44 @@ public class ModeloTipoEscalada implements Persistable<TipoEscalada>{ //<Objeto 
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;
-		try{
+		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_DELETE);
-			pst.setInt(campo1, id);			
-			if ( pst.executeUpdate() == 1 ){
+			pst.setInt(CAMPO1, id);
+			if (pst.executeUpdate() == 1) {
 				resul = true;
-			}			
-		}catch(Exception e){
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
-				if(pst != null){
+				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();	
+				DataBaseHelper.closeConnection();
 				return resul;
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}		
+		}
 		return resul;
 	}
-	
+
 	/**
 	 * Mapea un ResultSet a TipoEscalada
+	 * 
 	 * @param rs
 	 * @return
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	private TipoEscalada mapeo(ResultSet rs) throws SQLException {
-		TipoEscalada resul = null;    
-		
-		resul = new TipoEscalada( rs.getString(COL_NOMBRE) );
-		resul.setId( rs.getInt(COL_ID));
+		TipoEscalada resul = null;
+
+		resul = new TipoEscalada(rs.getString(COL_NOMBRE));
+		resul.setId(rs.getInt(COL_ID));
 		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
-		
+
 		return resul;
 	}
-	
-	
-	
 
 }

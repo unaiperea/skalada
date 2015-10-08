@@ -32,6 +32,7 @@ public class ModeloVia implements Persistable<Via> {
 			+ " = g.`id` INNER JOIN  `sector` as s ON v.`id_sector` = s.`id`"
 			+ " INNER JOIN  `tipo_escalada` as tp ON v.`id_tipo_escalada` = tp.`id`"
 			+ " INNER JOIN  `zona` as z ON s.`id_zona` = z.`id`";
+	private static final String SQL_GET_TOTAL = "SELECT count(*) as `total` FROM `via`";
 
 	/*
 	 * select v.`id`, v.`nombre`, v.`longitud`, v.`descripcion`, v.`id_grado`,
@@ -49,13 +50,13 @@ public class ModeloVia implements Persistable<Via> {
 	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`= ?, `longitud`= ?, `descripcion`= ?, `id_grado`= ?, `id_tipo_escalada`= ?, `id_sector`= ? WHERE  `id`= ?;";
 	private static final String SQL_DELETE = "";
 
-	private static final byte campo1 = 1;
-	private static final byte campo2 = 2;
-	private static final byte campo3 = 3;
-	private static final byte campo4 = 4;
-	private static final byte campo5 = 5;
-	private static final byte campo6 = 6;
-	private static final byte campo8 = 8;
+	private static final byte CAMPO1 = 1;
+	private static final byte CAMPO2 = 2;
+	private static final byte CAMPO3 = 3;
+	private static final byte CAMPO4 = 4;
+	private static final byte CAMPO5 = 5;
+	private static final byte CAMPO6 = 6;
+	private static final byte CAMPO8 = 8;
 
 	@Override
 	public int save(Via via) {
@@ -67,13 +68,13 @@ public class ModeloVia implements Persistable<Via> {
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
-				pst.setString(campo1, via.getNombre());
+				pst.setString(CAMPO1, via.getNombre());
 				if (pst.executeUpdate() != 1) {
 					throw new Exception("No se ha realizado la insercion");
 				} else {
 					rsKeys = pst.getGeneratedKeys();
 					if (rsKeys.next()) {
-						resul = rsKeys.getInt(campo1);
+						resul = rsKeys.getInt(CAMPO1);
 						via.setId(resul);
 					} else {
 						throw new Exception("No se ha podido generar ID");
@@ -106,10 +107,39 @@ public class ModeloVia implements Persistable<Via> {
 		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETONE);
-			pst.setInt(campo1, id);
+			pst.setInt(CAMPO1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				resul = this.mapeo(rs);
+				resul = mapeo(rs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return resul;
+	}
+
+	public int getTotal() {
+		int resul = 0;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GET_TOTAL);
+			rs = pst.executeQuery();
+			if (rs.first()) {
+				resul = rs.getInt("total");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,7 +169,7 @@ public class ModeloVia implements Persistable<Via> {
 			pst = con.prepareStatement(SQL_GETALL);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				resul.add(this.mapeo(rs));
+				resul.add(mapeo(rs));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,16 +202,16 @@ public class ModeloVia implements Persistable<Via> {
 				// `descripcion`= ?,
 				// `id_grado`= ?, `id_tipo_escalada`= ?, `id_sector`= ? WHERE
 				// `id`= ?;
-				pst.setString(campo1, via.getNombre());
-				pst.setInt(campo2, via.getLongitud());
-				pst.setString(campo3, via.getDescripcion());
-				pst.setInt(campo4, via.getGrado().getId());
-				pst.setInt(campo5, via.getTipoEscalada().getId());
-				pst.setInt(campo6, via.getSector().getId());
-				// @Unai: pst.setInt(campo7, v.getSector().getZona().getId());
+				pst.setString(CAMPO1, via.getNombre());
+				pst.setInt(CAMPO2, via.getLongitud());
+				pst.setString(CAMPO3, via.getDescripcion());
+				pst.setInt(CAMPO4, via.getGrado().getId());
+				pst.setInt(CAMPO5, via.getTipoEscalada().getId());
+				pst.setInt(CAMPO6, via.getSector().getId());
+				// @Unai: pst.setInt(CAMPO7, v.getSector().getZona().getId());
 				// Zona no est� en la tabla. Habr� que hacer update directamente
 				// en la zona
-				pst.setInt(campo8, via.getId());
+				pst.setInt(CAMPO8, via.getId());
 				if (pst.executeUpdate() == 1) {
 					resul = true;
 				}
@@ -208,7 +238,7 @@ public class ModeloVia implements Persistable<Via> {
 		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_DELETE);
-			pst.setInt(campo1, id);
+			pst.setInt(CAMPO1, id);
 			if (pst.executeUpdate() == 1) {
 				resul = true;
 			}
@@ -243,7 +273,7 @@ public class ModeloVia implements Persistable<Via> {
 
 		// Tipo Escalada
 		// @Unai: Creamos el objeto tipoEscalada con su constructor d�ndole el
-		// campo del resulSet
+		// CAMPO del resulSet
 		TipoEscalada tipoEscalada = new TipoEscalada(
 				rs.getString("nombre_tipo_escalada"));
 		tipoEscalada.setId(rs.getInt("id_tipo_escalada")); // Seteamos el id del

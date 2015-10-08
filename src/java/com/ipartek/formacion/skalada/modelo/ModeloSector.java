@@ -41,6 +41,8 @@ public class ModeloSector implements Persistable<Sector> {
 			+ " AS s, " + TABLA_ZONA + " AS z WHERE s." + COL_ZONA_ID + "= z."
 			+ COL_ID;
 
+	private static final String SQL_GET_TOTAL = "SELECT count(*) as `total` FROM " + TABLA_SECTOR;
+
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA_SECTOR
 			+ "` SET `" + COL_NOMBRE + "`= ? , `" + COL_ZONA_ID + "`= ?"
 			+ ", `" + COL_IMAGEN + "`= ? WHERE `" + COL_ID + "`= ? ;";
@@ -106,7 +108,36 @@ public class ModeloSector implements Persistable<Sector> {
 			pst.setInt(CAMPO1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				resul = this.mapeo(rs);
+				resul = mapeo(rs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return resul;
+	}
+
+	public int getTotal() {
+		int resul = 0;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GET_TOTAL);
+			rs = pst.executeQuery();
+			if (rs.first()) {
+				resul = rs.getInt("total");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +167,7 @@ public class ModeloSector implements Persistable<Sector> {
 			pst = con.prepareStatement(SQL_GETALL);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				resul.add(this.mapeo(rs));
+				resul.add(mapeo(rs));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -238,14 +269,11 @@ public class ModeloSector implements Persistable<Sector> {
 	}
 
 	/**
-	 * Obtiene todos los sectores de una Zona {@code Zona}, <b> Cuidado:
-	 * getZona() retorna <code>null</code>, se supone que ya la conocemos</b>
+	 * Obtiene todos los sectores de una Zona {@code Zona}, <b> Cuidado: getZona() retorna <code>null</code>, se supone que ya la conocemos</b>
 	 * 
 	 * @param id_zona
 	 *            {@int} identificador de la {@code Zona}
-	 * @return ArrayList<Sector> colecci�n de sectores de la Zona, si no existe
-	 *         ninguno colecci�n inicializada con new() as� no devolvemos un
-	 *         null
+	 * @return ArrayList<Sector> colecci�n de sectores de la Zona, si no existe ninguno colecci�n inicializada con new() as� no devolvemos un null
 	 */
 	public ArrayList<Sector> getAllByZona(int id_zona) {
 

@@ -1,6 +1,5 @@
 <%@page import="com.ipartek.formacion.skalada.listener.ListenerUserCounter"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
-<%@page import="com.ipartek.formacion.skalada.listener;"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
@@ -11,7 +10,7 @@
 
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Dashboard2</h1>
+			<h1 class="page-header">Panel de administración</h1>
 		</div>
 		<!-- /.col-lg-12 -->
 	</div>
@@ -33,37 +32,13 @@
 						</div>
 					</div>
 				</div>
-				<a href="#">
+				<!-- <a href="#"> -->
 					<div class="panel-footer">
-						<span class="pull-left">View Details</span> <span
+						<span class="pull-left">Detalles</span> <span
 							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 						<div class="clearfix"></div>
 					</div>
-				</a>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="panel panel-green">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-xs-3">
-							<span class="fa-stack fa-5x"> <i
-								class="fa fa-picture-o fa-stack-2x"></i>
-							</span>
-						</div>
-						<div class="col-xs-9 text-right">
-							<div class="huge"><%=request.getAttribute("num_sectores")%></div>
-							<div class="huge">Sectores publicados</div>
-						</div>
-					</div>
-				</div>
-				<a href="#">
-					<div class="panel-footer">
-						<span class="pull-left">View Details</span> <span
-							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-						<div class="clearfix"></div>
-					</div>
-				</a>
+				<!-- </a> -->
 			</div>
 		</div>
 		<div class="col-md-6">
@@ -72,23 +47,22 @@
 					<div class="row">
 						<div class="col-xs-3">
 							<span class="fa-stack fa-5x"> <i
-								class="fa fa-user fa-stack-1x"></i> <i
-								class="fa fa-ban fa-stack-2x text-danger"></i>
+								class="fa fa-user-times fa-stack-2x"></i>
 							</span>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge"><%=request.getAttribute("num_user_invalid")%></div>
+							<div class="huge"><%=request.getAttribute("totalInvalidados")%></div>
 							<div class="huge">Usuarios sin validar</div>
 						</div>
 					</div>
 				</div>
-				<a href="#">
+				<!-- <a href="#"> -->
 					<div class="panel-footer">
-						<span class="pull-left">View Details</span> <span
+						<span class="pull-left">Detalles</span> <span
 							  class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 						<div class="clearfix"></div>
 					</div>
-				</a>
+				<!-- </a> -->
 			</div>
 		</div>
 		<div class="col-md-6">
@@ -108,13 +82,110 @@
 				</div>
 				<a href="<%=Constantes.VIEW_BACK_CONTENT_LOGS%>">
 					<div class="panel-footer">
-						<span class="pull-left">View Details</span> <span
+						<span class="pull-left">Detalles</span> <span
 							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 						<div class="clearfix"></div>
 					</div>
 				</a>
 			</div>
 		</div>
+		<div class="col-md-6">
+			<div class="panel panel-green">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<span class="fa-stack fa-5x"> <i
+								class="fa fa-heart fa-stack-2x"></i>
+							</span>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge"><%=request.getAttribute("totalLikes")%></div>
+							<div class="huge">Likes</div>
+						</div>
+					</div>
+				</div>
+				<!-- <a href="#"> -->
+					<div class="panel-footer">
+						<span class="pull-left">Detalles</span> <span
+							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+						<div class="clearfix"></div>
+					</div>
+				<!-- </a> -->
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<span class="fa-stack fa-3x"> <i
+								class="fa fa-map fa-stack-2x"></i>
+							</span>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge"><%=request.getAttribute("totalZonas")%></div>
+							<div>Zonas publicadas</div>
+						</div>
+					</div>
+				</div>
+				<!-- <a href="#"> -->
+					<div class="panel-footer">
+						<span class="pull-left">Detalles</span> <span
+							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+						<div class="clearfix"></div>
+					</div>
+				<!-- </a> -->
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<span class="fa-stack fa-3x"> <i
+								class="fa fa-map-signs fa-stack-2x"></i>
+							</span>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge"><%=request.getAttribute("totalSectores")%></div>
+							<div>Sectores publicados</div>
+						</div>
+					</div>
+				</div>
+				<!-- <a href="#"> -->
+					<div class="panel-footer">
+						<span class="pull-left">Detalles</span> <span
+							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+						<div class="clearfix"></div>
+					</div>
+				<!-- </a> -->
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<span class="fa-stack fa-3x"> <i
+								class="fa fa-random fa-rotate-270 fa-stack-2x"></i>
+							</span>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge"><%=request.getAttribute("totalVias")%></div>
+							<div>Vías publicadas</div>
+						</div>
+					</div>
+				</div>
+				<!-- <a href="#"> -->
+					<div class="panel-footer">
+						<span class="pull-left">Detalles</span> <span
+							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+						<div class="clearfix"></div>
+					</div>
+				<!-- </a> -->
+			</div>
+		</div>
+		
 	</div>
 	<!-- /.row -->
 </div>

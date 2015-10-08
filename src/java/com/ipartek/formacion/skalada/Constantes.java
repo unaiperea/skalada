@@ -24,6 +24,11 @@ public final class Constantes {
 	public static final String ROOT_APP = "/skalada/";
 	public static final String APP_NAME = "skalada";
 
+	/*
+	 * public static final String SERVER = "http://192.168.1.75:8080"; // Para desplegar en un servidor public static final String ROOT_APP =
+	 * "/skaladaUnai/"; // Para desplegar en un servidor public static final String APP_NAME = "skaladaUnai"; // Para desplegar en un servidor
+	 */
+
 	// vistas publicas
 	public static final String VIEW_PUBLIC_INDEX = "index.jsp";
 	public static final String VIEW_PUBLIC_VIA = "/pages/via_detalle.jsp";
@@ -38,6 +43,7 @@ public final class Constantes {
 	public static final String VIEW_BACK_SIGNUP = "backoffice/pages/signup.jsp";
 	public static final String VIEW_BACK_RECUPERAR_PASS = "pages/recuperarpass.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
+	public static final String VIEW_BACK_HOME_INDEX = "pages/index_back.jsp";
 
 	public static final String VIEW_BACK_VIAS_INDEX = "backoffice/pages/vias/index.jsp";
 	public static final String VIEW_BACK_VIAS_FORM = "backoffice/pages/vias/form.jsp";
@@ -68,8 +74,7 @@ public final class Constantes {
 	public static final String CONTROLLER_VIAS = ROOT_APP + "vias";
 	public static final String CONTROLLER_HOME = ROOT_APP + "home";
 	public static final String CONTROLLER_GRADOS = ROOT_APP + "grados";
-	public static final String CONTROLLER_TIPO_ESCALADA = ROOT_APP
-			+ "tipo-escalada";
+	public static final String CONTROLLER_TIPO_ESCALADA = ROOT_APP + "tipo-escalada";
 	public static final String CONTROLLER_ZONAS = ROOT_APP + "zonas";
 	public static final String CONTROLLER_ZONAS_JSON = ROOT_APP + "zonas-json";
 	public static final String CONTROLLER_SECTORES = ROOT_APP + "sectores";
@@ -95,7 +100,7 @@ public final class Constantes {
 	public static final ArrayList<String> IMG_CONTENT_TYPES = new ArrayList<String>(
 			Arrays.asList("image/jpeg", "image/png")); // Para inicializarlo.
 														// Por ser constante no
-														// se podr�a a�adir
+																																// se podr�a a�adir
 														// elementos con .add();
 
 	// ROLES

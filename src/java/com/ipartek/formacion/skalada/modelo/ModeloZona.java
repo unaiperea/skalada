@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previamente determinado en la interfaz
+public class ModeloZona implements Persistable<Zona> { // <Objeto genérico> previamente determinado en la interfaz
 	
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
@@ -19,6 +19,7 @@ public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previ
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
 	private static final String SQL_GETONE = "SELECT `id`, `nombre` FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
 	private static final String SQL_GETALL = "SELECT `id`, `nombre` FROM " + TABLA;
+	private static final String SQL_GET_TOTAL = "SELECT count(*) as `total` FROM " + TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `" + COL_NOMBRE + "`= ? WHERE `" + COL_ID + "`= ? ;";
 	
 	@Override
@@ -28,7 +29,8 @@ public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previ
 		ResultSet rsKeys = null;
 		if(zona != null){
 			try{
-				Connection con = DataBaseHelper.getConnection(); //Al declararlo como static al llamar al objeto no se instancia. NombreDeLaClase.nombreDelMétodo(parámetros si los hay)
+				Connection con = DataBaseHelper.getConnection(); // Al declararlo como static al llamar al objeto no se instancia.
+																	// NombreDeLaClase.nombreDelMétodo(parámetros si los hay)
 				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, zona.getNombre());		
 		    	if ( pst.executeUpdate() != 1 ){
@@ -90,6 +92,35 @@ public class ModeloZona implements Persistable<Zona>{ //<Objeto genérico> previ
 			}
 		}		
 		return resul;		
+	}
+
+	public int getTotal() {
+		int resul = 0;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GET_TOTAL);
+			rs = pst.executeQuery();
+			if (rs.first()) {
+				resul = rs.getInt("total");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return resul;
 	}
 
 	@Override

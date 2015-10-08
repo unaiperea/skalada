@@ -16,7 +16,9 @@ public class DataBaseHelper {
 	
 	//Parametros configuracion base datos
 	static final public String DRIVER    = "com.mysql.jdbc.Driver";
-	static final public String SERVER    = "localhost";
+	// static final public String SERVER = "192.168.1.75:8080"; // Para desplegar en un servidor
+	// static final public String DATA_BASE = "eskaladaUnai"; // Para desplegar en un servidor
+	static final public String SERVER = "localhost:8080";
 	static final public String DATA_BASE = "eskalada";
 	static final public String USER      = "root";
 	static final public String PASS      = "";
@@ -31,8 +33,8 @@ public class DataBaseHelper {
 	 * @throws Exception
 	 */
 	//Al declararlo como static al llamar al objeto no se instancia
-	//NombreDeLaClase.nombreDelMétodo (parámetros si los hay);
-	//NombreDelObjeto.nombreDelMétodo (parámetros si los hay);
+	// NombreDeLaClase.nombreDelMétodo (parámetros si los hay);
+	// NombreDelObjeto.nombreDelMétodo (parámetros si los hay);
 	public static Connection getConnection() throws Exception{
 		/**
 		 * Conexión usando el DriverManager que no es la más óptima
