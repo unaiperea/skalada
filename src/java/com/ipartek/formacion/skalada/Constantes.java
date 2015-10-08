@@ -18,6 +18,7 @@ public final class Constantes {
 		super();
 	}
 
+	public static final String SERVER = "http://192.168.1.75:8080";
 	public static final String ROOT_APP = "/skalada/";
 	public static final String APP_NAME = "skalada";
 
@@ -109,13 +110,13 @@ public final class Constantes {
 	public static final int USER_VALIDATE = 1;
 	public static final int USER_NO_VALIDATE = 0;
 	public static final String EMAIL_TEMPLATE_REGISTRO = "file/plantilla-mail.html";
-	public static final String URL_VALIDATE = "http://localhost:8080/skalada/signup?action=1&id=";
-	public static final String URL_PASS_OLVIDADO = "http://localhost:8080/skalada/signup?action=2&email=";
+	public static final String URL_VALIDATE = SERVER
+			+ "/skalada/signup?action=1&id=";
+	public static final String URL_PASS_OLVIDADO = SERVER
+			+ "/skalada/signup?action=2&email=";
 
-	// Mails
 	public static final String VALIDACION = "validacion";
 	public static final String RECUPERACION = "recuperacion";
-	public static final String SERVER = "http://localhost:8080";
 
 	public static final String KEY_SESSION_USER = "ss_user";
 
