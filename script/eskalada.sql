@@ -168,8 +168,7 @@ DELETE FROM `usuario`;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
 	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, 'rmd461ebm6p2f4ks0680n7ob3l'),
-	(2, 'user@user.com', 'user', 'user', 2, 1, '827gb5c31hbg2rt08fkfvj4mai')
-	
+	(2, 'user@user.com', 'user', 'user', 2, 1, '827gb5c31hbg2rt08fkfvj4mai');	
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
