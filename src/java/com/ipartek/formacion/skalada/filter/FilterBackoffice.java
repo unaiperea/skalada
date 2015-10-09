@@ -56,12 +56,12 @@ public class FilterBackoffice implements Filter {
 
 				((HttpServletResponse) response).sendRedirect(Constantes.SERVER
 						+ Constantes.ROOT_APP + Constantes.VIEW_LOGIN);
+			} else {
+				// pass the request along the filter chain
+				chain.doFilter(request, response);
 			}
 
 		}
-
-		// pass the request along the filter chain
-		chain.doFilter(request, response);
 	}
 
 	/**
