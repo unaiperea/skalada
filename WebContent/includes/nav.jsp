@@ -86,7 +86,7 @@
                     
                     <!-- enlace backoffice -->
                     <li>
-                    	<a href="backoffice/pages/login.jsp">Login</a>
+                    	<a href="<%=Constantes.VIEW_LOGIN%>">Login</a>
                     </li>
                     
                 </ul>

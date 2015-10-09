@@ -108,20 +108,20 @@ public class LoginController extends HttpServlet {
 								Mensaje.MSG_WARNING,
 								"El usuario no ha sido validado todavia, por favor revise su correo electronico");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				} else {
 					// Ir a => login.jsp
 					this.msg = new Mensaje(Mensaje.MSG_WARNING,
 							"El email o la contraseña proporcionados no son validos.");
 					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+							.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				}
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_WARNING,
 						"El usuario no existe, si lo desea registrese.");
 				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			}
 
 		}

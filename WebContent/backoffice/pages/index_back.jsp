@@ -26,11 +26,11 @@
 	<%
 		if (rol == Constantes.ROLE_ID_ADMIN) {
 	%>
-	<jsp:include page="dashboard-admin.jsp"></jsp:include>
+		<jsp:include page="dashboard-admin.jsp"></jsp:include>
 	<%
 		} else {
 	%>
-	<jsp:include page="dashboard-user.jsp"></jsp:include>
+		<jsp:include page="dashboard-user.jsp"></jsp:include>
 	<%
 		}
 	%>

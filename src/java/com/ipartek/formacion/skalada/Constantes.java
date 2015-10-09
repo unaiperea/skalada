@@ -18,12 +18,16 @@ public final class Constantes {
 		super();
 	}
 
-	public static final String SERVER = "http://192.168.1.75:8080";
+	public static final String SERVER = "http://localhost:8080";
 	public static final String ROOT_APP = "/skalada/";
 	public static final String APP_NAME = "skalada";
 
 	// vistas publicas
 	public static final String VIEW_PUBLIC_INDEX = "index.jsp";
+	public static final String VIEW_LOGIN = "login.jsp";
+	public static final String VIEW_SIGNUP = "signup.jsp";
+	public static final String VIEW_RECUPERAR_PASS = "recupera-pass.jsp";
+
 	public static final String VIEW_PUBLIC_VIA = "/pages/via_detalle.jsp";
 
 	// vistas backoffice
@@ -32,8 +36,6 @@ public final class Constantes {
 	public static final String VIEW_BACK_CONTENT_LOGS = "pages/log-content.jsp";
 	public static final String VIEW_BACK_LOGS = "/logs/trazas.jsp";
 
-	public static final String VIEW_BACK_LOGIN = "backoffice/pages/login.jsp";
-	public static final String VIEW_BACK_SIGNUP = "backoffice/pages/signup.jsp";
 	public static final String VIEW_BACK_INDEX = "backoffice/pages/index_back.jsp";
 	public static final String VIEW_BACK_DASHBOARD = "pages/index_back.jsp";
 
@@ -57,8 +59,6 @@ public final class Constantes {
 
 	public static final String VIEW_BACK_USUARIOS_INDEX = "backoffice/pages/usuarios/index.jsp";
 	public static final String VIEW_BACK_USUARIOS_FORM = "backoffice/pages/usuarios/form.jsp";
-
-	public static final String VIEW_BACK_RECUPERAR_PASS = "backoffice/pages/recupera-pass.jsp";
 
 	// controladores
 	public static final String CONTROLLER_LOGIN = ROOT_APP + "login";

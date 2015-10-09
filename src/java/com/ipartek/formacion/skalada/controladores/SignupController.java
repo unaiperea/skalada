@@ -59,7 +59,7 @@ public class SignupController extends HttpServlet {
 		try {
 			this.msg = null;
 			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+					.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			this.getParameters(request, response);
 
 			switch (this.pAccion) {
@@ -89,7 +89,7 @@ public class SignupController extends HttpServlet {
 		request.setAttribute("email", this.pEmail);
 		request.setAttribute("token", this.usuario.getToken());
 		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_RECUPERAR_PASS);
+				.getRequestDispatcher(Constantes.VIEW_RECUPERAR_PASS);
 	}
 
 	private void getParameters(HttpServletRequest request,
@@ -121,25 +121,25 @@ public class SignupController extends HttpServlet {
 				this.msg = new Mensaje(Mensaje.MSG_DANGER,
 						"Ha ocurrido un error al comprobar su correo electronico.");
 				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			} else {
 				if (this.map.get("validado") != 0) {
 					this.msg = new Mensaje(Mensaje.MSG_DANGER,
 							"Su usuario ya esta validado.");
 					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+							.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				} else {
 					if (this.modeloUsuario.validate(this.map.get("id"))) {
 						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
 								"Su cuenta ha sido activada. Bienvenid@!");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					} else {
 						this.msg = new Mensaje(
 								Mensaje.MSG_WARNING,
 								"Ha ocurrido un error al validar el usuario, contacte con el administrador de la pagina.");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				}
 			}
@@ -147,14 +147,13 @@ public class SignupController extends HttpServlet {
 			this.msg = new Mensaje(Mensaje.MSG_DANGER,
 					"Ha ocurrido un error al comprobar su correo electronico.");
 			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+					.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 		}
 
 	}
 
 	private void signup(HttpServletRequest request, HttpServletResponse response) {
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 	}
 
 	/**
@@ -177,17 +176,17 @@ public class SignupController extends HttpServlet {
 				this.pId = -1;
 
 				if (!this.modeloUsuario.checkUser(this.pNombre, this.pEmail)) { // Comprobamos
-																				// si
-																				// existe
-																				// el
-																				// usuario
+					// si
+					// existe
+					// el
+					// usuario
 					// Guardar usuario
 					this.crearUsuario(); // Creamos el objeto Usuario
 					if ((this.pId = this.modeloUsuario.save(this.usuario)) == -1) {
 						this.msg = new Mensaje(Mensaje.MSG_DANGER,
 								"Ha habido un error al guardar el usuario");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+								.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 					} else {
 						SendMail mail = new SendMail();
 						mail.setDestinatario(this.usuario.getEmail());
@@ -206,13 +205,13 @@ public class SignupController extends HttpServlet {
 						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
 								"Por favor revise su correo electronico para validar su usuario");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				} else {
 					this.msg = new Mensaje(Mensaje.MSG_DANGER,
 							"El usuario ya existe");
 					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+							.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 				}
 				break;
 			case Constantes.ACCION_PASS_OLVIDADO:
@@ -230,7 +229,7 @@ public class SignupController extends HttpServlet {
 						params.put("{usuario}", this.pEmail);
 						params.put("{url}",
 								Constantes.URL_PASS_OLVIDADO + this.pEmail
-										+ "&tkn=" + this.usuario.getToken());
+								+ "&tkn=" + this.usuario.getToken());
 						params.put(
 								"{contenido}",
 								"Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
@@ -242,21 +241,21 @@ public class SignupController extends HttpServlet {
 								Mensaje.MSG_INFO,
 								"Se ha enviado un mensaje a su cuenta de correo electronico en el que puede recuperar su contraseña");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					} else {
 						this.msg = new Mensaje(Mensaje.MSG_DANGER,
 								"El usuario no esta validado");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				} else {
 					this.msg = new Mensaje(Mensaje.MSG_DANGER,
 							"El usuario no existe");
 					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_BACK_SIGNUP);
+							.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 				}
 				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+						.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				break;
 			case Constantes.ACCION_REGENERAR_PASS:
 				this.pEmail = request.getParameter("email");
@@ -278,13 +277,13 @@ public class SignupController extends HttpServlet {
 							"Ha ocurrido un error.");
 				}
 				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+						.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				break;
 			default:
 				this.msg = new Mensaje(Mensaje.MSG_DANGER,
 						"Ha ocurrido un error desconocido");
 				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_BACK_LOGIN);
+						.getRequestDispatcher(Constantes.VIEW_LOGIN);
 			}
 
 		} catch (Exception e) {
@@ -297,6 +296,9 @@ public class SignupController extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Crear nuevo Usuario con rol "usuario"
+	 */
 	private void crearUsuario() {
 		this.rol = new Rol("Usuario");
 		this.rol.setId(2);

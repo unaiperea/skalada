@@ -16,18 +16,7 @@
 				</div>
 				<div class="panel-body">
 
-					<%
-						Mensaje msg = (Mensaje) request.getAttribute("msg");
-						if (msg != null) {
-							out.print("<div class='alert alert-" + msg.getTipo()
-									+ " alert-dismissible' role='alert'>");
-							out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-							out.print("<span aria-hidden='true'>&times;</span>");
-							out.print("</button>");
-							out.print("<strong>" + msg.getTexto() + "</strong>");
-							out.print("</div>");
-						}
-					%>
+					<jsp:include page="includes/mensaje.jsp"></jsp:include>
 
 					<form role="form" action="<%=Constantes.CONTROLLER_LOGIN%>"
 						method="post">
@@ -48,7 +37,7 @@
 							</div>
 							<input class="btn btn-lg btn-block btn-success" type="submit"
 								value="login">
-							<a href="pages/signup.jsp" class="btn btn-lg btn-block btn-primary">¿No estás registrado?</a>
+							<a href="<%=Constantes.VIEW_SIGNUP%>" class="btn btn-lg btn-block btn-primary">¿No estás registrado?</a>
 						</fieldset>
 					</form>
 				</div>

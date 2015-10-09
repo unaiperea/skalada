@@ -153,11 +153,32 @@
   <listener>
     <listener-class>com.ipartek.formacion.skalada.listener.ListenerSession</listener-class>
   </listener>
-  <!-- REFERENCIAS A RESOURCES -->
-	<resource-ref>
-		<description>Datasource para la BBDD</description>
-		<res-ref-name>jdbc/skaladaDB</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
+  <resource-ref>
+    <description>Datasource para la BBDD</description>
+    <res-ref-name>jdbc/skaladaDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  
+  <!-- FILTROS -->
+  
+  <filter>
+    <display-name>FilterBackoffice</display-name>
+    <filter-name>FilterBackoffice</filter-name>
+    <filter-class>com.ipartek.formacion.skalada.filter.FilterBackoffice</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>FilterBackoffice</filter-name>
+    <url-pattern>/backoffice/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <!-- 
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    -->
+  </filter-mapping>
+  
+  
+  
 </web-app>
