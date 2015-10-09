@@ -9,15 +9,13 @@ import javax.servlet.ServletContextListener;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.ipartek.formacion.skalada.controladores.LoginController;
-
 /**
  * Application Lifecycle Listener implementation class ListenerInit
  *
  */
 public class ListenerInit implements ServletContextListener {
 
-	private static final Logger LOG = Logger.getLogger(LoginController.class);
+	private static final Logger LOG = Logger.getLogger(ListenerInit.class);
 	Properties props = null;
 
 	/**

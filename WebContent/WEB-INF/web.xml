@@ -22,7 +22,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ViasController</servlet-name>
-    <url-pattern>/vias</url-pattern>
+    <url-pattern>/backoffice/vias</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -62,7 +62,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>GradosController</servlet-name>
-    <url-pattern>/grados</url-pattern>
+    <url-pattern>/backoffice/grados</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -72,7 +72,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>TipoEscaladaController</servlet-name>
-    <url-pattern>/tipo-escalada</url-pattern>
+    <url-pattern>/backoffice/tipo-escalada</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -82,7 +82,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ZonasController</servlet-name>
-    <url-pattern>/zonas</url-pattern>
+    <url-pattern>/backoffice/zonas</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -92,7 +92,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SectoresController</servlet-name>
-    <url-pattern>/sectores</url-pattern>
+    <url-pattern>/backoffice/sectores</url-pattern>
   </servlet-mapping>
   <servlet>
     <description>Controlador para retornar las Zonas en formato Json, preparado para recibir llamadas por Ajax</description>
@@ -112,7 +112,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>RolesController</servlet-name>
-    <url-pattern>/roles</url-pattern>
+    <url-pattern>/backoffice/roles</url-pattern>
   </servlet-mapping>
   <servlet>
     <description>Controlador para los los usuarios</description>
@@ -122,7 +122,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UserController</servlet-name>
-    <url-pattern>/usuarios</url-pattern>
+    <url-pattern>/backoffice/usuarios</url-pattern>
   </servlet-mapping>
   <servlet>
     <description>Registro de usuarios</description>
