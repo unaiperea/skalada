@@ -100,7 +100,7 @@ public class GradosController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("grados", this.modelo.getAll());
+		request.setAttribute("grados", this.modelo.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_GRADOS_INDEX);
 	}
@@ -180,7 +180,7 @@ public class GradosController extends HttpServlet {
 			if (this.modelo.update(this.grado)) {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
-						+ ")]");
+								+ ")]");
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al modificar el registro [id(" + this.pID + ")]");

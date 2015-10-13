@@ -22,17 +22,20 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Sector;
+import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
  * Servlet implementation class SectoresController
+ * 
  * @author Curso
  */
 public class SectoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private Usuario usuario = null;
 	private RequestDispatcher dispatcher = null;
 	private ModeloSector modeloSector = null;
 	private Sector sector = null;
@@ -45,7 +48,7 @@ public class SectoresController extends HttpServlet {
 	private String pNombre;
 	private int pIDZona;
 
-	//Imagen File	
+	// Imagen File
 	private File file;
 
 	/**
@@ -59,10 +62,20 @@ public class SectoresController extends HttpServlet {
 		this.modeloZona = new ModeloZona();
 	}
 
+	@Override
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		this.usuario = (Usuario) request.getSession().getAttribute(
+				Constantes.KEY_SESSION_USER);
+		super.service(request, response);
+	}
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// recoger parametros
@@ -112,7 +125,7 @@ public class SectoresController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("sectores", this.modeloSector.getAll());
+		request.setAttribute("sectores", this.modeloSector.getAll(this.usuario));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_INDEX);
 	}
@@ -134,7 +147,7 @@ public class SectoresController extends HttpServlet {
 		this.sector = new Sector("", this.zona);
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", "Crear nuevo Sector");
-		request.setAttribute("zonas", this.modeloZona.getAll());
+		request.setAttribute("zonas", this.modeloZona.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 
@@ -142,10 +155,10 @@ public class SectoresController extends HttpServlet {
 
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
-		this.sector = (Sector) this.modeloSector.getById(this.pID);
+		this.sector = this.modeloSector.getById(this.pID);
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", this.sector.getNombre().toUpperCase());
-		request.setAttribute("zonas", this.modeloZona.getAll());
+		request.setAttribute("zonas", this.modeloZona.getAll(null));
 
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
@@ -155,51 +168,55 @@ public class SectoresController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
-		Mensaje msg = new Mensaje( Mensaje.MSG_DANGER , "Error sin identificar");
-		
-		try{
-				// recoger parametros del formulario
-				this.getParametersForm(request);
-		
-				// Crear Objeto Sector
-				this.crearObjeto();
-		
-				// Guardar/Modificar Objeto Via
-				if (this.pID == -1) {
-					if (this.modeloSector.save(this.sector) != -1) {
-						msg.setTipo(Mensaje.MSG_SUCCESS);
-						msg.setTexto("Registro creado con exito");
-						
-					} else {
-						msg.setTipo(Mensaje.MSG_DANGER);
-						msg.setTexto("Error al guardar el nuevo registro");														
-					}
-				} else {
-					if (this.modeloSector.update(this.sector)) {
-						msg.setTipo(Mensaje.MSG_SUCCESS);
-						msg.setTexto("Modificado correctamente el registro [id(" + this.pID
-								+ ")]");						
-					} else {
-						msg.setTipo(Mensaje.MSG_DANGER);
-						msg.setTexto("Error al modificar el registro [id(" + this.pID + ")]");			
-					}
-				}
-				
-				request.setAttribute("msg", msg);
 
-		}catch( FileSizeLimitExceededException e){		
-			e.printStackTrace();
-			msg = new Mensaje( Mensaje.MSG_DANGER , "La imagen excede del tama�o maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes" );
-			request.setAttribute("msg", msg);	
-		}catch(Exception e){
-			e.printStackTrace();
-			msg = new Mensaje( Mensaje.MSG_DANGER , e.getMessage() );
+		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin identificar");
+
+		try {
+			// recoger parametros del formulario
+			this.getParametersForm(request);
+
+			// Crear Objeto Sector
+			this.crearObjeto();
+
+			// Guardar/Modificar Objeto Via
+			if (this.pID == -1) {
+				if (this.modeloSector.save(this.sector) != -1) {
+					msg.setTipo(Mensaje.MSG_SUCCESS);
+					msg.setTexto("Registro creado con exito");
+
+				} else {
+					msg.setTipo(Mensaje.MSG_DANGER);
+					msg.setTexto("Error al guardar el nuevo registro");
+				}
+			} else {
+				if (this.modeloSector.update(this.sector)) {
+					msg.setTipo(Mensaje.MSG_SUCCESS);
+					msg.setTexto("Modificado correctamente el registro [id("
+							+ this.pID + ")]");
+				} else {
+					msg.setTipo(Mensaje.MSG_DANGER);
+					msg.setTexto("Error al modificar el registro [id("
+							+ this.pID + ")]");
+				}
+			}
+
 			request.setAttribute("msg", msg);
-		}	
-		
+
+		} catch (FileSizeLimitExceededException e) {
+			e.printStackTrace();
+			msg = new Mensaje(Mensaje.MSG_DANGER,
+					"La imagen excede del tama�o maximo permitido "
+							+ Constantes.MAX_FILE_SIZE + " bytes");
+			request.setAttribute("msg", msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = new Mensaje(Mensaje.MSG_DANGER, e.getMessage());
+			request.setAttribute("msg", msg);
+		}
+
 		this.listar(request, response);
 		this.dispatcher.forward(request, response);
 
@@ -211,7 +228,7 @@ public class SectoresController extends HttpServlet {
 	 * @param request
 	 */
 	private void uploadFile(HttpServletRequest request) {
-		//TODO realizar comprobaciones y guardar imagen en PC
+		// TODO realizar comprobaciones y guardar imagen en PC
 	}
 
 	/**
@@ -223,25 +240,25 @@ public class SectoresController extends HttpServlet {
 		// zona.setId(pIDZona);
 		this.zona = (Zona) this.modeloZona.getById(this.pIDZona);
 
-		//TODO controlar si cambiamos el sector pero no la imagen
-		
+		// TODO controlar si cambiamos el sector pero no la imagen
+
 		// existe sector
 		if (this.pID != -1) {
 
-			this.sector = (Sector) this.modeloSector.getById(this.pID);
+			this.sector = this.modeloSector.getById(this.pID);
 			this.sector.setNombre(this.pNombre);
 			this.sector.setZona(this.zona);
-			if ( this.file != null ){
+			if (this.file != null) {
 				this.sector.setImagen(this.file.getName());
-			}	
+			}
 
 			// nuevo sector
 		} else {
 			this.sector = new Sector(this.pNombre, this.zona);
 			this.sector.setId(this.pID);
-			if ( this.file != null ){
+			if (this.file != null) {
 				this.sector.setImagen(this.file.getName());
-			}	
+			}
 		}
 
 	}
@@ -252,61 +269,64 @@ public class SectoresController extends HttpServlet {
 	 * @see backoffice\pages\sectores\form.jsp
 	 * @param request
 	 * @throws UnsupportedEncodingException
-	 * @throws FileUploadException 
+	 * @throws FileUploadException
 	 */
 	private void getParametersForm(HttpServletRequest request) throws Exception {
-	
-			request.setCharacterEncoding("UTF-8");		
-			
-			DiskFileItemFactory factory = new DiskFileItemFactory();
-			// maximum size that will be stored in memory
-			//TODO cambiar este valor para que falle
-			factory.setSizeThreshold( Constantes.MAX_MEM_SIZE );
-			// Location to save data that is larger than maxMemSize.
-			//TODO comprobar si no existe carpeta
-			factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER));
-			
-			// Create a new file upload handler
-		    ServletFileUpload upload = new ServletFileUpload(factory);
-		    // maximum file size to be uploaded.
-		    //TODO cambiar valor no dejar subir mas 1Mb
-		    upload.setSizeMax( Constantes.MAX_FILE_SIZE );
-		    
-		    //Parametros de la request del formulario, NO la imagen
-		    HashMap<String, String> dataParameters = new HashMap<String, String>();
-			// Parse the request to get file items.		   
-		    List<FileItem> items = upload.parseRequest(request);		   
-		    for (FileItem item : items) {		    	
-		    	//parametro formulario
-		    	if ( item.isFormField() ){		    		
-		    		dataParameters.put( item.getFieldName(), item.getString("UTF-8") );
-		    	//Imagen	
-		    	}else{		    		
-		    		String fileName     = item.getName();		    		
-		    		if ( !"".equals(fileName)){		    		
-			            String fileContentType  = item.getContentType();
-			            
-			            if ( Constantes.CONTENT_TYPES.contains(fileContentType)){
-			             		            
-				            item.getSize();				            
-				            
-				            //TODO No repetir nombres imagenes
-				            
-				            this.file = new File( Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName );
-				            item.write( this.file ) ;
-			            }else{
-			            	throw new Exception( "[" + fileContentType + "] extensi�n de imagen no permitida");
-			            }//end: content-type no permitido    
-		    		}else{
-		    			this.file = null;
-		    		}   
-		    	}	
-		    }//End: for List<FileItem>
-		    
-		   	this.pID = Integer.parseInt( dataParameters.get("id"));
-			this.pNombre = dataParameters.get("nombre");
-			this.pIDZona = Integer.parseInt(dataParameters.get("zona"));
-		
+
+		request.setCharacterEncoding("UTF-8");
+
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		// maximum size that will be stored in memory
+		// TODO cambiar este valor para que falle
+		factory.setSizeThreshold(Constantes.MAX_MEM_SIZE);
+		// Location to save data that is larger than maxMemSize.
+		// TODO comprobar si no existe carpeta
+		factory.setRepository(new File(Constantes.IMG_UPLOAD_TEMP_FOLDER));
+
+		// Create a new file upload handler
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		// maximum file size to be uploaded.
+		// TODO cambiar valor no dejar subir mas 1Mb
+		upload.setSizeMax(Constantes.MAX_FILE_SIZE);
+
+		// Parametros de la request del formulario, NO la imagen
+		HashMap<String, String> dataParameters = new HashMap<String, String>();
+		// Parse the request to get file items.
+		List<FileItem> items = upload.parseRequest(request);
+		for (FileItem item : items) {
+			// parametro formulario
+			if (item.isFormField()) {
+				dataParameters
+						.put(item.getFieldName(), item.getString("UTF-8"));
+				// Imagen
+			} else {
+				String fileName = item.getName();
+				if (!"".equals(fileName)) {
+					String fileContentType = item.getContentType();
+
+					if (Constantes.CONTENT_TYPES.contains(fileContentType)) {
+
+						item.getSize();
+
+						// TODO No repetir nombres imagenes
+
+						this.file = new File(Constantes.IMG_UPLOAD_FOLDER
+								+ "\\" + fileName);
+						item.write(this.file);
+					} else {
+						throw new Exception("[" + fileContentType
+								+ "] extensi�n de imagen no permitida");
+					}// end: content-type no permitido
+				} else {
+					this.file = null;
+				}
+			}
+		}// End: for List<FileItem>
+
+		this.pID = Integer.parseInt(dataParameters.get("id"));
+		this.pNombre = dataParameters.get("nombre");
+		this.pIDZona = Integer.parseInt(dataParameters.get("zona"));
+
 	}
 
 }

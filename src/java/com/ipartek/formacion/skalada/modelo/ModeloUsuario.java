@@ -140,7 +140,7 @@ public class ModeloUsuario implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll() {
+	public ArrayList<Object> getAll(Usuario usuario) {
 		ArrayList<Object> resul = new ArrayList<Object>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;

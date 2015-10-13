@@ -45,14 +45,14 @@ public class TestModeloZona {
 	public void testCRUD() {
 		int total; // Cantidad de registros iniciales en la tabla `test`
 		int total_despues; // Cantidad de registros en la tabla `test` tras
-							// insertar uno nuevo
+		// insertar uno nuevo
 
 		// Test para comprobar que al insertar un nuevo registro aumenta el ID
 		Zona z_insert = new Zona(NOMBREZONA);
 
-		total = modelo.getAll().size();
+		total = modelo.getAll(null).size();
 		this.id = modelo.save(z_insert);
-		total_despues = modelo.getAll().size(); // total = total_despues + 1
+		total_despues = modelo.getAll(null).size(); // total = total_despues + 1
 
 		assertTrue(total == (total_despues - 1));
 		assertTrue((this.id != -1) && (this.id > 0));
@@ -76,7 +76,7 @@ public class TestModeloZona {
 
 		// Test para comprobar que elimina el registro
 		assertTrue(modelo.delete(this.id));
-		assertTrue(total == modelo.getAll().size());
+		assertTrue(total == modelo.getAll(null).size());
 	}
 
 	@Test()

@@ -2,6 +2,8 @@ package com.ipartek.formacion.skalada.modelo;
 
 import java.util.ArrayList;
 
+import com.ipartek.formacion.skalada.bean.Usuario;
+
 /**
  * Interfaz para permitir guardar, recuperar, modificar y eliminar beans.
  * Soporta las operaciones basicas de CRUD: - Create - Read - Update - Delete
@@ -31,12 +33,15 @@ public interface Persistable<T> {
 	Object getById(int id);
 
 	/**
-	 **** READ II **** Recupera una coleccion de Objetos
+	 * Recupera una coleccion de Objetos pertenecientes al usuario, en caso de
+	 * {@code Usuario} "administrador" recupera todos
 	 * 
+	 * @param usuario
+	 *            {@code Usuario} del cual queremos recuperar los objetos
 	 * @return {@code Object} coleccion de objetos, si no existen coleccion
 	 *         vacia
 	 */
-	ArrayList<T> getAll();
+	ArrayList<T> getAll(Usuario usuario);
 
 	/**
 	 **** UPDATE **** Modificar un Objeto el cual debe tener un identificador

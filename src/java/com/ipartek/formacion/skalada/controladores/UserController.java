@@ -109,7 +109,7 @@ public class UserController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("usuarios", this.modeloUsuario.getAll());
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
 	}
@@ -149,7 +149,7 @@ public class UserController extends HttpServlet {
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("titulo", "Crear nuevo Usuario");
 
-		request.setAttribute("roles", this.modeloRol.getAll());
+		request.setAttribute("roles", this.modeloRol.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
 
@@ -161,7 +161,7 @@ public class UserController extends HttpServlet {
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("titulo", this.usuario.getNombre().toUpperCase());
 
-		request.setAttribute("roles", this.modeloRol.getAll());
+		request.setAttribute("roles", this.modeloRol.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
 	}

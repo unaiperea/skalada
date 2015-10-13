@@ -99,7 +99,7 @@ public class ZonasController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("zonas", this.modelo.getAll());
+		request.setAttribute("zonas", this.modelo.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_INDEX);
 	}
@@ -161,7 +161,7 @@ public class ZonasController extends HttpServlet {
 			if (this.modelo.update(this.zona)) {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
-						+ ")]");
+								+ ")]");
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al modificar el registro [id(" + this.pID + ")]");
