@@ -12,3 +12,5 @@
 .center-text{
 	text-align: center;
 }
+
+tr:hover{ background-color: pink;}

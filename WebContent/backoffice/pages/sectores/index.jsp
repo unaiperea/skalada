@@ -1,13 +1,26 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
-
 
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
+
+<%
+	//Comprobar si es Administrado
+	boolean isAdmin = false;
+	Usuario usuario = (Usuario)session.getAttribute(Constantes.KEY_SESSION_USER);
+	if ( usuario != null ){
+		if ( Constantes.ROLE_ID_ADMIN == usuario.getRol().getId() ){
+			isAdmin = true;
+		}	
+	}
+
+%>
+
 
 <div id="page-wrapper">
 
@@ -47,6 +60,11 @@
 	                <th>ID</th>
 	                <th>Nombre</th>
 	                <th>Zona</th>
+	                <th>Validado</th>
+	                <%if (isAdmin){%>
+	                	<th>Usuario</th>
+	                <%}%>	
+	                
 	            </tr>
 	        </thead> 
 	        	 
@@ -67,6 +85,20 @@
 		                	</a>
 		                </td>
 		                <td><%=s.getZona().getNombre()%></td>
+		                <!-- Validado -->
+		                <td>	
+		                	<% if (s.isValidado()){%>
+		                		<span class="label label-success">Validado</span>	
+		                	<%}else{%>
+		                		<span class="label label-warning">Sin Validar</span>
+		                	<%}%>
+		                </td>
+		                
+		                <!-- Mostrar Usuario solo para Administradores -->
+		                 <%if (isAdmin){%>
+	                		<td><%=s.getUsuario().getNombre()%></td>
+	                	<%}%>	
+		                
 		            </tr>	            
 	           <%
 	           		} //end for
