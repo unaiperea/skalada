@@ -17,8 +17,8 @@ public class Zona implements Serializable {
 	private int id;
 	private String nombre;
 	private List<Sector> sectores;
-	private Usuario creador;
-	private boolean publicado;
+	private Usuario usuario;
+	private boolean validado;
 	private Timestamp fechaCreado;
 	private Timestamp fechaModificado;
 
@@ -30,10 +30,10 @@ public class Zona implements Serializable {
 		this.setId(-1);
 		this.setNombre(nombre);
 		this.setSectores(new ArrayList<Sector>());
-		this.setPublicado(false);
+		this.setValidado(false);
 		ModeloUsuario mu = new ModeloUsuario();
 		Usuario admin = (Usuario) mu.getById(1);
-		this.setCreador(admin);
+		this.setUsuario(admin);
 	}
 
 	public Zona(String nombre, Usuario creador) {
@@ -41,8 +41,8 @@ public class Zona implements Serializable {
 		this.setId(-1);
 		this.setNombre(nombre);
 		this.setSectores(new ArrayList<Sector>());
-		this.setCreador(creador);
-		this.setPublicado(false);
+		this.setUsuario(creador);
+		this.setValidado(false);
 	}
 
 	/**
@@ -75,16 +75,16 @@ public class Zona implements Serializable {
 	/**
 	 * @return the creador
 	 */
-	public Usuario getCreador() {
-		return this.creador;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
 	/**
 	 * @param creador
 	 *            the creador to set
 	 */
-	public void setCreador(Usuario creador) {
-		this.creador = creador;
+	public void setUsuario(Usuario creador) {
+		this.usuario = creador;
 	}
 
 	/**
@@ -136,16 +136,30 @@ public class Zona implements Serializable {
 	/**
 	 * @return the publicado
 	 */
-	public boolean isPublicado() {
-		return this.publicado;
+	public boolean isValidado() {
+		return this.validado;
 	}
 
 	/**
 	 * @param publicado
 	 *            the publicado to set
 	 */
-	public void setPublicado(boolean publicado) {
-		this.publicado = publicado;
+	public void setValidado(boolean publicado) {
+		this.validado = publicado;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Zona [id=" + this.id + ", nombre=" + this.nombre
+				+ ", sectores=" + this.sectores + ", usuario=" + this.usuario
+				+ ", validado=" + this.validado + ", fechaCreado="
+				+ this.fechaCreado + ", fechaModificado="
+				+ this.fechaModificado + "]";
 	}
 
 }

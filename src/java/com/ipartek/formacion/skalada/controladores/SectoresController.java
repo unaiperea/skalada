@@ -25,6 +25,7 @@ import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
+import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
@@ -38,6 +39,7 @@ public class SectoresController extends HttpServlet {
 	private Usuario usuario = null;
 	private RequestDispatcher dispatcher = null;
 	private ModeloSector modeloSector = null;
+	private ModeloUsuario modeloUsuario = null;
 	private Sector sector = null;
 	private ModeloZona modeloZona = null;
 	private Zona zona = null;
@@ -60,6 +62,7 @@ public class SectoresController extends HttpServlet {
 		super.init(config);
 		this.modeloSector = new ModeloSector();
 		this.modeloZona = new ModeloZona();
+		this.modeloUsuario = new ModeloUsuario();
 	}
 
 	@Override
@@ -148,6 +151,7 @@ public class SectoresController extends HttpServlet {
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", "Crear nuevo Sector");
 		request.setAttribute("zonas", this.modeloZona.getAll(null));
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 
@@ -159,6 +163,7 @@ public class SectoresController extends HttpServlet {
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", this.sector.getNombre().toUpperCase());
 		request.setAttribute("zonas", this.modeloZona.getAll(null));
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
 
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
@@ -297,7 +302,7 @@ public class SectoresController extends HttpServlet {
 			// parametro formulario
 			if (item.isFormField()) {
 				dataParameters
-						.put(item.getFieldName(), item.getString("UTF-8"));
+				.put(item.getFieldName(), item.getString("UTF-8"));
 				// Imagen
 			} else {
 				String fileName = item.getName();

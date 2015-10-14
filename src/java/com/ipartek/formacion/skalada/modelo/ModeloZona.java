@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 
@@ -15,18 +16,19 @@ public class ModeloZona implements Persistable {
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
 	private static final String COL_NOMBRE = "nombre";
-	private static final String COL_CREADOR = "creado_por";
-	private static final String COL_PUBLICADO = "publicado";
+	private static final String COL_CREADOR = "id_usuario";
+	private static final String COL_PUBLICADO = "validado";
 	private static final String COL_FECHA_CREADO = "fecha_creado";
 	private static final String COL_FECHA_MODIFICADO = "fecha_modificado";
 
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`"
-			+ COL_NOMBRE + "`,`" + COL_CREADOR + "`) VALUES (?,?);";
+			+ COL_NOMBRE + "`, `" + COL_CREADOR + "`, `" + COL_PUBLICADO
+			+ "`) VALUES (?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
 			+ "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `creado_por`, `publicado`, `fecha_creado`, `fecha_modificado` FROM `"
+	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM `"
 			+ TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `creado_por`, `publicado`, `fecha_creado`, `fecha_modificado` FROM "
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM "
 			+ TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
@@ -46,7 +48,12 @@ public class ModeloZona implements Persistable {
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, z.getNombre());
-				pst.setInt(2, z.getCreador().getId());
+				pst.setInt(2, z.getUsuario().getId());
+				if (z.isValidado()) {
+					pst.setInt(3, Constantes.VALIDADO);
+				} else {
+					pst.setInt(3, 0);
+				}
 				if (pst.executeUpdate() != 1) {
 					throw new Exception("No se ha realizado la insercion");
 				} else {
@@ -150,8 +157,8 @@ public class ModeloZona implements Persistable {
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
 				pst.setString(1, z.getNombre());
-				pst.setInt(2, z.getCreador().getId());
-				pst.setBoolean(3, z.isPublicado());
+				pst.setInt(2, z.getUsuario().getId());
+				pst.setBoolean(3, z.isValidado());
 				pst.setTimestamp(4, z.getFechaModificado());
 				pst.setInt(5, z.getId());
 				if (pst.executeUpdate() == 1) {
@@ -211,11 +218,17 @@ public class ModeloZona implements Persistable {
 		Zona resul = null;
 		Usuario creador = null;
 		ModeloUsuario mu = new ModeloUsuario();
+		int validado = 0;
+		validado = rs.getInt(COL_PUBLICADO);
 		creador = (Usuario) mu.getById(rs.getInt(COL_CREADOR));
 		resul = new Zona(rs.getString(COL_NOMBRE));
 		resul.setId(rs.getInt(COL_ID));
-		resul.setCreador(creador);
-		resul.setPublicado(rs.getBoolean(COL_PUBLICADO));
+		resul.setUsuario(creador);
+		if (validado > 0) {
+			resul.setValidado(true);
+		} else {
+			resul.setValidado(false);
+		}
 		resul.setFechaCreado(rs.getTimestamp(COL_FECHA_CREADO));
 		resul.setFechaModificado(rs.getTimestamp(COL_FECHA_MODIFICADO));
 		return resul;

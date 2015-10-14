@@ -38,6 +38,9 @@
 
     <!-- Timeline CSS -->
     <link href="dist/css/timeline.css" rel="stylesheet">
+    
+    <!-- Toggle checkbuttons  -->
+    <link href="dist/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="dist/css/sb-admin-2.css" rel="stylesheet">

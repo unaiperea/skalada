@@ -1,3 +1,6 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
@@ -10,6 +13,8 @@
 	//recoger atributos (Objeto Zona)"zona" y (String)"titulo"
 	Zona zona = (Zona)request.getAttribute("zona");
 	String titulo = request.getAttribute("titulo").toString();
+	ArrayList<Usuario> usuarios = (ArrayList<Usuario>)request.getAttribute("usuarios");
+	Usuario usuario = (Usuario)session.getAttribute(Constantes.KEY_SESSION_USER);
 %>
 
 <div id="page-wrapper">
@@ -28,22 +33,53 @@
 		<form action="<%=Constantes.CONTROLLER_ZONAS%>" method="post" role="form">
 			
 			<div class="row">
-				
-				<div class="form-group">			
+				<div class="form-group col-lg-1">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
 					<label for="id">ID</label>
 					<input type="hidden" name="id" value="<%=zona.getId()%>">
 					<input type="text"  class="form-control" value="<%=zona.getId()%>" disabled >
 				</div>
-				
-				<div class="form-group">
+				<div class="form-group col-lg-3">
 	           		<label for="nombre">Nombre</label>
 	           		<input type="text" class="form-control" name="nombre" value="<%=zona.getNombre()%>">
 	          	</div>
-	          	
-	        </div>
-	        
-
+	          		<!-- Fechas -->
+	          	<%
+	           		String fechaCreado = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(zona.getFechaCreado());
+                	String fechaModificado = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(zona.getFechaModificado());
+	           	%>
+	          	<div class="form-group col-lg-4">
+	           		<label for="fecha_creacion">Fecha de Creacion</label>
+	           		<input type="datetime-local" disabled class="form-control" name="fecha_creacion" value="<%=fechaCreado%>">
+	          	</div>
+	          	<div class="form-group col-lg-4">
+	           		<label for="fecha_modificacion">Fecha de Modificacion</label>
+	           		<input type="datetime-local" disabled class="form-control" name="fecha_modificacion" value="<%=fechaModificado%>">
+	          	</div>         	
+	      	</div><!-- end row -->
+	      	<%
+		        String validado = "";
+	            String val_class ="";
+	            if (zona.isValidado()){
+	            	validado="checked";
+	            }else{
+	            	validado="";
+	            }
+				if (usuario.getRol().getId()==Constantes.ROLE_ID_ADMIN){
+					out.print("<div class='row'><div class='form-group col-lg-3'><label for='creador'>Creado por</label>");
+							
+					out.print("<select class='form-control' name='creador'>");
+					for (int i = 0 ; i < usuarios.size() ; i++){
+						if( usuarios.get(i).getId() == zona.getUsuario().getId() ){
+							out.print("<option selected value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
+						}else{
+							out.print("<option value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
+						}//end else  						
+					}//end for
+					out.print("</select></div>");
+					out.print("<div class='form-group col-lg-2'><label for='validado'>Validado</label><br><input type='checkbox' "+validado+" name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1></div></div>");
+				}
+			%>
 			
 			<!-- Botonera -->
 			<div class="form-group">

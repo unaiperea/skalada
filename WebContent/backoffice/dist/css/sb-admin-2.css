@@ -352,3 +352,6 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+.toggle-on  { background-color:green !important; }
+.toggle-off { background-color:orange !important; color:#FFF !important;}

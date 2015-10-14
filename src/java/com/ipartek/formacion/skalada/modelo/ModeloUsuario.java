@@ -140,8 +140,8 @@ public class ModeloUsuario implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll(Usuario usuario) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Usuario> getAll(Usuario usuario) {
+		ArrayList<Usuario> resul = new ArrayList<Usuario>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -264,7 +264,7 @@ public class ModeloUsuario implements Persistable {
 
 	/**
 	 * Mapea un ResultSet a Usuario
-	 * 
+	 *
 	 * @param rs
 	 * @return
 	 * @throws SQLException
@@ -285,7 +285,7 @@ public class ModeloUsuario implements Persistable {
 
 	/**
 	 * Comprueba si existe ese nombre o email en la tabla usuario
-	 * 
+	 *
 	 * @param nombre
 	 *            {@code String} nombre del {@code Usuario}
 	 * @param email
@@ -327,7 +327,7 @@ public class ModeloUsuario implements Persistable {
 	/**
 	 * Funcion para comprobar la activacion de usuarios. Busca en la BBDD si
 	 * existe un email dado.
-	 * 
+	 *
 	 * @param email
 	 *            Email a buscar en la BBDD
 	 * @return Devuelve un HashMap con el id y el validao correspondiente al

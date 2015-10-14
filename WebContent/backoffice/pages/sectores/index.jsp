@@ -96,7 +96,13 @@
 		                
 		                <!-- Mostrar Usuario solo para Administradores -->
 		                 <%if (isAdmin){%>
-	                		<td><%=s.getUsuario().getNombre()%></td>
+		                 	
+	                		<td>
+	                			<a href="<%=Constantes.CONTROLLER_USUARIOS%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=s.getUsuario().getId()%>">
+	                				<%=s.getUsuario().getNombre()%>
+	                			</a>
+	                		</td>
+	                			
 	                	<%}%>	
 		                
 		            </tr>	            

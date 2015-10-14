@@ -64,15 +64,15 @@
     <div class="row">
     
     <!-- tabla -->
-    	<table id="tabla" class="display" cellspacing="0" width="100%">
+    	<table id="tabla" class="display hover stripe" cellspacing="0" width="100%">
 	        <thead>
 	            <tr>
 	                <th>ID</th>
 	                <th>Nombre</th>
-	                <th>Creador</th>
+	                <th>Creado por</th>
 	                <th>Creado el</th>
 	                <th>Modificado el</th>
-	                <th>Publicado</th>
+	                <th>Validado</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -92,7 +92,7 @@
 		                		<%=z.getNombre()%>
 		                	</a>
 		                </td>
-		                <td><%=z.getCreador().getNombre() %></td>
+		                <td><%=z.getUsuario().getNombre() %></td>
 		                <%
 		                	String fechaCreado = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(z.getFechaCreado());
 		                	String fechaModificado = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(z.getFechaModificado());
@@ -100,12 +100,17 @@
 		                <td><%=fechaCreado %></td>
 		                <td><%=fechaModificado %></td>
 		                <%
-		                String checked = "";
-		                if (z.isPublicado()){
-		                	checked="checked";
+		                String validado = "";
+		                String val_class ="";
+		                if (z.isValidado()){
+		                	validado="Validado";
+		                	val_class="success";
+		                }else{
+		                	validado="No Validado";
+		                	val_class="danger";
 		                }
 		                %>
-		                <td class="center-text"><input type="checkbox" disabled <%=checked%>></td>
+		                <td><span class="label label-<%=val_class%>"><%=validado %></span></td>
 		            </tr>	            
 	           <%
 	           		} //end for
