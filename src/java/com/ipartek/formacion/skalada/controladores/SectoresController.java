@@ -137,13 +137,25 @@ public class SectoresController extends HttpServlet {
 
 	private void eliminar(HttpServletRequest request,
 			HttpServletResponse response) {
-		if (this.modeloSector.delete(this.pID)) {
-			request.setAttribute("msg-danger",
-					"Registro eliminado correctamente");
+
+		// Check Autorizacion
+		if (this.usuario.isAdmin()
+				|| this.sector.getUsuario().getId() == this.usuario.getId()) {
+
+			if (this.modeloSector.delete(this.pID)) {
+				request.setAttribute("msg-danger",
+						"Registro eliminado correctamente");
+			} else {
+				request.setAttribute("msg-warning",
+						"Error al eliminar el registro [id(" + this.pID + ")]");
+			}
+			// Usuario sin autorizacion para este Sector
 		} else {
-			request.setAttribute("msg-warning",
-					"Error al eliminar el registro [id(" + this.pID + ")]");
+			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,
+					"No tienes permisos para ver el detalle");
+			request.setAttribute("msg", msg);
 		}
+
 		this.listar(request, response);
 	}
 
@@ -163,13 +175,27 @@ public class SectoresController extends HttpServlet {
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
 		this.sector = this.modeloSector.getById(this.pID);
-		request.setAttribute("sector", this.sector);
-		request.setAttribute("titulo", this.sector.getNombre().toUpperCase());
-		request.setAttribute("zonas", this.modeloZona.getAll(null));
-		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
 
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
+		// check autorizacion
+		if (this.usuario.isAdmin()
+				|| this.sector.getUsuario().getId() == this.usuario.getId()) {
+
+			request.setAttribute("sector", this.sector);
+			request.setAttribute("titulo", this.sector.getNombre()
+					.toUpperCase());
+			request.setAttribute("zonas", this.modeloZona.getAll(null));
+			request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
+
+			this.dispatcher = request
+					.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
+
+			// Usuario sin autorizacion
+		} else {
+			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,
+					"No tienes permisos para ver el detalle");
+			request.setAttribute("msg", msg);
+			this.listar(request, response);
+		}
 	}
 
 	/**
