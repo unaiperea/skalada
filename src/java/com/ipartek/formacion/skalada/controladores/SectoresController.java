@@ -49,6 +49,8 @@ public class SectoresController extends HttpServlet {
 	private int pID = -1; // ID no valido
 	private String pNombre;
 	private int pIDZona;
+	private int pIDusuario;
+	private boolean pValidado;
 
 	// Imagen File
 	private File file;
@@ -148,6 +150,7 @@ public class SectoresController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 		this.zona = new Zona("");
 		this.sector = new Sector("", this.zona);
+		this.sector.setUsuario(this.usuario);
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", "Crear nuevo Sector");
 		request.setAttribute("zonas", this.modeloZona.getAll(null));
@@ -197,7 +200,7 @@ public class SectoresController extends HttpServlet {
 					msg.setTexto("Error al guardar el nuevo registro");
 				}
 			} else {
-				if (this.modeloSector.update(this.sector)) {
+				if (this.modeloSector.update(this.sector, this.usuario)) {
 					msg.setTipo(Mensaje.MSG_SUCCESS);
 					msg.setTexto("Modificado correctamente el registro [id("
 							+ this.pID + ")]");
@@ -241,9 +244,8 @@ public class SectoresController extends HttpServlet {
 	 */
 	private void crearObjeto() {
 
-		// zona = new Zona("");
-		// zona.setId(pIDZona);
 		this.zona = (Zona) this.modeloZona.getById(this.pIDZona);
+		Usuario uSector = (Usuario) this.modeloUsuario.getById(this.pIDusuario);
 
 		// TODO controlar si cambiamos el sector pero no la imagen
 
@@ -265,6 +267,9 @@ public class SectoresController extends HttpServlet {
 				this.sector.setImagen(this.file.getName());
 			}
 		}
+
+		this.sector.setValidado(this.pValidado);
+		this.sector.setUsuario(uSector);
 
 	}
 
@@ -331,6 +336,19 @@ public class SectoresController extends HttpServlet {
 		this.pID = Integer.parseInt(dataParameters.get("id"));
 		this.pNombre = dataParameters.get("nombre");
 		this.pIDZona = Integer.parseInt(dataParameters.get("zona"));
+
+		// Si es null, es un Usuario 'normal'
+		// puesto que el formulario no existe el parametro "creador"
+		if (dataParameters.get("creador") != null) {
+			// Usuario 'admin' coger id_usuario seleccionado del combo
+			this.pIDusuario = Integer.parseInt(dataParameters.get("creador"));
+		} else {
+			// Usuario 'normal' coger id de session
+			this.pIDusuario = this.usuario.getId();
+		}
+
+		this.pValidado = (dataParameters.get("validado") != null) ? true
+				: false;
 
 	}
 
