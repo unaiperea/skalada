@@ -1,18 +1,15 @@
-<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
-<%@page contentType="text/html"%>
-<%@page pageEncoding="UTF-8"%>
+<%@include file="includes/head.jsp" %>
 
+<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
-
-<jsp:include page="includes/head.jsp"></jsp:include>
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Entrar</h3>
+					<h3 class="panel-title"><fmt:message key="login.titulo"></fmt:message></h3>
 				</div>
 				<div class="panel-body">
 
