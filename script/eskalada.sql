@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Versión del servidor:         5.6.17 - MySQL Community Server (GPL)
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             9.3.0.4984
+-- HeidiSQL Versión:             9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,7 +16,7 @@ CREATE DATABASE IF NOT EXISTS `eskalada` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `eskalada`;
 
 
--- Volcando estructura para tabla eskalada_david.grado
+-- Volcando estructura para tabla eskalada.grado
 DROP TABLE IF EXISTS `grado`;
 CREATE TABLE IF NOT EXISTS `grado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `grado` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.grado: ~41 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.grado: ~41 rows (aproximadamente)
 DELETE FROM `grado`;
 /*!40000 ALTER TABLE `grado` DISABLE KEYS */;
 INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
@@ -73,7 +73,7 @@ INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 /*!40000 ALTER TABLE `grado` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.rol
+-- Volcando estructura para tabla eskalada.rol
 DROP TABLE IF EXISTS `rol`;
 CREATE TABLE IF NOT EXISTS `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `rol` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.rol: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.rol: ~2 rows (aproximadamente)
 DELETE FROM `rol`;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
 INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
@@ -91,36 +91,41 @@ INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.sector
+-- Volcando estructura para tabla eskalada.sector
 DROP TABLE IF EXISTS `sector`;
 CREATE TABLE IF NOT EXISTS `sector` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `id_zona` int(11) NOT NULL,
   `imagen` varchar(250) NOT NULL DEFAULT 'default_sector.jpg',
+  `validado` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Marca para saber si el registro esta validado == 1',
+  `id_usuario` int(11) NOT NULL,
   PRIMARY KEY (`id`,`id_zona`),
   KEY `fk_sector_zona1_idx` (`id_zona`),
-  CONSTRAINT `fk_sector_zona1` FOREIGN KEY (`id_zona`) REFERENCES `zona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  KEY `FK_usuario_sector1` (`id_usuario`),
+  CONSTRAINT `fk_sector_zona1` FOREIGN KEY (`id_zona`) REFERENCES `zona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_usuario_sector1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.sector: ~10 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.sector: ~11 rows (aproximadamente)
 DELETE FROM `sector`;
 /*!40000 ALTER TABLE `sector` DISABLE KEYS */;
-INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`) VALUES
-	(1, 'Primer espolón', 1, 'default_sector.jpg'),
-	(2, 'Tercer espolón', 1, 'default_sector.jpg'),
-	(3, 'Alluitz', 1, 'default_sector.jpg'),
-	(4, 'Labargorri', 1, 'default_sector.jpg'),
-	(5, 'Urrestei', 1, 'default_sector.jpg'),
-	(6, 'Elosuko Harrobia', 2, 'default_sector.jpg'),
-	(7, 'Lauretazpe', 2, 'default_sector.jpg'),
-	(8, 'Ogoño', 3, 'default_sector.jpg'),
-	(9, 'Cara Sur', 4, 'default_sector.jpg'),
-	(10, 'Cara Oeste', 4, 'default_sector.jpg');
+INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
+	(1, 'Alluitz24', 1, 'default_sector.jpg', 0, 4),
+	(2, 'Tercer espolón', 1, 'default_sector.jpg', 1, 1),
+	(3, 'Alluitz2', 1, 'default_sector.jpg', 0, 4),
+	(4, 'Labargorri', 1, 'default_sector.jpg', 1, 1),
+	(5, 'Urrestei', 1, 'default_sector.jpg', 1, 1),
+	(6, 'Elosuko Harrobia', 2, 'default_sector.jpg', 1, 1),
+	(7, 'Lauretazpe', 2, 'default_sector.jpg', 1, 1),
+	(8, 'Ogoño', 3, 'default_sector.jpg', 1, 1),
+	(9, 'Cara Sur2', 4, 'default_sector.jpg', 1, 1),
+	(10, 'Cara Oeste', 4, 'default_sector.jpg', 1, 1),
+	(12, 'La Ruta del Cares', 7, 'default_sector.jpg', 0, 4);
 /*!40000 ALTER TABLE `sector` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.tipo_escalada
+-- Volcando estructura para tabla eskalada.tipo_escalada
 DROP TABLE IF EXISTS `tipo_escalada`;
 CREATE TABLE IF NOT EXISTS `tipo_escalada` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -129,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `tipo_escalada` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.tipo_escalada: ~11 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.tipo_escalada: ~11 rows (aproximadamente)
 DELETE FROM `tipo_escalada`;
 /*!40000 ALTER TABLE `tipo_escalada` DISABLE KEYS */;
 INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
@@ -147,7 +152,7 @@ INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 /*!40000 ALTER TABLE `tipo_escalada` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.usuario
+-- Volcando estructura para tabla eskalada.usuario
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -163,16 +168,18 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.usuario: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.usuario: ~4 rows (aproximadamente)
 DELETE FROM `usuario`;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
 	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, 'rmd461ebm6p2f4ks0680n7ob3l'),
-	(2, 'user@user.com', 'user', 'user', 2, 1, '827gb5c31hbg2rt08fkfvj4mai');	
+	(2, 'degar00@gmail.com', 'Degar', '456456', 2, 1, '827gb5c31hbg2rt08fkfvj4mai'),
+	(3, 'juan@juan.juan', 'Juan', '123456', 2, 0, '1l7ah3bb9bc5glqq4eba1umjmn'),
+	(4, 'pepe@pepe.com', 'pepe', 'pepe', 2, 1, '5ej47c7nrj4qnv73bol0s54jn0');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.via
+-- Volcando estructura para tabla eskalada.via
 DROP TABLE IF EXISTS `via`;
 CREATE TABLE IF NOT EXISTS `via` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -191,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `via` (
   CONSTRAINT `fk_via_tipo_escalada1` FOREIGN KEY (`id_tipo_escalada`) REFERENCES `tipo_escalada` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.via: ~14 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.via: ~14 rows (aproximadamente)
 DELETE FROM `via`;
 /*!40000 ALTER TABLE `via` DISABLE KEYS */;
 INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`) VALUES
@@ -212,32 +219,32 @@ INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_ti
 /*!40000 ALTER TABLE `via` ENABLE KEYS */;
 
 
--- Volcando estructura para tabla eskalada_david.zona
+-- Volcando estructura para tabla eskalada.zona
 DROP TABLE IF EXISTS `zona`;
 CREATE TABLE IF NOT EXISTS `zona` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `creado_por` int(11) NOT NULL DEFAULT '1',
-  `publicado` bit(1) NOT NULL DEFAULT b'0',
+  `id_usuario` int(11) NOT NULL,
+  `validado` bit(1) NOT NULL,
   `fecha_creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`),
-  KEY `FK_zona_usuario` (`creado_por`),
-  CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`creado_por`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `FK_zona_usuario` (`id_usuario`),
+  CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada_david.zona: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.zona: ~7 rows (aproximadamente)
 DELETE FROM `zona`;
 /*!40000 ALTER TABLE `zona` DISABLE KEYS */;
-INSERT INTO `zona` (`id`, `nombre`, `creado_por`, `publicado`, `fecha_creado`, `fecha_modificado`) VALUES
-	(1, 'Atxarte', 1, b'1', '2015-10-07 09:47:00', '2015-10-07 09:47:19'),
-	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(3, 'Cabo Ogoño', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(4, 'Naranjo de Bulnes', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(6, 'vacia', 1, b'0', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(7, 'Nueva', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(9, 'gradoMock', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19');
+INSERT INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
+	(1, 'Atxarte', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(3, 'Cabo Ogoño', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(4, 'Naranjo de Bulnes', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(6, 'vacia', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(7, 'Nueva', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
+	(9, 'gradoMock', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24');
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
