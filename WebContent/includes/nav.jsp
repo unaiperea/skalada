@@ -24,6 +24,9 @@
                         <a href="about.html">About</a>
                     </li>
                     <li>
+                        <a href="<%=Constantes.FRONT_MAPA%>">Mapa</a>
+                    </li>
+                    <li>
                         <a href="services.html">Services</a>
                     </li>
                     <li>
