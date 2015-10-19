@@ -89,7 +89,7 @@
 		                		<%=g.getNombre()%>
 		                	</a>
 		                </td>
-		                <td><%=g.getDescripcion()%></td>
+		                <td><a href="<%=Constantes.CONTROLLER_GRADOS%>?accion=<%=Constantes.ACCION_DETALLE%>&id=<%=g.getId()%>"><%=g.getDescripcion()%></a></td>
 		            </tr>	            
 	           <%
 	           		} //end for

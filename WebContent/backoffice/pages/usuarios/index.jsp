@@ -70,7 +70,18 @@
 		                	</a>
 		                </td>
 		                <td><%=u.getEmail()%></td>
-		                <td><%=u.getValidado()%></td>
+		                <%
+		                String validado = "";
+		                String val_class ="";
+		                if (u.getValidado()==1){
+		                	validado="Validado";
+		                	val_class="success";
+		                }else{
+		                	validado="No Validado";
+		                	val_class="danger";
+		                }
+		                %>
+		                <td><span class="label label-<%=val_class%>"><%=validado %></span></td>
 		               	<td><%=u.getRol().getNombre()%></td>
 		            </tr>           
 	           <%

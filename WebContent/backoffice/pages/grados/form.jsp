@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo%></h1>
+            <h1 class="page-header"><%=grado.getNombre()%> - <%=grado.getDescripcion()%></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -29,19 +29,20 @@
 			
 			<div class="row">
 				
-				<div class="form-group">			
+				<div class="form-group col-lg-1">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
 					<label for="id">ID</label>
 					<input type="hidden" name="id" value="<%=grado.getId()%>">
 					<input type="text"  class="form-control" value="<%=grado.getId()%>" disabled >
 				</div>
 				
-				<div class="form-group">
+				<div class="form-group col-lg-4">
 	           		<label for="nombre">Nombre</label>
 	           		<input type="text" class="form-control" name="nombre" value="<%=grado.getNombre()%>">
 	          	</div>
-
-	          	<div class="form-group">
+			</div>
+			<div class="row">
+	          	<div class="form-group col-lg-12">
 		            <label for="descripcion">Descripción</label>
 		            <textarea class="form-control" rows="3" name="descripcion"><%=grado.getDescripcion()%></textarea>
 		        </div>

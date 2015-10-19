@@ -29,19 +29,20 @@
 			
 			<div class="row">
 				
-				<div class="form-group">			
+				<div class="form-group col-lg-1">			
 					<!-- Mostramon el input text, pero se submita el hidden -->
 					<label for="id">ID</label>
 					<input type="hidden" name="id" value="<%=te.getId()%>">
 					<input type="text"  class="form-control" value="<%=te.getId()%>" disabled >
 				</div>
 				
-				<div class="form-group">
+				<div class="form-group col-lg-5">
 	           		<label for="nombre">Nombre</label>
 	           		<input type="text" class="form-control" name="nombre" value="<%=te.getNombre()%>">
 	          	</div>
-
-	          	<div class="form-group">
+			</div>
+			<div class="row">
+	          	<div class="form-group col-lg-12">
 		            <label for="descripcion">Descripción</label>
 		            <textarea class="form-control" rows="3" name="descripcion"><%=te.getDescripcion()%></textarea>
 		        </div>

@@ -9,10 +9,6 @@
 <%	
 	Usuario usuario = null;
 	usuario = (Usuario) session.getAttribute(Constantes.KEY_SESSION_USER);
-	int rol = 0;
-	if (usuario!=null){
-		rol = usuario.getRol().getId();	
-	}
 	%>
 
 <!-- Navigation -->
@@ -63,10 +59,10 @@
 						</span>
 					</div> <!-- /input-group -->
 				</li>
-				<%	if (rol == Constantes.ROLE_ID_ADMIN) {	%>
-				<jsp:include page="nav-admin.jsp"></jsp:include>
+				<%	if (usuario.isAdmin()) {	%>
+				<%@include file="nav-admin.jsp"%>
 				<%	} else { %>
-				<jsp:include page="nav-user.jsp"></jsp:include>
+				<%@include file="nav-user.jsp"%>
 				<%} %>
 			</ul>
 		</div>
