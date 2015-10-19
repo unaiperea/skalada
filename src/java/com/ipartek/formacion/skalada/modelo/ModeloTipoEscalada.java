@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import com.ipartek.formacion.skalada.bean.TipoEscalada;
 import com.ipartek.formacion.skalada.bean.Usuario;
 
-public class ModeloTipoEscalada implements Persistable {
+public class ModeloTipoEscalada implements Persistable<TipoEscalada> {
 
 	private static final String TABLA = "tipo_escalada";
 	private static final String COL_ID = "id";
@@ -30,14 +30,12 @@ public class ModeloTipoEscalada implements Persistable {
 			+ COL_ID + "`= ? ;";
 
 	@Override()
-	public int save(Object o) {
+	public int save(TipoEscalada te) {
 		int resul = -1;
-		TipoEscalada te = null;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if (o != null) {
+		if (te != null) {
 			try {
-				te = (TipoEscalada) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
@@ -74,8 +72,8 @@ public class ModeloTipoEscalada implements Persistable {
 	}
 
 	@Override()
-	public Object getById(int id) {
-		Object resul = null;
+	public TipoEscalada getById(int id) {
+		TipoEscalada resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -105,8 +103,8 @@ public class ModeloTipoEscalada implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll(Usuario usuario) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<TipoEscalada> getAll(Usuario usuario) {
+		ArrayList<TipoEscalada> resul = new ArrayList<TipoEscalada>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -135,13 +133,11 @@ public class ModeloTipoEscalada implements Persistable {
 	}
 
 	@Override()
-	public boolean update(Object o) {
+	public boolean update(TipoEscalada te) {
 		boolean resul = false;
-		TipoEscalada te = null;
 		PreparedStatement pst = null;
-		if (o != null) {
+		if (te != null) {
 			try {
-				te = (TipoEscalada) o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
@@ -196,7 +192,7 @@ public class ModeloTipoEscalada implements Persistable {
 
 	/**
 	 * Mapea un ResultSet a TipoEscalada
-	 * 
+	 *
 	 * @param rs
 	 * @return
 	 * @throws SQLException
