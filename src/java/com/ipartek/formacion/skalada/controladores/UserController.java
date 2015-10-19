@@ -144,8 +144,7 @@ public class UserController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		Rol rol = new Rol(Constantes.ROLE_USER);
-		this.usuario = new Usuario(this.pNombre, this.pEmail, this.pPassword,
-				rol);
+		this.usuario = new Usuario("", "", "", rol);
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("titulo", "Crear nuevo Usuario");
 
