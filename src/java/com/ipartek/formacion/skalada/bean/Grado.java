@@ -3,7 +3,7 @@ package com.ipartek.formacion.skalada.bean;
 import java.io.Serializable;
 
 /**
- * Grado de dificultd para las vias
+ * Grado de dificultd para las vias.
  *
  * @author Curso
  *

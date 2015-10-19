@@ -11,7 +11,7 @@ import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloZona implements Persistable {
+public class ModeloZona implements Persistable<Zona> {
 
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
@@ -36,14 +36,12 @@ public class ModeloZona implements Persistable {
 			+ "`= ? ;";
 
 	@Override()
-	public int save(Object o) {
+	public int save(Zona z) {
 		int resul = -1;
-		Zona z = null;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if (o != null) {
+		if (z != null) {
 			try {
-				z = (Zona) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
@@ -85,8 +83,8 @@ public class ModeloZona implements Persistable {
 	}
 
 	@Override()
-	public Object getById(int id) {
-		Object resul = null;
+	public Zona getById(int id) {
+		Zona resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -116,8 +114,8 @@ public class ModeloZona implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll(Usuario usuario) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Zona> getAll(Usuario u) {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -146,13 +144,11 @@ public class ModeloZona implements Persistable {
 	}
 
 	@Override()
-	public boolean update(Object o) {
+	public boolean update(Zona z) {
 		boolean resul = false;
-		Zona z = null;
 		PreparedStatement pst = null;
-		if (o != null) {
+		if (z != null) {
 			try {
-				z = (Zona) o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
@@ -220,7 +216,7 @@ public class ModeloZona implements Persistable {
 		ModeloUsuario mu = new ModeloUsuario();
 		int validado = 0;
 		validado = rs.getInt(COL_PUBLICADO);
-		creador = (Usuario) mu.getById(rs.getInt(COL_CREADOR));
+		creador = mu.getById(rs.getInt(COL_CREADOR));
 		resul = new Zona(rs.getString(COL_NOMBRE));
 		resul.setId(rs.getInt(COL_ID));
 		resul.setUsuario(creador);
@@ -235,8 +231,8 @@ public class ModeloZona implements Persistable {
 	}
 
 	// TODO OBTENER SECTORES DE UNA VIA
-	public ArrayList<Object> getSectores(int id) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Zona> getSectores(int id) {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
 
 		return resul;
 	}

@@ -20,11 +20,9 @@ public class ModeloSector implements Persistable<Sector> {
 	private static final Logger LOG = Logger.getLogger(ModeloSector.class);
 
 	private static final String TABLA_SECTOR = "sector";
-	private static final String TABLA_ZONA = "zona";
 	private static final String COL_ID = "id";
 	private static final String COL_NOMBRE = "nombre";
 	private static final String COL_ZONA_ID = "id_zona";
-	private static final String COL_ZONA_NOMBRE = "zona_nombre";
 	private static final String COL_IMAGEN = "imagen";
 
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA_SECTOR
@@ -217,7 +215,7 @@ public class ModeloSector implements Persistable<Sector> {
 
 	/**
 	 * Modificar Sector comprobando Autorizacion del Usuario
-	 * 
+	 *
 	 * @param s
 	 *            {@code Sector} a modificar
 	 * @param usuario

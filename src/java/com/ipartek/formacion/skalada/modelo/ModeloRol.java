@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
 
-public class ModeloRol implements Persistable {
+public class ModeloRol implements Persistable<Rol> {
 
 	private static final String TABLA = "rol";
 	private static final String COL_ID = "id";
@@ -30,14 +30,12 @@ public class ModeloRol implements Persistable {
 			+ COL_ID + "`= ? ;";
 
 	@Override()
-	public int save(Object o) {
+	public int save(Rol r) {
 		int resul = -1;
-		Rol r = null;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if (o != null) {
+		if (r != null) {
 			try {
-				r = (Rol) o;
 				Connection con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
@@ -74,8 +72,8 @@ public class ModeloRol implements Persistable {
 	}
 
 	@Override()
-	public Object getById(int id) {
-		Object resul = null;
+	public Rol getById(int id) {
+		Rol resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -105,8 +103,8 @@ public class ModeloRol implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll(Usuario usuario) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Rol> getAll(Usuario usuario) {
+		ArrayList<Rol> resul = new ArrayList<Rol>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -135,13 +133,11 @@ public class ModeloRol implements Persistable {
 	}
 
 	@Override()
-	public boolean update(Object o) {
+	public boolean update(Rol r) {
 		boolean resul = false;
-		Rol r = null;
 		PreparedStatement pst = null;
-		if (o != null) {
+		if (r != null) {
 			try {
-				r = (Rol) o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
@@ -196,7 +192,7 @@ public class ModeloRol implements Persistable {
 
 	/**
 	 * Mapea un ResultSet a Rol
-	 * 
+	 *
 	 * @param rs
 	 * @return
 	 * @throws SQLException
