@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Versión del servidor:         5.6.17 - MySQL Community Server (GPL)
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             9.1.0.4867
+-- HeidiSQL Versión:             9.3.0.4984
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -189,33 +189,37 @@ CREATE TABLE IF NOT EXISTS `via` (
   `id_grado` int(11) NOT NULL,
   `id_tipo_escalada` int(11) NOT NULL,
   `id_sector` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `validado` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`,`id_grado`,`id_tipo_escalada`,`id_sector`),
   KEY `fk_via_grado_idx` (`id_grado`),
   KEY `fk_via_tipo_escalada1_idx` (`id_tipo_escalada`),
   KEY `fk_via_sector1_idx` (`id_sector`),
+  KEY `FK_via_usuario` (`id_usuario`),
   CONSTRAINT `fk_via_grado` FOREIGN KEY (`id_grado`) REFERENCES `grado` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_via_sector1` FOREIGN KEY (`id_sector`) REFERENCES `sector` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_via_tipo_escalada1` FOREIGN KEY (`id_tipo_escalada`) REFERENCES `tipo_escalada` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_via_tipo_escalada1` FOREIGN KEY (`id_tipo_escalada`) REFERENCES `tipo_escalada` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_via_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.via: ~14 rows (aproximadamente)
 DELETE FROM `via`;
 /*!40000 ALTER TABLE `via` DISABLE KEYS */;
-INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`) VALUES
-	(1, 'Irentxo', 30, 'Mantenida', 10, 8, 1),
-	(2, 'Bosque de los Inurios\r\n', 18, 'Vía con 5 movimientos muy duros', 12, 8, 1),
-	(3, 'Normal', 120, 'Larga y bonita vía con pasos de todo tipo. Reequipada con químicos en su totalidad', 8, 8, 2),
-	(4, 'La Cabra de Judas\r\n', 400, 'A1 de artificial. Roca buena en general. Material: Fisureros, cordinos, estribos', 11, 4, 3),
-	(5, 'María chimenea', 140, 'Último largo bastante lavado, técnica y de coco', 9, 8, 4),
-	(6, 'Arista de Urrestei', 300, 'Grado asequible para utilizar tu chatarra', 9, 2, 5),
-	(7, 'Oroimen\r\n', 45, 'Equipada por Carmen Urkiola, Ricardo Garaigordobil y Manu Marcos\r\n', 10, 8, 6),
-	(8, 'Amaituezina', 50, 'Reunión común con la 7', 10, 8, 6),
-	(9, 'Abiadura handiko trena KK\r\n', 30, 'Excelente roca\r\n', 13, 8, 6),
-	(10, 'Ezinezkoa\r\n', 30, 'Buena roca caliza\r\n', 19, 8, 6),
-	(11, 'Gaviotas', 1300, 'Escalar a partir de Septiembre por nidificación de aves\r\n', 9, 8, 8),
-	(12, 'Directa de los Martínez\r\n', 160, 'Material necesario: 8 cintas exprés, juego completo de friends desde el 0,3 de los camalot hasta el n2 (nº3 y empotradores opcionales) casco imprescindible\r\n', 8, 2, 9),
-	(13, 'Orbayu\r\n', 500, 'La vía clásica más dificil del mundo\r\n', 28, 3, 10),
-	(14, 'Murciana 78\r\n', 600, 'Dominar el 6b+ a vista. Pasos difíciles: A1\r\n', 21, 8, 10);
+INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES
+	(1, 'Irentxo', 30, 'Mantenida', 10, 8, 1, 1, b'0'),
+	(2, 'Bosque de los Inurios\r\n', 18, 'Vía con 5 movimientos muy duros', 12, 8, 1, 1, b'0'),
+	(3, 'Normal', 120, 'Larga y bonita vía con pasos de todo tipo. Reequipada con químicos en su totalidad', 8, 8, 2, 1, b'0'),
+	(4, 'La Cabra de Judas\r\n', 400, 'A1 de artificial. Roca buena en general. Material: Fisureros, cordinos, estribos', 11, 4, 3, 1, b'0'),
+	(5, 'María chimenea', 140, 'Último largo bastante lavado, técnica y de coco', 9, 8, 4, 1, b'0'),
+	(6, 'Arista de Urrestei', 300, 'Grado asequible para utilizar tu chatarra', 9, 2, 5, 1, b'0'),
+	(7, 'Oroimen\r\n', 45, 'Equipada por Carmen Urkiola, Ricardo Garaigordobil y Manu Marcos\r\n', 10, 8, 6, 1, b'0'),
+	(8, 'Amaituezina', 50, 'Reunión común con la 7', 10, 8, 6, 1, b'0'),
+	(9, 'Abiadura handiko trena KK\r\n', 30, 'Excelente roca\r\n', 13, 8, 6, 1, b'0'),
+	(10, 'Ezinezkoa\r\n', 30, 'Buena roca caliza\r\n', 19, 8, 6, 1, b'0'),
+	(11, 'Gaviotas', 1300, 'Escalar a partir de Septiembre por nidificación de aves\r\n', 9, 8, 8, 1, b'0'),
+	(12, 'Directa de los Martínez\r\n', 160, 'Material necesario: 8 cintas exprés, juego completo de friends desde el 0,3 de los camalot hasta el n2 (nº3 y empotradores opcionales) casco imprescindible\r\n', 8, 2, 9, 1, b'0'),
+	(13, 'Orbayu\r\n', 500, 'La vía clásica más dificil del mundo\r\n', 28, 3, 10, 1, b'0'),
+	(14, 'Murciana 78\r\n', 600, 'Dominar el 6b+ a vista. Pasos difíciles: A1\r\n', 21, 8, 10, 1, b'0');
 /*!40000 ALTER TABLE `via` ENABLE KEYS */;
 
 
