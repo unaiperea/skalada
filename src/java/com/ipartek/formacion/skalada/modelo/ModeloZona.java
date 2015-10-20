@@ -21,19 +21,11 @@ public class ModeloZona implements Persistable<Zona> {
 	private static final String COL_FECHA_CREADO = "fecha_creado";
 	private static final String COL_FECHA_MODIFICADO = "fecha_modificado";
 
-	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`"
-			+ COL_NOMBRE + "`, `" + COL_CREADOR + "`, `" + COL_PUBLICADO
-			+ "`) VALUES (?,?,?);";
-	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
-			+ "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM `"
-			+ TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM "
-			+ TABLA;
-	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
-			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
-			+ "`=?, `" + COL_FECHA_MODIFICADO + "`=? WHERE `" + COL_ID
-			+ "`= ? ;";
+	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_CREADOR + "`, `" + COL_PUBLICADO + "`, `longitud`, `latitud`) VALUES (?,?,?,?,?);";
+	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `longitud`, `latitud` FROM " + TABLA;
+	private static final String SQL_GETONE = SQL_GETALL + " WHERE `" + COL_ID + "`= ?";
+	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO+ "`=?, `" + COL_FECHA_MODIFICADO + "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID+ "`= ? ;";
 
 	@Override()
 	public int save(Zona z) {
@@ -52,6 +44,8 @@ public class ModeloZona implements Persistable<Zona> {
 				} else {
 					pst.setInt(3, 0);
 				}
+				pst.setDouble(4, z.getLongitud());
+				pst.setDouble(5, z.getLatitud());
 				if (pst.executeUpdate() != 1) {
 					throw new Exception("No se ha realizado la insercion");
 				} else {
@@ -156,7 +150,9 @@ public class ModeloZona implements Persistable<Zona> {
 				pst.setInt(2, z.getUsuario().getId());
 				pst.setBoolean(3, z.isValidado());
 				pst.setTimestamp(4, z.getFechaModificado());
-				pst.setInt(5, z.getId());
+				pst.setDouble(5, z.getLongitud());
+				pst.setDouble(6, z.getLatitud());
+				pst.setInt(7, z.getId());
 				if (pst.executeUpdate() == 1) {
 					resul = true;
 				}
@@ -227,6 +223,8 @@ public class ModeloZona implements Persistable<Zona> {
 		}
 		resul.setFechaCreado(rs.getTimestamp(COL_FECHA_CREADO));
 		resul.setFechaModificado(rs.getTimestamp(COL_FECHA_MODIFICADO));
+		resul.setLongitud(rs.getDouble("longitud"));
+		resul.setLatitud(rs.getDouble("latitud"));
 		return resul;
 	}
 

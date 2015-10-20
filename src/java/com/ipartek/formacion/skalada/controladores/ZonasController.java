@@ -39,6 +39,8 @@ public class ZonasController extends HttpServlet {
 	private int pID = -1; // ID no valido
 	private String pNombre;
 	private int validado;
+	private double pLongitud;
+	private double pLatitud;
 
 	/**
 	 * Este metodo se ejecuta solo la primera vez que se llama al servlet Se usa
@@ -204,7 +206,8 @@ public class ZonasController extends HttpServlet {
 		} else {
 			this.zona.setValidado(false);
 		}
-
+		this.zona.setLongitud(pLongitud);
+		this.zona.setLatitud(pLatitud);
 	}
 
 	/**
@@ -230,6 +233,9 @@ public class ZonasController extends HttpServlet {
 		} else {
 			this.validado = 0;
 		}
+		
+		this.pLongitud = Double.parseDouble(request.getParameter("longitud"));
+		this.pLatitud = Double.parseDouble(request.getParameter("latitud"));
 	}
 
 }

@@ -14,3 +14,10 @@
 }
 
 tr:hover{ background-color: pink;}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px
+  }

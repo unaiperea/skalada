@@ -1,10 +1,10 @@
-<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
-<%@page import="java.awt.Image"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="java.awt.Image"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
@@ -92,6 +92,34 @@
 				out.print("<div class='form-group col-lg-2'><label for='validado'>Validado</label><br><input type='checkbox' "+validado+" name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1></div></div>");
 			}
 		%>
+		
+<!-- SECTOR GEOLOCALIZACION -->
+			
+			<div class="form-group col-lg-3">
+	        	<label for="longitud">Longitud</label>
+	           	<input type="text" class="form-control" name="longitud" value="<%=sector.getLongitud()%>">
+	    	</div>
+	    	<div class="form-group col-lg-3">
+	           	<label for="latitud">Latitud</label>
+	           	<input type="text" class="form-control" name="latitud" value="<%=sector.getLatitud()%>">
+	        </div>	
+	        <div class="form-group col-lg-3">
+	        	<span>
+	        		<br><br>
+	        		<label>Mapa <i class="fa fa-map-o fa-fw"></i> </label>
+	        		<a class="showhide"><i class="fa fa-chevron-down"></i></a>
+	        	</span>
+	        </div>
+	        <div class="form-group col-lg-8">
+	        	<div id="map" class=""></div>
+	        </div>        
+
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+		<script src="dist/js/geomap.js"></script>
+     
+			
+<!-- END: SECTOR GEOLOCALIZACION -->
+			
 			<!-- Imagen -->
 			<div class="form-group col-lg-12">
 				<label for="imagen">Imagen</label> <input type="file" id="imagen"
@@ -99,14 +127,14 @@
 
 				<%
 					String img_path = Constantes.IMG_DEFAULT_SECTOR;
-												      			//imagen subida al servidor	
-												      			if ( !img_path.equals( sector.getImagen())){
-												      				img_path = Constantes.IMG_WEP_PATH + sector.getImagen();
-												      				
-												      			//imagen por defecto del proyecto	
-												      			}else{
-												      				img_path = "../img/" + img_path;
-												      			}
+	      			//imagen subida al servidor	
+	      			if ( !img_path.equals( sector.getImagen())){
+	      				img_path = Constantes.IMG_WEP_PATH + sector.getImagen();
+	      				
+	      			//imagen por defecto del proyecto	
+	      			}else{
+	      				img_path = "../img/" + img_path;
+	      			}
 				%>
 
 				<img src="<%=img_path%>"

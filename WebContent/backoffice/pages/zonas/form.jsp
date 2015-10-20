@@ -81,6 +81,36 @@
 				}
 			%>
 			
+<!-- GEOLOCALIZACION -->
+			<div class="row">
+				<div class="form-group col-lg-3">
+	           		<label for="longitud">Longitud</label>
+	           		<input type="text" class="form-control" name="longitud" value="<%=zona.getLongitud()%>">
+	          	</div>
+	          	<div class="form-group col-lg-3">
+	           		<label for="latitud">Latitud</label>
+	           		<input type="text" class="form-control" name="latitud" value="<%=zona.getLatitud()%>">
+	          	</div>	
+	          	<div class="form-group col-lg-3">
+	        		<span>
+	        			<br><br>
+	        			<label>Mapa <i class="fa fa-map-o fa-fw"></i> </label>
+	        			<a class="showhide"><i class="fa fa-chevron-down"></i></a>
+	        		</span>
+	        	</div>
+	       		<div class="form-group col-lg-8">
+	        		<div id="map" class=""></div>
+	        	</div>        
+
+				<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+				<script src="dist/js/geomap.js"></script>
+				
+			</div>
+			
+			
+<!-- END: GEOLOCALIZACION -->
+
+
 			<!-- Botonera -->
 			<div class="form-group">
 								

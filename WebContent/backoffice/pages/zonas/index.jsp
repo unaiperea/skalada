@@ -73,6 +73,8 @@
 	                <th>Creado el</th>
 	                <th>Modificado el</th>
 	                <th>Validado</th>
+	                <th>Longitud</th>
+	                <th>Latitud</th>
 	            </tr>
 	        </thead> 
 	        	 
@@ -111,6 +113,8 @@
 		                }
 		                %>
 		                <td><span class="label label-<%=val_class%>"><%=validado %></span></td>
+		                <td><%=z.getLongitud()%></td>
+		                <td><%=z.getLatitud()%></td>
 		            </tr>	            
 	           <%
 	           		} //end for
