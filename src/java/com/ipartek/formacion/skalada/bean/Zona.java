@@ -21,6 +21,9 @@ public class Zona implements Serializable {
 	private boolean validado;
 	private Timestamp fechaCreado;
 	private Timestamp fechaModificado;
+	
+	private double latitud;
+	private double longitud;
 
 	/**
 	 * Constructor
@@ -34,6 +37,10 @@ public class Zona implements Serializable {
 		ModeloUsuario mu = new ModeloUsuario();
 		Usuario admin = (Usuario) mu.getById(1);
 		this.setUsuario(admin);
+		
+		this.setLatitud(0);
+		this.setLongitud(0);	
+		
 	}
 
 	public Zona(String nombre, Usuario creador) {
@@ -43,6 +50,10 @@ public class Zona implements Serializable {
 		this.setSectores(new ArrayList<Sector>());
 		this.setUsuario(creador);
 		this.setValidado(false);
+		
+		this.setLatitud(0);
+		this.setLongitud(0);	
+		
 	}
 
 	/**
@@ -147,6 +158,24 @@ public class Zona implements Serializable {
 	public void setValidado(boolean publicado) {
 		this.validado = publicado;
 	}
+	
+	public double getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(double latitud) {
+		this.latitud = latitud;
+	}
+
+	public double getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(double longitud) {
+		this.longitud = longitud;
+	}
+	
+	
 
 	/*
 	 * (non-Javadoc)

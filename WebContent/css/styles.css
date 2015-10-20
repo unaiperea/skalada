@@ -16,3 +16,10 @@
 table.dataTable thead th, table.dataTable thead td{
 	padding: 10px 5px !important;
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px
+  }

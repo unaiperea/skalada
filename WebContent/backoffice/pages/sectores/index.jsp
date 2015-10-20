@@ -63,7 +63,9 @@
 	                <th>Validado</th>
 	                <%if (isAdmin){%>
 	                	<th>Usuario</th>
-	                <%}%>	
+	                <%}%>
+	                <th>Longitud</th>
+	                <th>Latitud</th>	
 	                
 	            </tr>
 	        </thead> 
@@ -104,6 +106,9 @@
 	                		</td>
 	                			
 	                	<%}%>	
+	                	
+	                	<td><%=s.getLongitud()%></td>
+		                <td><%=s.getLatitud()%></td>
 		                
 		            </tr>	            
 	           <%

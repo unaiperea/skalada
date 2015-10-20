@@ -33,6 +33,11 @@
     <script>
 	    $(document).ready(function() {
 	    	
+	    	$('.showhide2').click(function() {
+	    		alert('Click');
+	    		$('#map').toggleClass('hidden');	    		
+	    	});
+	    	
 	    	//Habilitar DataTable
 	        $('#tabla').DataTable({
 	                responsive: true

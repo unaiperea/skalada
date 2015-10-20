@@ -52,7 +52,9 @@ public class SectoresController extends HttpServlet {
 	private int pIDZona;
 	private int pIDusuario;
 	private boolean pValidado;
-
+	private double pLongitud;
+	private double pLatitud;
+	
 	// Imagen File
 	private File file;
 
@@ -299,6 +301,8 @@ public class SectoresController extends HttpServlet {
 
 		this.sector.setValidado(this.pValidado);
 		this.sector.setUsuario(uSector);
+		this.sector.setLongitud(pLongitud);
+		this.sector.setLatitud(pLatitud);
 
 	}
 
@@ -376,9 +380,11 @@ public class SectoresController extends HttpServlet {
 			this.pIDusuario = this.usuario.getId();
 		}
 
-		this.pValidado = (dataParameters.get("validado") != null) ? true
-				: false;
-
+		this.pValidado = (dataParameters.get("validado") != null) ? true: false;
+		
+		this.pLongitud = Double.parseDouble(dataParameters.get("longitud"));
+		this.pLatitud = Double.parseDouble(dataParameters.get("latitud"));
+		
 	}
 
 }
