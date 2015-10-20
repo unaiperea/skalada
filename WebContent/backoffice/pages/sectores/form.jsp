@@ -38,19 +38,19 @@
 		<div class="row">
 			<div class="form-group col-lg-1">
 				<!-- Mostramon el input text, pero se submita el hidden -->
-				<label for="id">ID</label> <input type="hidden" name="id"
-					value="<%=sector.getId()%>"> <input type="text"
-					class="form-control" value="<%=sector.getId()%>" disabled>
+				<label for="id">ID</label>
+				<input type="hidden" name="id"	value="<%=sector.getId()%>">
+				<input type="text" class="form-control" value="<%=sector.getId()%>" disabled>
 			</div>
 
 			<div class="form-group col-lg-3">
-				<label for="nombre">Nombre</label> <input type="text"
-					class="form-control" name="nombre" value="<%=sector.getNombre()%>">
+				<label for="nombre">Nombre</label>
+				<input type="text" class="form-control" name="nombre" value="<%=sector.getNombre()%>">
 			</div>
 
 			<div class="form-group col-lg-3">
-				<label for="zona">Zona</label> <select class="form-control"
-					name="zona">
+				<label for="zona">Zona</label>
+				<select class="form-control" name="zona">
 					<%
 						for (int i = 0 ; i < zonas.size() ; i++){
 					%>
@@ -58,11 +58,11 @@
 					<%
 						if( zonas.get(i).getId() == sector.getZona().getId() ){
 					%>
-					<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+							<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
 					<%
 						}else{
 					%>
-					<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
+							<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
 					<%
 						}//end else  						
 														  					}//end for

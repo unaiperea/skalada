@@ -15,17 +15,18 @@ import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.TipoEscalada;
+import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Via;
-import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloGrado;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloTipoEscalada;
+import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
  * Servlet implementation class ViasController
- * 
+ *
  * @author Curso
  */
 public class ViasController extends HttpServlet {
@@ -34,6 +35,8 @@ public class ViasController extends HttpServlet {
 	private RequestDispatcher dispatcher = null;
 	private ModeloVia modeloVia = null;
 	private Via via = null;
+	private Usuario admin = null;
+	private Usuario usuario = null;
 
 	private ModeloGrado modeloGrado = null;
 	private Grado grado = null;
@@ -42,6 +45,7 @@ public class ViasController extends HttpServlet {
 	private ModeloSector modeloSector = null;
 	private Sector sector = null;
 	private ModeloZona modeloZona = null;
+	private ModeloUsuario modeloUsuario = null;
 
 	// parametros
 	private int pAccion = Constantes.ACCION_LISTAR; // Accion por defecto
@@ -52,6 +56,8 @@ public class ViasController extends HttpServlet {
 	private int pIDGrado;
 	private int pIDTipoEscalada;
 	private int pIDSector;
+	private Usuario pUsuario;
+	private boolean pValidado;
 
 	private Mensaje msg;
 
@@ -67,6 +73,17 @@ public class ViasController extends HttpServlet {
 		this.modeloTipoEscalada = new ModeloTipoEscalada();
 		this.modeloSector = new ModeloSector();
 		this.modeloZona = new ModeloZona();
+		this.modeloUsuario = new ModeloUsuario();
+		this.admin = this.modeloUsuario.getById(Constantes.ROLE_ID_ADMIN);
+	}
+
+	@Override
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		this.usuario = (Usuario) request.getSession().getAttribute(
+				Constantes.KEY_SESSION_USER);
+		super.service(request, response);
 	}
 
 	/**
@@ -117,13 +134,14 @@ public class ViasController extends HttpServlet {
 
 	/**
 	 * Obtiene todas las vias del modelo y carga dispatch con index.jsp
-	 * 
+	 *
 	 * @see backoffice/pages/via/index.jsp
 	 * @param request
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("vias", this.modeloVia.getAll(null));
+		request.getSession().setAttribute("vias",
+				this.modeloVia.getAll(this.usuario));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);
 	}
@@ -131,13 +149,13 @@ public class ViasController extends HttpServlet {
 	private void eliminar(HttpServletRequest request,
 			HttpServletResponse response) {
 		if (this.modeloVia.delete(this.pID)) {
-			this.msg = new Mensaje(Mensaje.MSG_DANGER,
+			this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
 					"Registro eliminado correctamente");
 		} else {
-			this.msg = new Mensaje(Mensaje.MSG_WARNING,
+			this.msg = new Mensaje(Mensaje.MSG_DANGER,
 					"Error al eliminar el registro [id(" + this.pID + ")]");
 		}
-		request.setAttribute("msg", this.msg);
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
@@ -145,15 +163,20 @@ public class ViasController extends HttpServlet {
 		this.via = new Via("");
 		this.via.setGrado(new Grado(""));
 		this.via.setTipoEscalada(new TipoEscalada(""));
-		this.via.setSector(new Sector("", new Zona("")));
+		this.via.setSector(this.modeloSector.getById(1));
+		// Al crear nuevo registro se muestra el primer sector
+		this.via.setUsuario(this.usuario);
+		this.via.setValidado(false);
+		this.via.setDescripcion("");
 		request.setAttribute("via", this.via);
 		request.setAttribute("titulo", "Crear nueva Via");
 		request.setAttribute("metodo", "Guardar");
 		request.setAttribute("grados", this.modeloGrado.getAll(null));
 		request.setAttribute("tipoEscaladas",
 				this.modeloTipoEscalada.getAll(null));
-		request.setAttribute("sectores", this.modeloSector.getAll(null));
-		request.setAttribute("zonas", this.modeloZona.getAll(null));
+		request.setAttribute("sectores", this.modeloSector.getAllByZona(1));
+		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
 
@@ -167,11 +190,12 @@ public class ViasController extends HttpServlet {
 		request.setAttribute("grados", this.modeloGrado.getAll(null));
 		request.setAttribute("tipoEscaladas",
 				this.modeloTipoEscalada.getAll(null));
-		request.setAttribute("zonas", this.modeloZona.getAll(null));
+		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
 		request.setAttribute(
 				"sectores",
 				this.modeloSector.getAllByZona(this.via.getSector().getZona()
 						.getId()));
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
 	}
@@ -203,17 +227,18 @@ public class ViasController extends HttpServlet {
 			if (this.modeloVia.update(this.via)) {
 				this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
 						"Modificado correctamente el registro [id(" + this.pID
-								+ ")]");
+						+ ")]");
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_DANGER,
 						"Error al modificar el registro [id(" + this.pID + ")]");
 			}
 		}
 
-		this.listar(request, response);
+		// this.listar(request, response);
 
-		request.setAttribute("msg", this.msg);
-		this.dispatcher.forward(request, response);
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath()
+				+ "/backoffice/vias?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 
@@ -221,8 +246,8 @@ public class ViasController extends HttpServlet {
 	 * Crea un Objeto {@code Via} Con los parametros recibidos
 	 */
 	private void crearObjetoVia() {
-		this.grado = (Grado) this.modeloGrado.getById(this.pIDGrado);
-		this.tipoEscalada = (TipoEscalada) this.modeloTipoEscalada
+		this.grado = this.modeloGrado.getById(this.pIDGrado);
+		this.tipoEscalada = this.modeloTipoEscalada
 				.getById(this.pIDTipoEscalada);
 		this.sector = this.modeloSector.getById(this.pIDSector);
 
@@ -231,17 +256,23 @@ public class ViasController extends HttpServlet {
 			this.via.setGrado(this.grado);
 			this.via.setTipoEscalada(this.tipoEscalada);
 			this.via.setSector(this.sector);
+			this.via.setLongitud(this.pLongitud);
+			this.via.setDescripcion(this.pDescripcion);
+			this.via.setNombre(this.pNombre);
+			this.via.setUsuario(this.pUsuario);
+			this.via.setValidado(this.pValidado);
 		} else {
 			this.via = new Via(this.pNombre, this.pLongitud, this.grado,
-					this.tipoEscalada, this.sector);
+					this.tipoEscalada, this.sector, this.pUsuario);
 			this.via.setId(this.pID);
 			this.via.setDescripcion(this.pDescripcion);
+			this.via.setValidado(this.pValidado);
 		}
 	}
 
 	/**
 	 * Recoger los parametros enviados desde el formulario
-	 * 
+	 *
 	 * @see backoffice\pages\vias\form.jsp
 	 * @param request
 	 * @throws UnsupportedEncodingException
@@ -264,7 +295,15 @@ public class ViasController extends HttpServlet {
 		this.pIDTipoEscalada = Integer.parseInt(request
 				.getParameter("tipo_escalada"));
 		this.pIDSector = Integer.parseInt(request.getParameter("sector"));
-
+		if (request.getParameter("creador") != "") {
+			this.pUsuario = (this.modeloUsuario.getById(Integer
+					.parseInt(request.getParameter("creador"))));
+		}
+		if (request.getParameter("validado") != null) {
+			this.pValidado = true;
+		} else {
+			this.pValidado = false;
+		}
 	}
 
 }

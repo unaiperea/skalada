@@ -43,6 +43,16 @@ public class Via implements Serializable {
 	 */
 	private Sector sector;
 
+	/**
+	 * Usuario al que pertenece la via
+	 */
+	private Usuario usuario;
+
+	/**
+	 * Indica si la via esta validada o no. Por defecto siempre false
+	 */
+	private boolean validado;
+
 	// **********************************
 	// **** Constructores ****
 	// **********************************
@@ -59,7 +69,7 @@ public class Via implements Serializable {
 	 *            sector
 	 */
 	public Via(String nombre, int longitud, Grado grado,
-			TipoEscalada tipoEscalada, Sector sector) {
+			TipoEscalada tipoEscalada, Sector sector, Usuario usuario) {
 		super();
 		this.setId(-1);
 		this.setNombre(nombre);
@@ -67,6 +77,8 @@ public class Via implements Serializable {
 		this.setGrado(grado);
 		this.setTipoEscalada(tipoEscalada);
 		this.setSector(sector);
+		this.setUsuario(usuario);
+		this.setValidado(false);
 	}
 
 	/**
@@ -79,6 +91,8 @@ public class Via implements Serializable {
 		this.setGrado(null);
 		this.setTipoEscalada(null);
 		this.setSector(null);
+		this.setUsuario(null);
+		this.setValidado(false);
 	}
 
 	// **********************************
@@ -140,14 +154,50 @@ public class Via implements Serializable {
 		this.sector = sector;
 	}
 
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	/**
+	 * @param usuario
+	 *            the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the validado
+	 */
+	public boolean isValidado() {
+		return this.validado;
+	}
+
+	/**
+	 * @param validado
+	 *            the validado to set
+	 */
+	public void setValidado(boolean validado) {
+		this.validado = validado;
+	}
+
 	// **********************************
 	// **** ToString() ****
 	// **********************************
-	@Override()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
 	public String toString() {
 		return "Via [id=" + this.id + ", nombre=" + this.nombre + ", grado="
 				+ this.grado + ", longitud=" + this.longitud + ", descripcion="
 				+ this.descripcion + ", tipoEscalada=" + this.tipoEscalada
-				+ ", sector=" + this.sector + "]";
+				+ ", sector=" + this.sector + ", usuario=" + this.usuario
+				+ ", validado=" + this.validado + "]";
 	}
 }

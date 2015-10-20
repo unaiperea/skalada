@@ -73,7 +73,7 @@
 		                <%
 		                String validado = "";
 		                String val_class ="";
-		                if (u.getValidado()==1){
+		                if (u.isValidado()){
 		                	validado="Validado";
 		                	val_class="success";
 		                }else{

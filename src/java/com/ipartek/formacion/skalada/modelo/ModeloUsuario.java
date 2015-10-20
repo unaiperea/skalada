@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
 
@@ -208,7 +209,11 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				pst.setString(1, u.getEmail());
 				pst.setString(2, u.getNombre());
 				pst.setString(3, u.getPassword());
-				pst.setInt(4, u.getValidado());
+				if (u.isValidado()) {
+					pst.setInt(4, Constantes.VALIDADO);
+				} else {
+					pst.setInt(4, Constantes.NO_VALIDADO);
+				}
 				pst.setInt(5, u.getRol().getId());
 				pst.setString(6, u.getToken());
 				pst.setInt(7, u.getId());
@@ -274,7 +279,12 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		resul = new Usuario(rs.getString("nombre"), rs.getString("email"),
 				rs.getString("password"), rol);
 		resul.setId(rs.getInt("id"));
-		resul.setValidado(rs.getInt("validado"));
+		if (rs.getInt("validado") == 1) {
+			resul.setValidado(true);
+		} else {
+			resul.setValidado(false);
+		}
+
 		resul.setToken(rs.getString("token"));
 		return resul;
 	}

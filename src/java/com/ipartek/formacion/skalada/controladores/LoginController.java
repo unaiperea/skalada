@@ -92,11 +92,11 @@ public class LoginController extends HttpServlet {
 			// validar los datos
 			// comprobamos con la BBDD
 
-			this.usuario = (Usuario) MODELOUSUARIO.getByEmail(this.pEmail);
+			this.usuario = MODELOUSUARIO.getByEmail(this.pEmail);
 			if (this.usuario != null) {
 				if (this.usuario.getEmail().equals(this.pEmail)
 						&& this.usuario.getPassword().equals(this.pPassword)) {
-					if (this.usuario.getValidado() != 0) {
+					if (this.usuario.isValidado()) {
 						// salvar session
 						this.session.setAttribute(Constantes.KEY_SESSION_USER,
 								this.usuario);

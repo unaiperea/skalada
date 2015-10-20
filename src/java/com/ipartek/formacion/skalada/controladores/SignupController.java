@@ -19,7 +19,7 @@ import com.ipartek.formacion.skalada.util.SendMail;
 
 /**
  * Servlet implementation class RegistroController
- * 
+ *
  * @author Curso
  */
 public class SignupController extends HttpServlet {
@@ -85,7 +85,7 @@ public class SignupController extends HttpServlet {
 
 	private void mostrarRecuperarPass(HttpServletRequest request,
 			HttpServletResponse response) {
-		this.usuario = (Usuario) this.modeloUsuario.getByEmail(this.pEmail);
+		this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 		request.setAttribute("email", this.pEmail);
 		request.setAttribute("token", this.usuario.getToken());
 		this.dispatcher = request
@@ -216,12 +216,11 @@ public class SignupController extends HttpServlet {
 				break;
 			case Constantes.ACCION_PASS_OLVIDADO:
 				this.pEmail = request.getParameter("email-olvidado");
-				this.usuario = (Usuario) this.modeloUsuario
-						.getByEmail(this.pEmail);
+				this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 				if (this.usuario != null) {
 					this.usuario.setToken();
 					this.modeloUsuario.update(this.usuario);
-					if (this.usuario.getValidado() == 1) {
+					if (this.usuario.isValidado()) {
 						SendMail mail = new SendMail();
 						mail.setDestinatario(this.pEmail);
 						mail.setAsunto("Recuperacion de password");
@@ -229,7 +228,7 @@ public class SignupController extends HttpServlet {
 						params.put("{usuario}", this.pEmail);
 						params.put("{url}",
 								Constantes.URL_PASS_OLVIDADO + this.pEmail
-								+ "&tkn=" + this.usuario.getToken());
+										+ "&tkn=" + this.usuario.getToken());
 						params.put(
 								"{contenido}",
 								"Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
@@ -262,8 +261,7 @@ public class SignupController extends HttpServlet {
 				this.pToken = request.getParameter("token");
 				this.pPass = request.getParameter("password");
 
-				this.usuario = (Usuario) this.modeloUsuario
-						.getByEmail(this.pEmail);
+				this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 				if (this.usuario.getToken().equals(this.pToken)) {
 					if (this.modeloUsuario.resetPass(this.pEmail, this.pPass)) {
 						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,

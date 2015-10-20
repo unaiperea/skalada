@@ -141,7 +141,7 @@ public class ModeloSector implements Persistable<Sector> {
 		try {
 			Connection con = DataBaseHelper.getConnection();
 			if (usuario != null) {
-				if (Constantes.ROLE_ID_ADMIN == usuario.getRol().getId()) {
+				if (usuario.isAdmin()) {
 					pst = con.prepareStatement(SQL_GETALL);
 				} else {
 					pst = con.prepareStatement(SQL_GETALL_BY_USER);

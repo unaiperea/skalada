@@ -11,13 +11,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Volcando estructura de base de datos para eskalada
-DROP DATABASE IF EXISTS `eskalada`;
 CREATE DATABASE IF NOT EXISTS `eskalada` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `eskalada`;
 
 
 -- Volcando estructura para tabla eskalada.grado
-DROP TABLE IF EXISTS `grado`;
 CREATE TABLE IF NOT EXISTS `grado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(10) NOT NULL COMMENT 'Grado de dificultad de la via de escalada, por ejemplo: ',
@@ -26,9 +24,8 @@ CREATE TABLE IF NOT EXISTS `grado` (
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.grado: ~41 rows (aproximadamente)
-DELETE FROM `grado`;
 /*!40000 ALTER TABLE `grado` DISABLE KEYS */;
-INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
+INSERT IGNORE INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'I', 'Trepada sencilla'),
 	(2, 'II', 'Trepada fácil'),
 	(3, 'II+', 'Trepada'),
@@ -74,7 +71,6 @@ INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 
 
 -- Volcando estructura para tabla eskalada.rol
-DROP TABLE IF EXISTS `rol`;
 CREATE TABLE IF NOT EXISTS `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL DEFAULT '0',
@@ -83,16 +79,14 @@ CREATE TABLE IF NOT EXISTS `rol` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.rol: ~2 rows (aproximadamente)
-DELETE FROM `rol`;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
+INSERT IGNORE INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'Administrador', 'Administrador del sistema'),
 	(2, 'Usuario', 'Usuario estandar');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 
 
 -- Volcando estructura para tabla eskalada.sector
-DROP TABLE IF EXISTS `sector`;
 CREATE TABLE IF NOT EXISTS `sector` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -108,9 +102,8 @@ CREATE TABLE IF NOT EXISTS `sector` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.sector: ~11 rows (aproximadamente)
-DELETE FROM `sector`;
 /*!40000 ALTER TABLE `sector` DISABLE KEYS */;
-INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
+INSERT IGNORE INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
 	(1, 'Alluitz24', 1, 'default_sector.jpg', 0, 4),
 	(2, 'Tercer espolón', 1, 'default_sector.jpg', 1, 1),
 	(3, 'Alluitz2', 1, 'default_sector.jpg', 0, 4),
@@ -126,7 +119,6 @@ INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuar
 
 
 -- Volcando estructura para tabla eskalada.tipo_escalada
-DROP TABLE IF EXISTS `tipo_escalada`;
 CREATE TABLE IF NOT EXISTS `tipo_escalada` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -135,9 +127,8 @@ CREATE TABLE IF NOT EXISTS `tipo_escalada` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.tipo_escalada: ~11 rows (aproximadamente)
-DELETE FROM `tipo_escalada`;
 /*!40000 ALTER TABLE `tipo_escalada` DISABLE KEYS */;
-INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
+INSERT IGNORE INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'Libre, solo integral o natural', 'En este tipo de escalada sólo se utilizan los pies y las manos para progresar, sin fijar ningún medio de seguridad para evitar accidentes. Se suelen usar pies de gato para una mayor fijación.'),
 	(2, 'Clásica', 'Aquí el escalador va metiendo sus propios seguros en la pared para hacer una escalada más segura. Se pueden introducir los seguro en anclajes naturales (árboles, puentes de roca, puntas de roca, etc.) o en anclajes artificiales recuperables (fisureros, friends, clavos, nudos empotrados, etc.).'),
 	(3, 'Alpina', 'Cuando la escalada clásica se realiza en una montaña de gran altura, conllevando riesgos de nevadas, avalanchas, falta de oxígeno, etc, y con el fin de alcanzar la cima.'),
@@ -153,7 +144,6 @@ INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 
 
 -- Volcando estructura para tabla eskalada.usuario
-DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL DEFAULT '0',
@@ -168,19 +158,17 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada.usuario: ~4 rows (aproximadamente)
-DELETE FROM `usuario`;
+-- Volcando datos para la tabla eskalada.usuario: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
-	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, 'rmd461ebm6p2f4ks0680n7ob3l'),
+INSERT IGNORE INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
+	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, '16kluv6gn3h9mptj18f58ieis6'),
 	(2, 'degar00@gmail.com', 'Degar', '456456', 2, 1, '827gb5c31hbg2rt08fkfvj4mai'),
-	(3, 'juan@juan.juan', 'Juan', '123456', 2, 0, '1l7ah3bb9bc5glqq4eba1umjmn'),
-	(4, 'pepe@pepe.com', 'pepe', 'pepe', 2, 1, '5ej47c7nrj4qnv73bol0s54jn0');
+	(3, 'juan@juan.juan', 'Juan', '123456', 2, 0, 'dgmtcq96sjjcevunh4c349j2kj'),
+	(4, 'pepe@pepe.com', 'pepe', 'pepe', 2, 1, 'iv60sat58rcs1nbundsdfkgq63');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
 -- Volcando estructura para tabla eskalada.via
-DROP TABLE IF EXISTS `via`;
 CREATE TABLE IF NOT EXISTS `via` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
@@ -203,9 +191,8 @@ CREATE TABLE IF NOT EXISTS `via` (
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.via: ~14 rows (aproximadamente)
-DELETE FROM `via`;
 /*!40000 ALTER TABLE `via` DISABLE KEYS */;
-INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES
+INSERT IGNORE INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES
 	(1, 'Irentxo', 30, 'Mantenida', 10, 8, 1, 1, b'0'),
 	(2, 'Bosque de los Inurios\r\n', 18, 'Vía con 5 movimientos muy duros', 12, 8, 1, 1, b'0'),
 	(3, 'Normal', 120, 'Larga y bonita vía con pasos de todo tipo. Reequipada con químicos en su totalidad', 8, 8, 2, 1, b'0'),
@@ -224,7 +211,6 @@ INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_ti
 
 
 -- Volcando estructura para tabla eskalada.zona
-DROP TABLE IF EXISTS `zona`;
 CREATE TABLE IF NOT EXISTS `zona` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -238,10 +224,9 @@ CREATE TABLE IF NOT EXISTS `zona` (
   CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada.zona: ~7 rows (aproximadamente)
-DELETE FROM `zona`;
+-- Volcando datos para la tabla eskalada.zona: ~8 rows (aproximadamente)
 /*!40000 ALTER TABLE `zona` DISABLE KEYS */;
-INSERT INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
+INSERT IGNORE INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
 	(1, 'Atxarte', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
 	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
 	(3, 'Cabo Ogoño', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),

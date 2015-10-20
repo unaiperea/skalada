@@ -30,13 +30,14 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
 
 /**
  * Servlet implementation class SectoresController
- * 
+ *
  * @author Curso
  */
 public class SectoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Usuario usuario = null;
+	private Usuario admin = null;
 	private RequestDispatcher dispatcher = null;
 	private ModeloSector modeloSector = null;
 	private ModeloUsuario modeloUsuario = null;
@@ -65,6 +66,7 @@ public class SectoresController extends HttpServlet {
 		this.modeloSector = new ModeloSector();
 		this.modeloZona = new ModeloZona();
 		this.modeloUsuario = new ModeloUsuario();
+		this.admin = this.modeloUsuario.getById(Constantes.ROLE_ID_ADMIN);
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class SectoresController extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if (request.getParameter("id") != null
+			if ((request.getParameter("id") != null)
 					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
@@ -124,7 +126,7 @@ public class SectoresController extends HttpServlet {
 	/**
 	 * Obtiene todas los sectores del modeloSector y carga dispatch con
 	 * index.jsp
-	 * 
+	 *
 	 * @see backoffice/pages/sectores/index.jsp
 	 * @param request
 	 * @param response
@@ -140,7 +142,7 @@ public class SectoresController extends HttpServlet {
 
 		// Check Autorizacion
 		if (this.usuario.isAdmin()
-				|| this.sector.getUsuario().getId() == this.usuario.getId()) {
+				|| (this.sector.getUsuario().getId() == this.usuario.getId())) {
 
 			if (this.modeloSector.delete(this.pID)) {
 				request.setAttribute("msg-danger",
@@ -165,8 +167,8 @@ public class SectoresController extends HttpServlet {
 		this.sector.setUsuario(this.usuario);
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("titulo", "Crear nuevo Sector");
-		request.setAttribute("zonas", this.modeloZona.getAll(null));
-		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
+		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 
@@ -178,13 +180,14 @@ public class SectoresController extends HttpServlet {
 
 		// check autorizacion
 		if (this.usuario.isAdmin()
-				|| this.sector.getUsuario().getId() == this.usuario.getId()) {
+				|| (this.sector.getUsuario().getId() == this.usuario.getId())) {
 
 			request.setAttribute("sector", this.sector);
 			request.setAttribute("titulo", this.sector.getNombre()
 					.toUpperCase());
-			request.setAttribute("zonas", this.modeloZona.getAll(null));
-			request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
+			request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
+			request.setAttribute("usuarios",
+					this.modeloUsuario.getAll(this.admin));
 
 			this.dispatcher = request
 					.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
@@ -258,7 +261,7 @@ public class SectoresController extends HttpServlet {
 
 	/**
 	 * Se encarga de guardar la imagen del formulario en la carpeta de subidas
-	 * 
+	 *
 	 * @param request
 	 */
 	private void uploadFile(HttpServletRequest request) {
@@ -270,8 +273,8 @@ public class SectoresController extends HttpServlet {
 	 */
 	private void crearObjeto() {
 
-		this.zona = (Zona) this.modeloZona.getById(this.pIDZona);
-		Usuario uSector = (Usuario) this.modeloUsuario.getById(this.pIDusuario);
+		this.zona = this.modeloZona.getById(this.pIDZona);
+		Usuario uSector = this.modeloUsuario.getById(this.pIDusuario);
 
 		// TODO controlar si cambiamos el sector pero no la imagen
 
@@ -301,7 +304,7 @@ public class SectoresController extends HttpServlet {
 
 	/**
 	 * Recoger los parametros enviados desde el formulario
-	 * 
+	 *
 	 * @see backoffice\pages\sectores\form.jsp
 	 * @param request
 	 * @throws UnsupportedEncodingException
@@ -333,7 +336,7 @@ public class SectoresController extends HttpServlet {
 			// parametro formulario
 			if (item.isFormField()) {
 				dataParameters
-				.put(item.getFieldName(), item.getString("UTF-8"));
+						.put(item.getFieldName(), item.getString("UTF-8"));
 				// Imagen
 			} else {
 				String fileName = item.getName();

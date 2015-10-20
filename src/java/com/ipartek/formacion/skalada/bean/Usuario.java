@@ -16,7 +16,7 @@ public class Usuario implements Serializable {
 	private String nombre;
 	private String email;
 	private String password;
-	private int validado;
+	private boolean validado;
 	private Rol rol;
 	private String token;
 
@@ -82,11 +82,11 @@ public class Usuario implements Serializable {
 		this.password = password;
 	}
 
-	public int getValidado() {
+	public boolean isValidado() {
 		return this.validado;
 	}
 
-	public final void setValidado(int validado) {
+	public void setValidado(boolean validado) {
 		this.validado = validado;
 	}
 
@@ -109,7 +109,8 @@ public class Usuario implements Serializable {
 	public boolean isAdmin() {
 		boolean resul = false;
 
-		if (this.rol != null && Constantes.ROLE_ID_ADMIN == this.rol.getId()) {
+		if ((this.rol != null)
+				&& (Constantes.ROLE_ID_ADMIN == this.rol.getId())) {
 			resul = true;
 		}
 		return resul;

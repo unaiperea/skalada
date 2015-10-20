@@ -121,5 +121,6 @@ public final class Constantes {
 	public static final String KEY_SESSION_USER = "ss_user";
 
 	public static final int VALIDADO = 1;
+	public static final int NO_VALIDADO = 0;
 
 }

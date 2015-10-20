@@ -156,7 +156,7 @@ public class UserController extends HttpServlet {
 
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
-		this.usuario = (Usuario) this.modeloUsuario.getById(this.pID);
+		this.usuario = this.modeloUsuario.getById(this.pID);
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("titulo", this.usuario.getNombre().toUpperCase());
 
@@ -209,10 +209,14 @@ public class UserController extends HttpServlet {
 	 */
 	private void crearObjeto() {
 
-		Rol rol = (Rol) this.modeloRol.getById(this.pRolId);
+		Rol rol = this.modeloRol.getById(this.pRolId);
 		this.usuario = new Usuario(this.pNombre, this.pEmail, this.pPassword,
 				rol);
-		this.usuario.setValidado(this.pValidado);
+		if (this.pValidado == Constantes.VALIDADO) {
+			this.usuario.setValidado(true);
+		} else {
+			this.usuario.setValidado(false);
+		}
 		this.usuario.setId(this.pID);
 	}
 

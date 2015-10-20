@@ -31,7 +31,7 @@
     <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     
     <!-- DataTables CSS -->
-    <link href="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
     <link href="bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">

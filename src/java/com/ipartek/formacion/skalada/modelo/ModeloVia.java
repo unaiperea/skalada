@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.TipoEscalada;
@@ -17,11 +18,13 @@ import com.ipartek.formacion.skalada.bean.Zona;
 /**
  * Clase encargada de persistir los objetos de tipo {@code Via} en ficheros
  * serializando y des-serializando
- * 
+ *
  * @author ur00
  *
  */
 public class ModeloVia implements Persistable<Via> {
+
+	private ModeloUsuario modeloUsuario = new ModeloUsuario();
 
 	private static final String TABLA_VIA = "via";
 
@@ -33,18 +36,23 @@ public class ModeloVia implements Persistable<Via> {
 	private static final String COL_TIPO_ESCALADA_ID = "id_tipo_escalada";
 	private static final String COL_SECTOR_ID = "id_sector";
 
-	private static final String SQL_INSERT = "INSERT INTO `via` (`nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`) VALUES (?, ?, ?, ?, ?, ?);";
+	private static final String SQL_INSERT = "INSERT INTO `via` (`nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String SQL_GETALL = "SELECT v.id, v.nombre, v.longitud, v.descripcion, v.id_grado, g.nombre AS nombre_grado, "
 			+ "v.id_tipo_escalada, te.nombre AS nombre_tipo_escalada, "
 			+ "v.id_sector, s.nombre AS nombre_sector, "
-			+ "s.id_zona, z.nombre AS nombre_zona "
+			+ "s.id_zona, z.nombre AS nombre_zona, "
+			+ "v.id_usuario, v.validado as validado "
 			+ "FROM via AS v "
 			+ "INNER JOIN grado AS g ON (v.id_grado = g.id) "
 			+ "INNER JOIN tipo_escalada AS te ON (v.id_tipo_escalada = te.id) "
 			+ "INNER JOIN sector AS s ON (v.id_sector = s.id) "
-			+ "INNER JOIN zona AS z ON (s.id_zona = z.id)";
+			+ "INNER JOIN zona AS z ON (s.id_zona = z.id) "
+			+ "INNER JOIN usuario as u ON (v.id_usuario = u.id)";
+	private static final String SQL_GETALL_BY_USER = SQL_GETALL
+			+ " WHERE v.id_usuario = ?";
+
 	private static final String SQL_GETONE = SQL_GETALL + "WHERE v.id = ?";
-	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`=?, `longitud`=?, `descripcion`=?, `id_grado`=?, `id_tipo_escalada`=?, `id_sector`=? WHERE  `id`=?;";
+	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`=?, `longitud`=?, `descripcion`=?, `id_grado`=?, `id_tipo_escalada`=?, `id_sector`=?, `id_usuario`=?, `validado`=? WHERE  `id`=?;";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_VIA
 			+ "` WHERE `" + COL_ID + "`= ?;";
 
@@ -64,6 +72,12 @@ public class ModeloVia implements Persistable<Via> {
 				pst.setInt(4, via.getGrado().getId());
 				pst.setInt(5, via.getTipoEscalada().getId());
 				pst.setInt(6, via.getSector().getId());
+				pst.setInt(7, via.getUsuario().getId());
+				if (via.isValidado()) {
+					pst.setInt(8, Constantes.VALIDADO);
+				} else {
+					pst.setInt(8, Constantes.NO_VALIDADO);
+				}
 				if (pst.executeUpdate() != 1) {
 					throw new Exception("No se ha realizado la insercion");
 				} else {
@@ -89,6 +103,41 @@ public class ModeloVia implements Persistable<Via> {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		}
+		return resul;
+	}
+
+	@Override
+	public ArrayList<Via> getAll(Usuario usuario) {
+		ArrayList<Via> resul = new ArrayList<Via>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			if (usuario.isAdmin()) {
+				pst = con.prepareStatement(SQL_GETALL);
+			} else {
+				pst = con.prepareStatement(SQL_GETALL_BY_USER);
+				pst.setInt(1, usuario.getId());
+			}
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return resul;
@@ -126,36 +175,6 @@ public class ModeloVia implements Persistable<Via> {
 	}
 
 	@Override
-	public ArrayList<Via> getAll(Usuario usuario) {
-		ArrayList<Via> resul = new ArrayList<Via>();
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETALL);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				resul.add(this.mapeo(rs));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pst != null) {
-					pst.close();
-				}
-				DataBaseHelper.closeConnection();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return resul;
-	}
-
-	@Override
 	public boolean update(Via via) {
 		boolean resul = false;
 		PreparedStatement pst = null;
@@ -170,7 +189,13 @@ public class ModeloVia implements Persistable<Via> {
 				pst.setInt(4, via.getGrado().getId());
 				pst.setInt(5, via.getTipoEscalada().getId());
 				pst.setInt(6, via.getSector().getId());
-				pst.setInt(7, via.getId());
+				pst.setInt(7, via.getUsuario().getId());
+				if (via.isValidado()) {
+					pst.setInt(8, Constantes.VALIDADO);
+				} else {
+					pst.setInt(8, Constantes.NO_VALIDADO);
+				}
+				pst.setInt(9, via.getId());
 				if (pst.executeUpdate() == 1) {
 					resul = true;
 				}
@@ -219,13 +244,18 @@ public class ModeloVia implements Persistable<Via> {
 
 	/**
 	 * Mapea un ResultSet a Via
-	 * 
+	 *
 	 * @param rs
 	 * @return
 	 * @throws SQLException
 	 */
 	private Via mapeo(ResultSet rs) throws SQLException {
 		Via resul = null;
+
+		Usuario usuario = null;
+		if (rs.getInt("id_usuario") != -1) {
+			usuario = this.modeloUsuario.getById(rs.getInt("id_usuario"));
+		}
 
 		Grado grado = new Grado(rs.getString("nombre_grado"));
 		grado.setId(rs.getInt(COL_GRADO_ID));
@@ -243,9 +273,14 @@ public class ModeloVia implements Persistable<Via> {
 		String nombre = rs.getString(COL_NOMBRE);
 		int longitud = rs.getInt(COL_LONGITUD);
 
-		resul = new Via(nombre, longitud, grado, tipoEscalada, sector);
+		resul = new Via(nombre, longitud, grado, tipoEscalada, sector, usuario);
 		resul.setId(rs.getInt(COL_ID));
 		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
+		if (rs.getInt("validado") == 1) {
+			resul.setValidado(true);
+		} else {
+			resul.setValidado(false);
+		}
 
 		// inicializar a null
 		grado = null;

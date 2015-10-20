@@ -63,7 +63,7 @@
 	       		 <%
 			        String validado = "";
 		            String val_class ="";
-		            if (usuario_form.getValidado()==1){
+		            if (usuario_form.isValidado()){
 		            	validado="checked";
 		            }else{
 		            	validado="";
