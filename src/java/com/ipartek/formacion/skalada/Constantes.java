@@ -56,6 +56,10 @@ public final class Constantes {
 
 	public static final String VIEW_BACK_ROLES_INDEX = "pages/roles/index.jsp";
 	public static final String VIEW_BACK_ROLES_FORM = "pages/roles/form.jsp";
+	
+	//OFERTAS
+	public static final String VIEW_BACK_OFERTAS_INDEX = "backoffice/pages/ofertas/index.jsp";
+	public static final String VIEW_BACK_OFERTAS_FORM = "backoffice/pages/ofertas/form.jsp";
 
 	public static final String VIEW_BACK_USUARIOS_INDEX = "pages/usuarios/index.jsp";
 	public static final String VIEW_BACK_USUARIOS_FORM = "pages/usuarios/form.jsp";
@@ -74,6 +78,8 @@ public final class Constantes {
 	public static final String CONTROLLER_SECTORES = ROOT_BACK + "sectores";
 	public static final String CONTROLLER_ROLES = ROOT_BACK + "roles";
 	public static final String CONTROLLER_USUARIOS = ROOT_BACK + "usuarios";
+	//Ofertas
+	public static final String CONTROLLER_OFERTAS = ROOT_APP + "ofertas";
 
 	// acciones
 	public static final int ACCION_NUEVO = 0;
@@ -121,5 +127,9 @@ public final class Constantes {
 	public static final String KEY_SESSION_USER = "ss_user";
 
 	public static final int VALIDADO = 1;
+	
+	//Ofertas
+	public static final int OFERTA_VISIBLE = 1;
+	public static final int OFERTA_NO_VISIBLE = 0;
 
 }
