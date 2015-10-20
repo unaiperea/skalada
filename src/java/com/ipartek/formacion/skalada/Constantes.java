@@ -63,6 +63,7 @@ public final class Constantes {
 
 	public static final String VIEW_BACK_USUARIOS_INDEX = "pages/usuarios/index.jsp";
 	public static final String VIEW_BACK_USUARIOS_FORM = "pages/usuarios/form.jsp";
+	public static final String VIEW_BACK_PERFIL_FORM = "pages/usuarios/perfil.jsp";
 
 	// controladores
 	public static final String CONTROLLER_LOGIN = ROOT_APP + "login";
@@ -78,6 +79,7 @@ public final class Constantes {
 	public static final String CONTROLLER_SECTORES = ROOT_BACK + "sectores";
 	public static final String CONTROLLER_ROLES = ROOT_BACK + "roles";
 	public static final String CONTROLLER_USUARIOS = ROOT_BACK + "usuarios";
+	public static final String CONTROLLER_PERFIL = ROOT_BACK + "perfil";
 
 	public static final String CONTROLLER_GEOMAP = ROOT_FRONT + "geomap";
 

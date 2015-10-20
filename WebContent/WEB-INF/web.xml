@@ -179,4 +179,14 @@
     <servlet-name>GeomapController</servlet-name>
     <url-pattern>/frontoffice/geomap</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <description></description>
+    <display-name>PerfilController</display-name>
+    <servlet-name>PerfilController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.PerfilController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PerfilController</servlet-name>
+    <url-pattern>/backoffice/perfil</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,5 +1,7 @@
 
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
+
 <li><a href="<%=Constantes.CONTROLLER_HOME%>"><i
 		class="fa fa-home fa-fw"></i> Web Publica</a></li>
 <li><a href="<%=Constantes.VIEW_BACK_DASHBOARD%>"><i
