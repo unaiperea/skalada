@@ -24,7 +24,7 @@
         </div>        <!-- /.col-lg-12 -->
     </div>    <!-- /.row -->
     
-    <div class="row">
+     <div class="row">
         <% 
             Mensaje msg = (Mensaje)request.getAttribute("msg");	
 			if (msg != null){
@@ -38,6 +38,11 @@
 		%>
 		
 	</div> <!-- /.row -->
+    
+    
+    
+
+
 
     <div class="row">
     
@@ -57,7 +62,6 @@
 	           <%
 	           		// recoger el atributo "zonas" que nos llegara del Servlet con una coleccion de zonas(ArrayList<Zona>)
 	           		ArrayList<Usuario> usuarios = (ArrayList<Usuario>)request.getAttribute("usuarios");
-
 	           		Usuario u = null;
 	           		for(int i = 0 ; i < usuarios.size() ; i++){
 	           			u = usuarios.get(i);
@@ -82,4 +86,4 @@
     
 </div>
         
-<jsp:include page="../includes/foot.jsp"></jsp:include>            
+<jsp:include page="../includes/foot.jsp"></jsp:include>     
