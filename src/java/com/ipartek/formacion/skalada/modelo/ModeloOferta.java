@@ -296,6 +296,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 						rs1.getString("usuario_password"),
 						rol);
 				ui.setId(rs1.getInt("o.usuario_id"));
+				ui.setFechaInscripcion(rs1.getTimestamp("o.fecha_inscripcion"));
 				resul.add(ui);
 			}
 			

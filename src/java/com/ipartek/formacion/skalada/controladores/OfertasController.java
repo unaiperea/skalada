@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -285,8 +286,26 @@ public class OfertasController extends HttpServlet {
 		this.pPrecio = Float.parseFloat(request.getParameter("precio"));
 		this.pZona = modeloZona.getById(Integer.parseInt(request.getParameter("zona")));
 		this.pVisible = (request.getParameter("visible")!=null)?1:0;
-		//TODO convertir string en timestamp para fecha_alta y fecha_baja
-		//this.pFecha_alta = new Timestamp(date.valueOf(request.getParameter("fecha_alta")));
-		//this.pFecha_baja = Timestamp.valueOf(request.getParameter("fecha_baja"));
+		
+		this.pFecha_alta = convFechaATimestamp(request.getParameter("fecha_alta"));
+		this.pFecha_baja = convFechaATimestamp(request.getParameter("fecha_baja")); 
+	}
+	
+	/**
+	 * Convierte una fecha pasada como argumento en Timestamp
+	 * @param strFecha: string con la fecha en formato "yyyy-MM-dd"
+	 * @return la fecha en Timestamp
+	 */
+	public Timestamp convFechaATimestamp(String strFecha){
+		Timestamp resul = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			java.util.Date date;
+			date = sdf.parse(strFecha);
+			resul = new java.sql.Timestamp(date.getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		return resul;
 	}
 }

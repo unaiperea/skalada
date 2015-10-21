@@ -145,7 +145,7 @@
     <url-pattern>/validar</url-pattern>
   </servlet-mapping>
   <session-config>
-    <session-timeout>5</session-timeout>
+    <session-timeout>50</session-timeout>
   </session-config>
   <listener>
     <listener-class>com.ipartek.formacion.skalada.listener.ListenerInit</listener-class>

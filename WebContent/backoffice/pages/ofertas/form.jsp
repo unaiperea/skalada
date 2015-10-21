@@ -68,7 +68,8 @@ if (!usuario.isAdmin()){
 	          	
 	          	<div class="form-group">
 	           		<label for="desc">Descripcion</label>
-	           		<input type="text" class="form-control" name="descripcion" value="<%=oferta.getDescripcion()%>" <%=modificar%>>
+	           		
+	           		<textarea class="form-control" name="descripcion" value="<%=oferta.getDescripcion()%>" <%=modificar%>></textarea>
 	          	</div>
 	          	<div class="form-group">
 	           		<label for="precio">Precio</label>
@@ -127,7 +128,7 @@ if (!usuario.isAdmin()){
 	           		<input type="date" class="form-control" name="fecha_alta" value="<%=oferta.getFecha_alta()%>" <%=modificar%>>
 	          	</div>
 	          	<div class="form-group col-lg-6">
-	           		<label for="fecha_alta">Fecha_baja</label>
+	           		<label for="fecha_baja">Fecha_baja</label>
 	           		<input type="date" class="form-control" name="fecha_baja" value="<%=oferta.getFecha_baja()%>" <%=modificar%>>
 	          	</div>
 	        </div>
