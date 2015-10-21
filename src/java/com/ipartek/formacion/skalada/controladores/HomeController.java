@@ -66,14 +66,12 @@ public class HomeController extends HttpServlet {
 
 		// recuperar las ultimas 6 sectores del modelo
 		// TODO usar LIMIT en la select y order bu id desc
-		ArrayList<Sector> sectores = new ArrayList<Sector>();
 		this.usuario = (Usuario) this.modeloUsuario.getByEmail("admin@admin.com");
 		this.session = request.getSession(true);
 		this.session.setAttribute("admin", this.usuario);
 		ArrayList<Zona> zonas = this.modeloZona.getAll(this.usuario);
 
 		// enviarlas como atributo en la request
-		request.setAttribute("ultimos_sectores", sectores);
 		request.setAttribute("ultimas_zonas", zonas);
 		// ir a index
 		request.getRequestDispatcher(Constantes.VIEW_PUBLIC_INDEX).forward(request,

@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.modelo.ModeloSector"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
@@ -38,19 +39,23 @@
             </div>
             <%
             	Usuario user = (Usuario) session.getAttribute("admin");
+            	ModeloSector modeloSector = new ModeloSector();
+            	ArrayList<Zona> zonas = new ArrayList<Zona>();
+            	ArrayList<Sector> sectores = new ArrayList<Sector>();
             %>
             <div class="categories">
                 <ul class="cat">
                     <li class="pull-left">
                         <ol class="type">
                         	<%
-                        	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("ultimas_zonas");
+                        	//Recoger todas las zonas de la BBDD (TODO SQL con vias solo publicadas)
+                        	zonas = (ArrayList<Zona>)request.getAttribute("ultimas_zonas");
 	           				Zona z = null;
 	           				for(int i = 0 ; i < zonas.size() ; i++){
-	           					z = zonas.get(i);            	
+	           					z = zonas.get(i);            
                         	%>
-                           	 	<li><a href="#" data-filter=".<%=z.getNombre() %>" class="active"><%=z.getNombre() %></a></li>
-                           	<%} %>
+                           	 	<li><a href="#" data-filter=".<%=z.getId()%>" class="active"><%=z.getNombre() %></a></li>
+                       	<%} %>
                         </ol>
                     </li>
                 </ul>
@@ -58,20 +63,22 @@
             </div>
             <div id="lightbox" class="row">		
 			<%
-			ArrayList<Sector> sectores = (ArrayList<Sector>)request.getAttribute("ultimos_sectores");            	
-			Sector s = null;
+			//Volvemos a recorrer todas las zonas para recoger los sectores de cada una (TODO SQL con solo publicas)
 			for(int i = 0 ; i < zonas.size() ; i++){
-					z = zonas.get(i);
-	  				for(int j = 0 ; j < sectores.size() ; j++){
-	  					s = sectores.get(j);
-	  					String img_path = Constantes.IMG_DEFAULT_SECTOR;	      			
-	  				if ( !img_path.equals( s.getImagen())){
-	  					img_path = Constantes.IMG_WEP_PATH + s.getImagen();	      				
-	  				}else{
-	  					img_path = "img/" + img_path;
-  					}
+				z = zonas.get(i);
+				sectores = (ArrayList<Sector>)modeloSector.getAllByZona(z.getId());
+				Sector s = null;
+				//Recorremos los sectores por zona
+				for(int j = 0 ; j < sectores.size() ; j++){
+					s = sectores.get(j);
+					String img_path = Constantes.IMG_DEFAULT_SECTOR;	      			
+				if ( !img_path.equals( s.getImagen())){
+					img_path = Constantes.IMG_WEP_PATH + s.getImagen();	      				
+				}else{
+					img_path = "img/" + img_path;
+				}
              %>
-              <div class="col-sm-6 col-md-3 col-lg-3 <%=z.getNombre()%>">
+              <div class="col-sm-6 col-md-3 col-lg-3 <%=z.getId()%>">
                     <div class="portfolio-item">
                         <div class="hover-bg">
                             <a href="#">
@@ -87,7 +94,7 @@
                     </div>
                 </div>
             <%} //for j %>
-            <%} //for zonas %>
+            <%} //for i %>
             </div>
 		</div>
 	</div>
