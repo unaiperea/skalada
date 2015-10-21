@@ -58,28 +58,30 @@
 	          	</div>         	
 	      	</div><!-- end row -->
 	      	<%
-		        String validado = "";
-	            String val_class ="";
-	            if (zona.isValidado()){
-	            	validado="checked";
-	            }else{
-	            	validado="";
-	            }
-				if (usuario.getRol().getId()==Constantes.ROLE_ID_ADMIN){
-					out.print("<div class='row'><div class='form-group col-lg-3'><label for='creador'>Creado por</label>");
-							
-					out.print("<select class='form-control' name='creador'>");
-					for (int i = 0 ; i < usuarios.size() ; i++){
-						if( usuarios.get(i).getId() == zona.getUsuario().getId() ){
-							out.print("<option selected value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
-						}else{
-							out.print("<option value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
-						}//end else  						
-					}//end for
-					out.print("</select></div>");
-					out.print("<div class='form-group col-lg-2'><label for='validado'>Validado</label><br><input type='checkbox' "+validado+" name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1></div></div>");
-				}
+		        String validado = (zona.isValidado()) ? "checked" : "" ;   				
+				if (usuario.getRol().getId() == Constantes.ROLE_ID_ADMIN){
 			%>
+			<div class='row'>
+				<div class='form-group col-lg-3'>
+					<label for='creador'>Creado por</label>
+					<select class='form-control' name='creador'>
+				<%	for (int i = 0 ; i < usuarios.size() ; i++){
+						if( usuarios.get(i).getId() == zona.getUsuario().getId() ){
+				%>
+						<option selected value="<%=usuarios.get(i).getId()%>"><%=usuarios.get(i).getNombre()%></option>
+				<%		} else { %>		
+						<option value="<%=usuarios.get(i).getId()%>"><%=usuarios.get(i).getNombre()%></option>
+				<% 		}	//end else  						
+					}//end for
+				%>
+					</select>
+				</div>
+				<div class='form-group col-lg-2'>
+					<label for='validado'>Validado</label><br>
+					<input type='checkbox' <%=validado%> name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1>
+				</div>
+			</div><!-- end row -->
+			<% } %>	
 			
 <!-- GEOLOCALIZACION -->
 			<div class="row">
@@ -103,7 +105,7 @@
 	        	</div>        
 
 				<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-				<script src="dist/js/geomap.js"></script>
+				<script src="dist/js/geomap-zona.js"></script>
 				
 			</div>
 			

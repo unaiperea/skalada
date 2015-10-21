@@ -27,7 +27,7 @@ public class ModeloSector implements Persistable<Sector> {
 
 	private static final String SQL_INSERT = "INSERT INTO `" + TABLA_SECTOR + "` (`" + COL_NOMBRE + "`, `" + COL_ZONA_ID + "` , `" + COL_IMAGEN + "`, `validado`, `id_usuario`, `longitud`, `latitud`) VALUES (?,?,?,?,?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_SECTOR + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT s.nombre, s.id, s.imagen, s.validado, s.longitud, s.latitud, z.nombre as zona_nombre, z.id as zona_id, r.nombre as rol_nombre, r.id as rol_id, u.nombre as usuario_nombre, u.password as usuario_pass, u.email as usuario_email, u.id as usuario_id FROM sector as s INNER JOIN zona as z ON s.id_zona = z.id INNER JOIN usuario as u ON s.id_usuario = u.id INNER JOIN rol as r ON u.id_rol = r.id";
+	private static final String SQL_GETALL = "SELECT s.nombre, s.id, s.imagen, s.validado, s.longitud, s.latitud, z.nombre as zona_nombre, z.id as zona_id, z.latitud as zona_latitud, z.longitud as zona_longitud, r.nombre as rol_nombre, r.id as rol_id, u.nombre as usuario_nombre, u.password as usuario_pass, u.email as usuario_email, u.id as usuario_id FROM sector as s INNER JOIN zona as z ON s.id_zona = z.id INNER JOIN usuario as u ON s.id_usuario = u.id INNER JOIN rol as r ON u.id_rol = r.id";
 
 	private static final String SQL_GETALL_BY_USER = SQL_GETALL + " AND s.id_usuario = ? ";
 	private static final String SQL_GETONE = SQL_GETALL + " WHERE s.id = ?";
@@ -301,6 +301,8 @@ public class ModeloSector implements Persistable<Sector> {
 		// Zona
 		Zona zona = new Zona(rs.getString("zona_nombre"));
 		zona.setId(rs.getInt("zona_id"));
+		zona.setLatitud(rs.getDouble("zona_latitud"));
+		zona.setLongitud(rs.getDouble("zona_longitud"));
 
 		// Usuario
 		Rol rol = new Rol(rs.getString("rol_nombre"));
