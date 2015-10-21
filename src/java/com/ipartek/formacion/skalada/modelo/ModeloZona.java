@@ -21,11 +21,22 @@ public class ModeloZona implements Persistable<Zona> {
 	private static final String COL_FECHA_CREADO = "fecha_creado";
 	private static final String COL_FECHA_MODIFICADO = "fecha_modificado";
 
-	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`" + COL_NOMBRE + "`, `" + COL_CREADOR + "`, `" + COL_PUBLICADO + "`, `longitud`, `latitud`) VALUES (?,?,?,?,?);";
-	private static final String SQL_DELETE = "DELETE FROM `" + TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `longitud`, `latitud` FROM " + TABLA;
-	private static final String SQL_GETONE = SQL_GETALL + " WHERE `" + COL_ID + "`= ?";
-	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO+ "`=?, `" + COL_FECHA_MODIFICADO + "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID+ "`= ? ;";
+	private static final String SQL_INSERT = "INSERT INTO `" + TABLA + "` (`"
+			+ COL_NOMBRE + "`, `" + COL_CREADOR + "`, `" + COL_PUBLICADO
+			+ "`, `longitud`, `latitud`) VALUES (?,?,?,?,?);";
+	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
+			+ "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `longitud`, `latitud` FROM "
+			+ TABLA;
+	private static final String SQL_GETONE = SQL_GETALL + " WHERE `" + COL_ID
+			+ "`= ?";
+	private static final String SQL_ZONAS_USER = SQL_GETALL + " WHERE `"
+			+ COL_CREADOR + "`= ?";
+
+	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
+			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
+			+ "`=?, `" + COL_FECHA_MODIFICADO
+			+ "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID + "`= ? ;";
 
 	@Override()
 	public int save(Zona z) {
@@ -114,7 +125,18 @@ public class ModeloZona implements Persistable<Zona> {
 		ResultSet rs = null;
 		try {
 			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETALL);
+
+			// si el usuario es admin se recogen todos los registros
+			// si el usuario no es admin solo se recogen sus zonas
+			if (u.getRol().getId() == 1) {
+				// Usuario admin
+				pst = con.prepareStatement(SQL_GETALL);
+			} else if (u.getRol().getId() == 2) {
+				// Usuario no admin
+				pst = con.prepareStatement(SQL_ZONAS_USER);
+				pst.setInt(1, u.getId());
+			}
+
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				resul.add(this.mapeo(rs));

@@ -211,28 +211,45 @@ public class ViasController extends HttpServlet {
 		// recoger parametros del formulario
 		this.getParametersForm(request);
 
-		// Crear Objeto Via
-		this.crearObjetoVia();
-
-		// Guardar/Modificar Objeto Via
-		if (this.pID == -1) {
-			if (this.modeloVia.save(this.via) != -1) {
-				this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-						"Registro creado con exito");
+		// Si el pIDSector es -1 es porque el sector es null,
+		// mandamos mensaje de error advirtiendolo
+		if (this.pIDSector == -1) {
+			if (this.pID == -1) {
+				this.msg = new Mensaje(Mensaje.MSG_DANGER,
+						"Error: No se puede crear una Via sin un Sector");
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Error al guardar el nuevo registro");
+						"Error: No se puede modificar una Via sin un Sector");
 			}
 		} else {
-			if (this.modeloVia.update(this.via)) {
-				this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-						"Modificado correctamente el registro [id(" + this.pID
-						+ ")]");
+			// si la via tiene un sector, se realiza la creacion o la
+			// modificacion de la misma
+
+			// Crear Objeto Via
+			this.crearObjetoVia();
+
+			// Guardar/Modificar Objeto Via
+			if (this.pID == -1) {
+				if (this.modeloVia.save(this.via) != -1) {
+					this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
+							"Registro creado con exito");
+				} else {
+					this.msg = new Mensaje(Mensaje.MSG_DANGER,
+							"Error al guardar el nuevo registro");
+				}
 			} else {
-				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Error al modificar el registro [id(" + this.pID + ")]");
+				if (this.modeloVia.update(this.via)) {
+					this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
+							"Modificado correctamente el registro [id("
+									+ this.pID + ")]");
+				} else {
+					this.msg = new Mensaje(Mensaje.MSG_DANGER,
+							"Error al modificar el registro [id(" + this.pID
+									+ ")]");
+				}
 			}
-		}
+
+		}// end if: this.pIDSector == -1
 
 		// this.listar(request, response);
 
@@ -294,11 +311,21 @@ public class ViasController extends HttpServlet {
 		this.pIDGrado = Integer.parseInt(request.getParameter("grado"));
 		this.pIDTipoEscalada = Integer.parseInt(request
 				.getParameter("tipo_escalada"));
-		this.pIDSector = Integer.parseInt(request.getParameter("sector"));
-		if (request.getParameter("creador") != "") {
+
+		try {
+			this.pIDSector = Integer.parseInt(request.getParameter("sector"));
+		} catch (Exception e) {
+			this.pIDSector = -1;
+		}
+
+		if (request.getParameter("creador") != null) {
 			this.pUsuario = (this.modeloUsuario.getById(Integer
 					.parseInt(request.getParameter("creador"))));
+		} else {
+			// "usuario" es el user cogido de la sesion
+			this.pUsuario = this.usuario;
 		}
+
 		if (request.getParameter("validado") != null) {
 			this.pValidado = true;
 		} else {

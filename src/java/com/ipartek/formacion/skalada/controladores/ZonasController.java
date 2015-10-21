@@ -51,7 +51,7 @@ public class ZonasController extends HttpServlet {
 		super.init(config);
 		this.modelo = new ModeloZona();
 		this.mu = new ModeloUsuario();
-		this.admin = (Usuario) this.mu.getById(Constantes.ROLE_ID_ADMIN);
+		this.admin = this.mu.getById(Constantes.ROLE_ID_ADMIN);
 		this.usuarios = this.mu.getAll(this.admin);
 	}
 
@@ -142,7 +142,7 @@ public class ZonasController extends HttpServlet {
 
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
-		this.zona = (Zona) this.modelo.getById(this.pID);
+		this.zona = this.modelo.getById(this.pID);
 		request.setAttribute("zona", this.zona);
 		request.setAttribute("titulo", this.zona.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
@@ -206,8 +206,8 @@ public class ZonasController extends HttpServlet {
 		} else {
 			this.zona.setValidado(false);
 		}
-		this.zona.setLongitud(pLongitud);
-		this.zona.setLatitud(pLatitud);
+		this.zona.setLongitud(this.pLongitud);
+		this.zona.setLatitud(this.pLatitud);
 	}
 
 	/**
@@ -224,16 +224,18 @@ public class ZonasController extends HttpServlet {
 				Constantes.KEY_SESSION_USER);
 		this.pID = Integer.parseInt(request.getParameter("id"));
 		this.pNombre = request.getParameter("nombre");
-		if (request.getParameter("creador") != "") {
-			this.creador = ((Usuario) this.mu.getById(Integer.parseInt(request
+		if (request.getParameter("creador") != null) {
+			// El creador es un Admin
+			this.creador = (this.mu.getById(Integer.parseInt(request
 					.getParameter("creador"))));
 		}
+
 		if (request.getParameter("validado") != null) {
 			this.validado = 1;
 		} else {
 			this.validado = 0;
 		}
-		
+
 		this.pLongitud = Double.parseDouble(request.getParameter("longitud"));
 		this.pLatitud = Double.parseDouble(request.getParameter("latitud"));
 	}
