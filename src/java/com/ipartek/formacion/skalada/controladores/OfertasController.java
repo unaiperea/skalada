@@ -2,7 +2,8 @@ package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -40,12 +41,14 @@ public class OfertasController extends HttpServlet {
 	private int pID = -1; // ID no valido
 	private String pTitulo;
 	private String pDescripcion;
-	private int pPrecio;
-	private Date pFecha_alta;
-	private Date pFecha_baja;
+	private float pPrecio;
+	private Timestamp pFecha_alta;
+	private Timestamp pFecha_baja;
 	private int pVisible;
 	private Zona pZona;
 	private ArrayList<UsuarioInscrito> pUsuariosInscritos;
+	private int pOferta;
+	private int pUser;
 
 	/**
 	 * Este metodo se ejecuta solo la primera vez que se llama al servlet Se usa
@@ -96,6 +99,12 @@ public class OfertasController extends HttpServlet {
 		case Constantes.ACCION_ELIMINAR:
 			this.eliminar(request, response);
 			break;
+		case Constantes.ACCION_INSCRIBIR:
+			this.inscribir(request, response);
+			break;
+		case Constantes.ACCION_DESINSCRIBIR:
+			this.desinscribir(request, response);
+			break;
 		default:
 			this.listar(request, response);
 			break;
@@ -109,10 +118,16 @@ public class OfertasController extends HttpServlet {
 
 		try {
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if (request.getParameter("id") != null
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if (request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
+			if (request.getParameter("oferta") != null ) {
+				this.pOferta = Integer.parseInt(request.getParameter("oferta"));
+			}
+			if (request.getParameter("user") != null ) {
+				this.pUser = Integer.parseInt(request.getParameter("user"));
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,10 +160,11 @@ public class OfertasController extends HttpServlet {
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		this.oferta = new Oferta();
+		this.oferta = new Oferta("");
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", "Crear nuevo Oferta");
-		request.setAttribute("metodo", "Guardar");
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(usuario));
+		request.setAttribute("zonas", this.modeloZona.getAll(usuario));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_OFERTAS_FORM);
 
@@ -159,9 +175,36 @@ public class OfertasController extends HttpServlet {
 		this.oferta = this.modeloOferta.getById(this.pID);
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", this.oferta.getTitulo().toUpperCase());
-		request.setAttribute("metodo", "Modificar");
+		request.setAttribute("usuarios", this.modeloUsuario.getAll(usuario));
+		request.setAttribute("zonas", this.modeloZona.getAll(usuario));		
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_OFERTAS_FORM);
+	}
+	
+	private void inscribir(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (this.modeloOferta.inscribir(pOferta,usuario.getId() )) {
+			request.setAttribute("msg-danger",
+					"Registro insertado correctamente");
+		} else {
+			request.setAttribute("msg-warning",
+					"Error al insertar el registro [id(" + this.pID + ")]");
+		}	
+		//TODO no mandarlo a listar sino dejarle en el form
+		this.listar(request, response);
+	}
+
+	private void desinscribir(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (this.modeloOferta.desInscribir(pOferta,pUser )) {
+			request.setAttribute("msg-danger",
+					"Registro eliminado correctamente");
+		} else {
+			request.setAttribute("msg-warning",
+					"Error al eliminar el registro [id(" + this.pID + ")]");
+		}
+		//TODO no mandarlo a listar sino dejarle en el form
+		this.listar(request, response);
 	}
 
 	/**
@@ -182,10 +225,10 @@ public class OfertasController extends HttpServlet {
 		// recoger parametros del formulario
 		this.getParametersForm(request);
 
-		// Crear Objeto Grado
+		// Crear Objeto Oferta
 		this.crearObjeto();
 
-		// Guardar/Modificar Objeto Via
+		// Guardar/Modificar Objeto Oferta
 		if (this.pID == -1) {
 			if (this.modeloOferta.save(this.oferta) != -1) {
 				request.setAttribute("msg-success", "Registro creado con exito");
@@ -211,12 +254,18 @@ public class OfertasController extends HttpServlet {
 	}
 
 	/**
-	 * Crea un Objeto {@code Grado} Con los parametros recibidos
+	 * Crea un Objeto {@code Oferta} Con los parametros recibidos
 	 */
 	private void crearObjeto() {
-		this.oferta = new Oferta();
+		//this.oferta = new Oferta();
 		this.oferta.setId(this.pID);
 		this.oferta.setDescripcion(this.pDescripcion);
+		oferta.setPrecio(pPrecio);
+		oferta.setZona(pZona);
+		oferta.setVisible(pVisible);
+		oferta.setFecha_alta(pFecha_alta);
+		oferta.setFecha_baja(pFecha_baja);
+		oferta.setTitulo(pTitulo);
 	}
 
 	/**
@@ -225,6 +274,7 @@ public class OfertasController extends HttpServlet {
 	 * @see backoffice\pages\ofertas\form.jsp
 	 * @param request
 	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
 	 */
 	private void getParametersForm(HttpServletRequest request)
 			throws UnsupportedEncodingException {
@@ -232,9 +282,11 @@ public class OfertasController extends HttpServlet {
 		this.pID = Integer.parseInt(request.getParameter("id"));
 		this.pTitulo = request.getParameter("titulo");
 		this.pDescripcion = request.getParameter("descripcion");
-		this.pPrecio = (int) Float.parseFloat(request.getParameter("precio"));
-		this.pFecha_alta = Date.valueOf(request.getParameter("fecha_alta"));
-		this.pFecha_baja = Date.valueOf(request.getParameter("fecha_baja"));
-
+		this.pPrecio = Float.parseFloat(request.getParameter("precio"));
+		this.pZona = modeloZona.getById(Integer.parseInt(request.getParameter("zona")));
+		this.pVisible = (request.getParameter("visible")!=null)?1:0;
+		//TODO convertir string en timestamp para fecha_alta y fecha_baja
+		//this.pFecha_alta = new Timestamp(date.valueOf(request.getParameter("fecha_alta")));
+		//this.pFecha_baja = Timestamp.valueOf(request.getParameter("fecha_baja"));
 	}
 }

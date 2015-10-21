@@ -35,6 +35,13 @@ public class Oferta implements Serializable {
 		this.usuariosInscritos = new ArrayList<UsuarioInscrito>();
 	}
 
+	public Oferta(String titulo) {
+		super();
+		this.setTitulo(titulo);
+		this.setId(-1);
+		this.setZona(new Zona(""));
+		this.usuariosInscritos = new ArrayList<UsuarioInscrito>();
+	}
 	
 	/**
 	 * @param id

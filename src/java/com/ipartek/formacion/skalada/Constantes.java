@@ -88,6 +88,8 @@ public final class Constantes {
 	public static final int ACCION_ELIMINAR = 3;
 	public static final int ACCION_NO_VALIDADOS = 4;
 	public static final int ACCION_CONECTADOS = 5;
+	public static final int ACCION_INSCRIBIR = 6;
+	public static final int ACCION_DESINSCRIBIR = 7;	
 
 	// acciones signup
 	public static final int ACCION_CONFIRM = 1;
