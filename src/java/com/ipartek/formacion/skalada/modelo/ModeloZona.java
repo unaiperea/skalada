@@ -11,7 +11,7 @@ import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 
-public class ModeloZona implements Persistable {
+public class ModeloZona implements Persistable<Zona> {
 
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
@@ -32,21 +32,17 @@ public class ModeloZona implements Persistable {
 			+ TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
-			+ "`=?, `" + COL_FECHA_MODIFICADO + "`=? WHERE `" + COL_ID
-			+ "`= ? ;";
+			+ "`=?, `" + COL_FECHA_MODIFICADO + "`=? WHERE `" + COL_ID + "`= ? ;";
 
 	@Override()
-	public int save(Object o) {
+	public int save(Zona z) {
 		int resul = -1;
-		Zona z = null;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
-		if (o != null) {
+		if (z != null) {
 			try {
-				z = (Zona) o;
 				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT,
-						Statement.RETURN_GENERATED_KEYS);
+				pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, z.getNombre());
 				pst.setInt(2, z.getUsuario().getId());
 				if (z.isValidado()) {
@@ -116,8 +112,8 @@ public class ModeloZona implements Persistable {
 	}
 
 	@Override()
-	public ArrayList<Object> getAll(Usuario usuario) {
-		ArrayList<Object> resul = new ArrayList<Object>();
+	public ArrayList<Zona> getAll(Usuario usuario) {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -146,13 +142,11 @@ public class ModeloZona implements Persistable {
 	}
 
 	@Override()
-	public boolean update(Object o) {
+	public boolean update(Zona z) {
 		boolean resul = false;
-		Zona z = null;
 		PreparedStatement pst = null;
-		if (o != null) {
+		if (z != null) {
 			try {
-				z = (Zona) o;
 				Connection con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
@@ -233,12 +227,4 @@ public class ModeloZona implements Persistable {
 		resul.setFechaModificado(rs.getTimestamp(COL_FECHA_MODIFICADO));
 		return resul;
 	}
-
-	// TODO OBTENER SECTORES DE UNA VIA
-	public ArrayList<Object> getSectores(int id) {
-		ArrayList<Object> resul = new ArrayList<Object>();
-
-		return resul;
-	}
-
 }

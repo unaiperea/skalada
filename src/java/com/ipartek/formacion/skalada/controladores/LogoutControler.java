@@ -2,10 +2,13 @@ package com.ipartek.formacion.skalada.controladores;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ipartek.formacion.skalada.bean.Usuario;
 
 /**
  * Servlet implementation class LogoutControler
@@ -14,6 +17,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LogoutControler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private Usuario usuario = null;
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+	}
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -27,8 +37,8 @@ public class LogoutControler extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		this.doPost(request, response);
 	}
 
@@ -37,12 +47,11 @@ public class LogoutControler extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		request.getSession().invalidate();
 		request.getRequestDispatcher("home").forward(request, response);
 
 	}
-
 }

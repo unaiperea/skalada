@@ -117,12 +117,12 @@ font-weight: 900;
 	}
 /* Home Style */
 #tf-home{
-	background: url(../img/01.jpg);
+	background: url(../img/escalada.jpg);
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
-	color: #cfcfcf;
+	color: grey;
 }
 
 #tf-home .overlay{
@@ -570,4 +570,16 @@ nav#footer p{
 	background: #FCAC45;
 	border-color: #FCAC45;
 	color: #ffffff;
+}
+
+/* CSS Personalizado */
+
+.form-centrado {
+	float: left;
+    width: 40%;
+    margin-left: 25%;
+}
+.btn-dch {
+	margin-right:25%;
+	width:10%;
 }
