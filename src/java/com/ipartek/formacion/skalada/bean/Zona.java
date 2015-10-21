@@ -188,7 +188,7 @@ public class Zona implements Serializable {
 				+ ", sectores=" + this.sectores + ", usuario=" + this.usuario
 				+ ", validado=" + this.validado + ", fechaCreado="
 				+ this.fechaCreado + ", fechaModificado="
-				+ this.fechaModificado + "]";
+				+ this.fechaModificado + ", longitud=" + this.longitud + ", latitud=" + this.latitud + "]";
 	}
 
 }

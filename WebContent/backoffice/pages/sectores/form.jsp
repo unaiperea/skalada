@@ -50,50 +50,53 @@
 
 			<div class="form-group col-lg-3">
 				<label for="zona">Zona</label>
-				<select class="form-control" name="zona">
-					<%
-						for (int i = 0 ; i < zonas.size() ; i++){
-					%>
-
-					<%
-						if( zonas.get(i).getId() == sector.getZona().getId() ){
-					%>
-							<option selected value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
-					<%
-						}else{
-					%>
-							<option value="<%=zonas.get(i).getId()%>"><%=zonas.get(i).getNombre()%></option>
-					<%
-						}//end else  						
-														  					}//end for
-					%>
-				</select>
-			</div>
-		<%
-	        String validado = "";
-            String val_class ="";
-            if (sector.isValidado()){
-            	validado="checked";
-            }else{
-            	validado="";
-            }
-			if (usuario.getRol().getId()==Constantes.ROLE_ID_ADMIN){
-				out.print("<div class='row'><div class='form-group col-lg-3'><label for='creador'>Creado por</label>");
-						
-				out.print("<select class='form-control' name='creador'>");
-				for (int i = 0 ; i < usuarios.size() ; i++){
-					if( usuarios.get(i).getId() == sector.getUsuario().getId() ){
-						out.print("<option selected value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
-					}else{
-						out.print("<option value='"+usuarios.get(i).getId()+"'>"+usuarios.get(i).getNombre()+"</option>");
+				<select class="form-control" id="selecZonas" name="zona" onchange="changeMapPosition(this);">
+			
+			<%	for (int i = 0 ; i < zonas.size() ; i++){
+					if( zonas.get(i).getId() == sector.getZona().getId() ){
+			%>
+				<option selected value="<%=zonas.get(i).getId()%>" 
+								 data-lng="<%=zonas.get(i).getLongitud()%>"
+								 data-lat="<%=zonas.get(i).getLatitud()%>"><%=zonas.get(i).getNombre()%></option>
+			<%		} else { %>
+				<option value="<%=zonas.get(i).getId()%>" 
+						data-lng="<%=zonas.get(i).getLongitud()%>"
+						data-lat="<%=zonas.get(i).getLatitud()%>"><%=zonas.get(i).getNombre()%></option>
+			<%
 					}//end else  						
 				}//end for
-				out.print("</select></div>");
-				out.print("<div class='form-group col-lg-2'><label for='validado'>Validado</label><br><input type='checkbox' "+validado+" name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1></div></div>");
-			}
-		%>
-		
-<!-- SECTOR GEOLOCALIZACION -->
+			%>
+				</select>
+			</div>
+			<%
+		        String validado = (sector.isValidado()) ? "checked" : "" ;   				
+				if (usuario.getRol().getId() == Constantes.ROLE_ID_ADMIN){
+			%>
+			<div class='row'>
+				<div class='form-group col-lg-3'>
+					<label for='creador'>Creado por</label>
+					<select class='form-control' name='creador'>
+				<%	for (int i = 0 ; i < usuarios.size() ; i++){
+						if( usuarios.get(i).getId() == sector.getUsuario().getId() ){
+				%>
+						<option selected value="<%=usuarios.get(i).getId()%>"><%=usuarios.get(i).getNombre()%></option>
+				<%		} else { %>		
+						<option value="<%=usuarios.get(i).getId()%>"><%=usuarios.get(i).getNombre()%></option>
+				<% 		}	//end else  						
+					}//end for
+				%>
+					</select>
+				</div>
+				<div class='form-group col-lg-2'>
+					<label for='validado'>Validado</label><br>
+					<input type='checkbox' <%=validado%> name='validado' data-toggle='toggle' data-on='Validado' data-off='No Validado' value=1>
+				</div>
+			</div><!-- end row -->
+			<% } %>	
+		</div>
+<!-- SECTOR GEOLOCALIZACION -->		
+		<div class="row">
+			
 			
 			<div class="form-group col-lg-3">
 	        	<label for="longitud">Longitud</label>
@@ -112,12 +115,9 @@
 	        </div>
 	        <div class="form-group col-lg-8">
 	        	<div id="map" class=""></div>
-	        </div>        
-
+	        </div>      
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-		<script src="dist/js/geomap.js"></script>
-     
-			
+		<script src="dist/js/geomap-sector.js"></script> 	
 <!-- END: SECTOR GEOLOCALIZACION -->
 			
 			<!-- Imagen -->
