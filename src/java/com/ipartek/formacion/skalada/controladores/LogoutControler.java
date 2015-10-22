@@ -6,6 +6,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
+import com.ipartek.formacion.skalada.Constantes;
+import com.ipartek.formacion.skalada.bean.Usuario;
 
 /**
  * Servlet implementation class LogoutControler
@@ -14,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LogoutControler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//Logs
+	private final static Logger LOG = Logger.getLogger(LogoutControler.class);
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -39,6 +48,10 @@ public class LogoutControler extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		Usuario usuario = (Usuario)request.getSession().getAttribute(Constantes.KEY_SESSION_USER);
+		
+		LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "] Cierra sesion.");
 
 		request.getSession().invalidate();
 		request.getRequestDispatcher("home").forward(request, response);

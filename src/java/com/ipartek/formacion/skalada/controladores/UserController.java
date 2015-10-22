@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Rol;
@@ -25,6 +27,9 @@ import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
  */
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(UserController.class);
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloUsuario modeloUsuario = null;
@@ -134,8 +139,10 @@ public class UserController extends HttpServlet {
 		if (this.modeloUsuario.delete(this.pID)) {
 			msg.setTipo(Mensaje.MSG_SUCCESS);
 			msg.setTexto("Registro eliminado correctamente");
+			LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Eliminado");
 		} else {
 			msg.setTexto("Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Error al eliminar usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "].");
 		}
 		request.setAttribute("msg", msg);
 		this.listar(request, response);
@@ -184,17 +191,21 @@ public class UserController extends HttpServlet {
 			if (this.modeloUsuario.save(this.usuario) != -1) {
 				msg.setTipo(Mensaje.MSG_SUCCESS);
 				msg.setTexto("Registro creado con exito");
+				LOG.info("Registrado nuevo usuario: " + usuario.getNombre() + "[email:" + usuario.getEmail() + "].");
 			} else {
 				msg.setTexto("Error al guardar el nuevo registro");
+				LOG.error("Error al registrar nuevo usuario: " + usuario.getNombre() + "[email:" + usuario.getEmail() + "].");
 			}
 		} else {
 			if (this.modeloUsuario.update(this.usuario)) {
 				msg.setTipo(Mensaje.MSG_SUCCESS);
 				msg.setTexto("Modificado correctamente el registro [id("
 						+ this.pID + ")]");
+				LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Modificado");
 			} else {
 				msg.setTexto("Error al modificar el registro [id(" + this.pID
 						+ ")]");
+				LOG.error("Error al modificar usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "].");
 			}
 		}
 		request.setAttribute("msg", msg);

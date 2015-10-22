@@ -24,10 +24,10 @@ import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
  * @author Curso
  */
 public class LoginController extends HttpServlet {
-
-	private static final Logger LOG = Logger.getLogger(LoginController.class);
-
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(LoginController.class);
 
 	// Key oara guardar el usuario en la session
 	private static final ModeloUsuario MODELOUSUARIO = new ModeloUsuario();
@@ -71,8 +71,6 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		LOG.info("Entrando....");
-
 		// recoger la sesion
 		this.session = request.getSession(true);
 		Usuario user_session = (Usuario) this.session
@@ -102,13 +100,15 @@ public class LoginController extends HttpServlet {
 								this.usuario);
 						// Ir a => index_back.jsp
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+								.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);						
+						LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Inicia sesión");
 					} else {
 						this.msg = new Mensaje(
 								Mensaje.MSG_WARNING,
 								"El usuario no ha sido validado todavia, por favor revise su correo electronico");
 						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+								.getRequestDispatcher(Constantes.VIEW_LOGIN);						
+						LOG.warn("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "] no esta validado.");
 					}
 				} else {
 					// Ir a => login.jsp
@@ -116,17 +116,17 @@ public class LoginController extends HttpServlet {
 							"El email o la contraseña proporcionados no son validos.");
 					this.dispatcher = request
 							.getRequestDispatcher(Constantes.VIEW_LOGIN);
+					LOG.warn("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "] Contraseña incorrecta.");
 				}
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_WARNING,
 						"El usuario no existe, si lo desea registrese.");
 				this.dispatcher = request
 						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+				LOG.warn("Intento de inicio de sesion de usuario no registrado.");
 			}
 
 		}
-
-		LOG.info("Saliendo...");
 
 		request.setAttribute("msg", this.msg);
 		this.dispatcher.forward(request, response);

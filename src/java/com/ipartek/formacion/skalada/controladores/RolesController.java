@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.modelo.ModeloRol;
@@ -21,6 +23,9 @@ import com.ipartek.formacion.skalada.modelo.ModeloRol;
  */
 public class RolesController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(RolesController.class);
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloRol modelo = null;
@@ -104,9 +109,11 @@ public class RolesController extends HttpServlet {
 		if (this.modelo.delete(this.pID)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
+			LOG.info("Rol: " + rol.getNombre() + "[id:" + rol.getId() + "]. Eliminado");
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Error al eliminar Rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
 		}
 		this.listar(request, response);
 	}
@@ -148,9 +155,11 @@ public class RolesController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modelo.save(this.rol) != -1) {
 				request.setAttribute("msg-success", "Registro creado con exito");
+				LOG.info("Registrado nuevo rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al guardar el nuevo registro");
+				LOG.error("Error al registrar nuevo rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
 			}
 		} else {
 			if (this.modelo.update(this.rol)) {

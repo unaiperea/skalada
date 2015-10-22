@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
+import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.TipoEscalada;
 import com.ipartek.formacion.skalada.modelo.ModeloTipoEscalada;
 
@@ -31,6 +32,8 @@ public class TipoEscaladaController extends HttpServlet {
 	private int pID = -1; // ID no valido
 	private String pNombre;
 	private String pDescripcion;
+	
+	private Mensaje msg = null;
 
 	/**
 	 * Este metodo se ejecuta solo la primera vez que se llama al servlet Se usa
@@ -71,19 +74,15 @@ public class TipoEscaladaController extends HttpServlet {
 		this.dispatcher.forward(request, response);
 	}
 
-	private void getParameters(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if ((request.getParameter("id") != null)
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if ((request.getParameter("id") != null) && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -95,18 +94,15 @@ public class TipoEscaladaController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("tipo_escalada", this.modelo.getAll(null));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_INDEX);
+		request.setAttribute("msg", msg);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_INDEX);
 	}
 
-	private void eliminar(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modelo.delete(this.pID)) {
-			request.setAttribute("msg-danger",
-					"Registro eliminado correctamente");
+			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");
 		} else {
-			request.setAttribute("msg-warning",
-					"Error al eliminar el registro [id(" + this.pID + ")]");
+			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
 		this.listar(request, response);
 	}
@@ -116,8 +112,7 @@ public class TipoEscaladaController extends HttpServlet {
 		request.setAttribute("tipo_escalada", this.tipoEscalada);
 		request.setAttribute("titulo", "Crear nuevo Tipo de Escalada");
 		request.setAttribute("metodo", "Guardar");
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
 
 	}
 
@@ -125,11 +120,9 @@ public class TipoEscaladaController extends HttpServlet {
 			HttpServletResponse response) {
 		this.tipoEscalada = (TipoEscalada) this.modelo.getById(this.pID);
 		request.setAttribute("tipo_escalada", this.tipoEscalada);
-		request.setAttribute("titulo", this.tipoEscalada.getNombre()
-				.toUpperCase());
+		request.setAttribute("titulo", this.tipoEscalada.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
 	}
 
 	/**
@@ -137,8 +130,7 @@ public class TipoEscaladaController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// recoger parametros del formulario
 		this.getParametersForm(request);
 
@@ -148,19 +140,15 @@ public class TipoEscaladaController extends HttpServlet {
 		// Guardar/Modificar Objeto Via
 		if (this.pID == -1) {
 			if (this.modelo.save(this.tipoEscalada) != -1) {
-				request.setAttribute("msg-success", "Registro creado con exito");
+				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
 			} else {
-				request.setAttribute("msg-danger",
-						"Error al guardar el nuevo registro");
+				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
 			}
 		} else {
 			if (this.modelo.update(this.tipoEscalada)) {
-				request.setAttribute("msg-success",
-						"Modificado correctamente el registro [id(" + this.pID
-						+ ")]");
+				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
 			} else {
-				request.setAttribute("msg-danger",
-						"Error al modificar el registro [id(" + this.pID + ")]");
+				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
 			}
 		}
 
@@ -186,8 +174,7 @@ public class TipoEscaladaController extends HttpServlet {
 	 * @param request
 	 * @throws UnsupportedEncodingException
 	 */
-	private void getParametersForm(HttpServletRequest request)
-			throws UnsupportedEncodingException {
+	private void getParametersForm(HttpServletRequest request) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
 		this.pID = Integer.parseInt(request.getParameter("id"));
 		this.pNombre = request.getParameter("nombre");
