@@ -108,9 +108,8 @@ public class TipoEscaladaController extends HttpServlet {
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		this.tipoEscalada = new TipoEscalada("");
+		this.tipoEscalada = new TipoEscalada("Crear nuevo Tipo de Escalada");
 		request.setAttribute("tipo_escalada", this.tipoEscalada);
-		request.setAttribute("titulo", "Crear nuevo Tipo de Escalada");
 		request.setAttribute("metodo", "Guardar");
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
 
@@ -120,7 +119,6 @@ public class TipoEscaladaController extends HttpServlet {
 			HttpServletResponse response) {
 		this.tipoEscalada = (TipoEscalada) this.modelo.getById(this.pID);
 		request.setAttribute("tipo_escalada", this.tipoEscalada);
-		request.setAttribute("titulo", this.tipoEscalada.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_FORM);
 	}

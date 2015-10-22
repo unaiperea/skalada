@@ -8,16 +8,15 @@
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-// 	recoger atributos (Objeto Zona)"zona" y (String)"titulo"
+// 	recoger atributos (Objeto Rol) "rol" 
 	Rol rol = (Rol)request.getAttribute("rol");
-	String titulo = request.getAttribute("titulo").toString();
 %>
 
 <div id="page-wrapper">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo %></h1>
+            <h1 class="page-header"><%=rol.getNombre().toUpperCase() %></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

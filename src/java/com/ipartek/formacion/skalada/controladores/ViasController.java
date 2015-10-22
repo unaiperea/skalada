@@ -140,27 +140,22 @@ public class ViasController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().setAttribute("vias",
-				this.modeloVia.getAll(this.usuario));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);
+		request.getSession().setAttribute("vias", this.modeloVia.getAll(this.usuario));
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);
 	}
 
-	private void eliminar(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modeloVia.delete(this.pID)) {
-			this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-					"Registro eliminado correctamente");
+			this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro eliminado correctamente");
 		} else {
-			this.msg = new Mensaje(Mensaje.MSG_DANGER,
-					"Error al eliminar el registro [id(" + this.pID + ")]");
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		this.via = new Via("");
+		this.via = new Via("Crear nueva Via");
 		this.via.setGrado(new Grado(""));
 		this.via.setTipoEscalada(new TipoEscalada(""));
 		this.via.setSector(this.modeloSector.getById(1));
@@ -169,35 +164,25 @@ public class ViasController extends HttpServlet {
 		this.via.setValidado(false);
 		this.via.setDescripcion("");
 		request.setAttribute("via", this.via);
-		request.setAttribute("titulo", "Crear nueva Via");
 		request.setAttribute("metodo", "Guardar");
 		request.setAttribute("grados", this.modeloGrado.getAll(null));
-		request.setAttribute("tipoEscaladas",
-				this.modeloTipoEscalada.getAll(null));
+		request.setAttribute("tipoEscaladas", this.modeloTipoEscalada.getAll(null));
 		request.setAttribute("sectores", this.modeloSector.getAllByZona(1));
 		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
 		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
 
 	}
 
-	private void detalle(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.via = this.modeloVia.getById(this.pID);
 		request.setAttribute("via", this.via);
-		request.setAttribute("titulo", this.via.getNombre().toUpperCase());
 		request.setAttribute("grados", this.modeloGrado.getAll(null));
-		request.setAttribute("tipoEscaladas",
-				this.modeloTipoEscalada.getAll(null));
+		request.setAttribute("tipoEscaladas", this.modeloTipoEscalada.getAll(null));
 		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
-		request.setAttribute(
-				"sectores",
-				this.modeloSector.getAllByZona(this.via.getSector().getZona()
-						.getId()));
+		request.setAttribute("sectores", this.modeloSector.getAllByZona(this.via.getSector().getZona().getId()));
 		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_FORM);
 	}
 
 	/**
@@ -205,8 +190,7 @@ public class ViasController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// recoger parametros del formulario
 		this.getParametersForm(request);
@@ -215,11 +199,9 @@ public class ViasController extends HttpServlet {
 		// mandamos mensaje de error advirtiendolo
 		if (this.pIDSector == -1) {
 			if (this.pID == -1) {
-				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Error: No se puede crear una Via sin un Sector");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error: No se puede crear una Via sin un Sector");
 			} else {
-				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Error: No se puede modificar una Via sin un Sector");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error: No se puede modificar una Via sin un Sector");
 			}
 		} else {
 			// si la via tiene un sector, se realiza la creacion o la
@@ -231,21 +213,15 @@ public class ViasController extends HttpServlet {
 			// Guardar/Modificar Objeto Via
 			if (this.pID == -1) {
 				if (this.modeloVia.save(this.via) != -1) {
-					this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-							"Registro creado con exito");
+					this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"Error al guardar el nuevo registro");
+					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
 				}
 			} else {
 				if (this.modeloVia.update(this.via)) {
-					this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-							"Modificado correctamente el registro [id("
-									+ this.pID + ")]");
+					this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"Error al modificar el registro [id(" + this.pID
-									+ ")]");
+					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
 				}
 			}
 

@@ -7,16 +7,15 @@
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
-	//recoger atributos (Objeto Grado)"grado" y (String)"titulo"
+	//recoger atributos (Objeto TipoEscalada) "tipo_escalada" 
 	TipoEscalada te = (TipoEscalada)request.getAttribute("tipo_escalada");
-	String titulo = request.getAttribute("titulo").toString();
 %>
 
 <div id="page-wrapper">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo%></h1>
+            <h1 class="page-header"><%=te.getNombre().toUpperCase()%></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

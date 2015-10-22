@@ -123,11 +123,10 @@ public class ZonasController extends HttpServlet {
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		this.zona = new Zona("", this.usuario);
+		this.zona = new Zona("Crear nuevo Zona", this.usuario);
 		this.zona.setFechaCreado();
 		this.zona.setFechaModificado();
 		request.setAttribute("zona", this.zona);
-		request.setAttribute("titulo", "Crear nuevo Zona");
 		request.setAttribute("metodo", "Guardar");
 		request.setAttribute("usuarios", this.usuarios);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_FORM);
@@ -137,7 +136,6 @@ public class ZonasController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.zona = this.modelo.getById(this.pID);
 		request.setAttribute("zona", this.zona);
-		request.setAttribute("titulo", this.zona.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
 		request.setAttribute("usuarios", this.usuarios);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_FORM);

@@ -12,14 +12,13 @@
 <%
 	Usuario usuario_form = (Usuario)request.getAttribute("usuario");
 	ArrayList<Rol> roles = (ArrayList<Rol>)request.getAttribute("roles");
-	String titulo = request.getAttribute("titulo").toString();
 %>
 
 <div id="page-wrapper">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo%></h1>
+            <h1 class="page-header"><%=usuario_form.getNombre().toUpperCase()%></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

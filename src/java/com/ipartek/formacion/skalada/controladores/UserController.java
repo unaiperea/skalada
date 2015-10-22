@@ -151,22 +151,16 @@ public class UserController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 
 		Rol rol = new Rol(Constantes.ROLE_USER);
-		this.usuario = new Usuario("", "", "", rol);
+		this.usuario = new Usuario("Crear nuevo Usuario", "", "", rol);
 		request.setAttribute("usuario", this.usuario);
-		request.setAttribute("titulo", "Crear nuevo Usuario");
-
 		request.setAttribute("roles", this.modeloRol.getAll(null));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
 
 	}
 
-	private void detalle(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.usuario = this.modeloUsuario.getById(this.pID);
 		request.setAttribute("usuario", this.usuario);
-		request.setAttribute("titulo", this.usuario.getNombre().toUpperCase());
-
 		request.setAttribute("roles", this.modeloRol.getAll(null));
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);

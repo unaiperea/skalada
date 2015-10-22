@@ -119,9 +119,8 @@ public class RolesController extends HttpServlet {
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		this.rol = new Rol("");
+		this.rol = new Rol("Crear nuevo Rol");
 		request.setAttribute("rol", this.rol);
-		request.setAttribute("titulo", "Crear nuevo Rol");
 		request.setAttribute("metodo", "Guardar");
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);
@@ -132,7 +131,6 @@ public class RolesController extends HttpServlet {
 			HttpServletResponse response) {
 		this.rol = (Rol) this.modelo.getById(this.pID);
 		request.setAttribute("rol", this.rol);
-		request.setAttribute("titulo", this.rol.getNombre().toUpperCase());
 		request.setAttribute("metodo", "Modificar");
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_ROLES_FORM);

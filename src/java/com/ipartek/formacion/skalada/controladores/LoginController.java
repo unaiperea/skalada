@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
 	//LOGS
 	private static final Logger LOG = Logger.getLogger(LoginController.class);
 
-	// Key oara guardar el usuario en la session
+	// Key para guardar el usuario en la session
 	private static final ModeloUsuario MODELOUSUARIO = new ModeloUsuario();
 
 	private RequestDispatcher dispatcher = null;
@@ -92,37 +92,27 @@ public class LoginController extends HttpServlet {
 
 			this.usuario = MODELOUSUARIO.getByEmail(this.pEmail);
 			if (this.usuario != null) {
-				if (this.usuario.getEmail().equals(this.pEmail)
-						&& this.usuario.getPassword().equals(this.pPassword)) {
+				if (this.usuario.getEmail().equals(this.pEmail) && this.usuario.getPassword().equals(this.pPassword)) {
 					if (this.usuario.isValidado()) {
 						// salvar session
-						this.session.setAttribute(Constantes.KEY_SESSION_USER,
-								this.usuario);
+						this.session.setAttribute(Constantes.KEY_SESSION_USER, this.usuario);
 						// Ir a => index_back.jsp
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);						
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);						
 						LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Inicia sesión");
 					} else {
-						this.msg = new Mensaje(
-								Mensaje.MSG_WARNING,
-								"El usuario no ha sido validado todavia, por favor revise su correo electronico");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);						
+						this.msg = new Mensaje(Mensaje.MSG_WARNING, "El usuario no ha sido validado todavia, por favor revise su correo electronico");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);						
 						LOG.warn("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "] no esta validado.");
 					}
 				} else {
 					// Ir a => login.jsp
-					this.msg = new Mensaje(Mensaje.MSG_WARNING,
-							"El email o la contraseña proporcionados no son validos.");
-					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_LOGIN);
+					this.msg = new Mensaje(Mensaje.MSG_WARNING, "El email o la contraseña proporcionados no son validos.");
+					this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					LOG.warn("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "] Contraseña incorrecta.");
 				}
 			} else {
-				this.msg = new Mensaje(Mensaje.MSG_WARNING,
-						"El usuario no existe, si lo desea registrese.");
-				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+				this.msg = new Mensaje(Mensaje.MSG_WARNING, "El usuario no existe, si lo desea registrese.");
+				this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 				LOG.warn("Intento de inicio de sesion de usuario no registrado.");
 			}
 

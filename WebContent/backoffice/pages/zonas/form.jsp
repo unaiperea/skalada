@@ -12,7 +12,6 @@
 <%
 	//recoger atributos (Objeto Zona)"zona" y (String)"titulo"
 	Zona zona = (Zona)request.getAttribute("zona");
-	String titulo = request.getAttribute("titulo").toString();
 	ArrayList<Usuario> usuarios = (ArrayList<Usuario>)request.getAttribute("usuarios");
 	Usuario usuario = (Usuario)session.getAttribute(Constantes.KEY_SESSION_USER);
 %>
@@ -21,7 +20,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><%=titulo%></h1>
+            <h1 class="page-header"><%=zona.getNombre().toUpperCase()%></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
