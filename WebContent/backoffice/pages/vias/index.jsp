@@ -2,7 +2,6 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
-<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
@@ -24,24 +23,11 @@
         </div>        <!-- /.col-lg-12 -->
     </div>    <!-- /.row -->
     
-    <div class="row">
-        <% 
-        
-        	Usuario usuario = (Usuario)session.getAttribute(Constantes.KEY_SESSION_USER);
-            Mensaje msg = (Mensaje)session.getAttribute("msg");	
-			if (msg != null){
-				out.print("<div class='alert alert-"+ msg.getTipo() +" alert-dismissible' role='alert'>");
-					out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-						out.print("<span aria-hidden='true'>&times;</span>");
-					out.print("</button>");
-					out.print("<strong>"+ msg.getTexto() +"</strong>");
-				out.print("</div>");
-			} 
-		%>
-		
-		
-		
+<!-- MUESTRA EL MENSAJE -->
+    <div class="row">    
+        <%@include file="../includes/mensaje.jsp" %>        
 	</div> <!-- /.row -->
+<!-- END MUESTRA DE MENSAJE -->
 
     <div class="row">
     

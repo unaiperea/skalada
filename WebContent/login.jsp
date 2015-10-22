@@ -1,9 +1,5 @@
 <%@include file="includes/head.jsp" %>
 
-<%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
-<%@page import="com.ipartek.formacion.skalada.Constantes"%>
-
-
 <div class="container">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
@@ -13,7 +9,7 @@
 				</div>
 				<div class="panel-body">
 
-					<jsp:include page="includes/mensaje.jsp"></jsp:include>
+					<%@include file="includes/mensaje.jsp" %>
 
 					<form role="form" action="<%=Constantes.CONTROLLER_LOGIN%>"
 						method="post">
