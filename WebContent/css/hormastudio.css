@@ -1,0 +1,343 @@
+/*   
+	version:  1.0
+	author:   Unai Perea Cruz
+		
+*/
+
+/* 
+   RESET    
+   Resetear todos los estilos para cualquier navegador
+*/
+@import url("reset.css");
+
+/* 
+
+   dar un estilo general o base a toda la Web	
+
+*/
+
+s{
+	float: left;
+}
+
+#canvas_croquis{
+	margin: 0 auto;
+	display: block; 
+}
+
+#titulo{
+	float: left !important;
+}
+
+/*#subtitulo{
+	vertical-align: ;
+}*/
+
+.flotar_izda {
+	float: left;
+}
+
+.flotar_dcha {
+	float: right;
+}
+
+.flotar_both{
+	float: both;
+}
+
+.lista-margen-arriba{
+	margin-top: 5px;
+}
+
+i{
+	color: #FFFFFF;
+}
+
+#control_select select{
+	background: transparent;
+	color: #fff;
+	border:solid 1px #888888;
+	cursor:pointer;
+	/*background: transparent;
+	width: 268px;
+	padding: 5px;
+	font-size: 16px;
+	line-height: 1;
+	border: 0;
+	border-radius: 0;
+	height: 34px;
+	-webkit-appearance: none;*/
+}
+
+#barra-menus{
+	margin-top: 10px;
+	padding-left: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+	border-radius: 3px;
+	background: #424242;  /* Fondo m�s oscuro que el original */
+	box-shadow: inset -1px -1px 1px rgba(0,0,0,.3), inset 1px 1px 1px rgba(255,255,255,.2);
+}
+
+#control-dibujo{
+	padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+	border-radius: 3px;
+	background: #424242;  /* Fondo m�s oscuro que el original */
+	box-shadow: inset -1px -1px 1px rgba(0,0,0,.3), inset 1px 1px 1px rgba(255,255,255,.2);
+}
+
+#control-propiedades{
+	margin-top: 10px;
+	padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+	border-radius: 3px;
+	background: #424242;  /* Fondo m�s oscuro que el original */
+	box-shadow: inset -1px -1px 1px rgba(0,0,0,.3), inset 1px 1px 1px rgba(255,255,255,.2);
+}
+
+#herramientas-izda, #control-archivo{
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 6px;
+	background: #343434;  /* Fondo m�s oscuro que el original */
+	box-shadow:inset 4px 4px 4px rgba(0,0,0,.3), inset -3px -3px 3px rgba(255,255,255,.2);
+}
+
+#zoom ul li{
+	list-style: none;
+}
+
+.invisible{
+	display: none;
+}
+
+/* Estilos de controles */
+
+.boton_pulsado/* Al presionarse el bot�n */ {
+	width: 30px;  /* Ancho del bot�n */
+	height: 30px;  /* Alto del bot�n */
+	padding-top: 2px;
+	padding-left: 2px;
+	text-align: center;  /* Alineaci�n del texto */
+	text-shadow: 1px 1px rgba(0,0,0,.3);  /* Sombra del texto */
+	background:#343434;  /* Fondo m�s oscuro que el original */
+	box-shadow:inset 4px 4px 4px rgba(0,0,0,.3), inset -3px -3px 3px rgba(255,255,255,.2);
+	border-radius: 4px;  /* Bordes redondos */
+	border: 1px solid #000000; /* Borde */
+	color: white;  /* Color del texto */
+}
+
+.boton_no_pulsado {
+	box-shadow: inset 3px 3px 3px rgba(255,255,255,.7), inset -2px -2px 3px rgba(0,0,0,.1), 2px 2px 10px rgba(0,0,0,.1);
+	width: 30px;  /* Ancho del bot�n */
+	height: 30px;  /* Alto del bot�n */
+	border: 0; /* Borde */
+	padding-top: 2px;
+	padding-left: 2px;
+	background: #535353;  /* Fondo */
+	text-align: center;  /* Alineaci�n del texto */
+	text-shadow: -1px -1px rgba(0,0,0,.2);  /* Sombra del texto */
+	border-radius: 4px;  /* Bordes redondos */
+	color: white;  /* Color del texto */
+}
+
+/*.boton_reunion_hover:hover {
+	border: 1px solid #000000;
+	background: #6a6a6a;
+	padding: 4px !important;
+	padding: 4px !important;
+}*/
+
+.boton_hover:hover { /*El bot�n_reunion no funciona al ser de icomoon por lo que se ha creado una clase especial para �l .boton_reunion_hover*/
+	border: 1px solid #000000; /* Borde */
+	background: #6a6a6a;  /* Fondo */
+}
+
+/*
+
+	Estilos personalizados
+	
+*/
+
+#centro{
+	/*position: relative;*/
+}
+
+#canvas-container{
+	background-color: #414141;
+}
+
+#canvas_croquis{ /* crosshair ----- cursor: url(img/dot.png), pointer; }*/
+	width: 100%;
+	border: 0px solid white;/*#d3d3d3;*/
+	background-color: white;
+}
+
+#herramientas-dcha-container{
+
+}
+
+#mover-container{
+	
+}
+
+#control_mover{
+	/*display: inline-block;
+	position: absolute;
+	top: 79px;
+    left: 883px;*/
+}
+
+.iconos-dibujo{
+	/*margin-top: 5px;*/
+	margin-bottom: 5px;
+}
+
+#control_pincel{
+	font-size: 17px;
+	padding-top: 6px;
+}
+
+#control_reunion, #control_borrar, #control_mover{
+	font-size: 21px;
+	padding-top: 5px;
+}
+
+/*#ruta{
+	position: absolute;
+	left: 60px;
+    top: 20px;
+}
+
+#reunion{
+	position: absolute;
+	left: 38px;
+    top: 70px;
+}
+
+#borrar{
+	position: absolute;
+	left: 50px;
+    top: 120px;
+}
+
+#deshacer{
+	position: absolute;
+	left: 38px;
+    top: 157px;
+}*/
+
+.cursor_wait{
+	cursor: wait;
+}
+
+.cursor_mover{
+	cursor: move;
+}
+
+.cursor_borrar{
+	cursor: default;
+}
+
+.cursor_hand{
+	cursor: pointer;
+}
+
+.cursor_none{
+	cursor: none;
+}
+
+/* Slider para controlar el grosor del pincel */
+#grosor_container, #zoom_container {
+  width: 100px;
+  position: relative;
+}
+
+#etiqueta{
+  color: #999;
+  margin-bottom: .6em;
+  font-family: sans-serif;
+  font-size: 0.8em;
+}
+
+#control_grosor, #control_zoom {
+  display: block;
+  width: 100%;
+}
+
+#control_grosor:focus, #control_zoom:focus {
+  outline: none;
+}
+
+#control_grosor, #control_zoom,
+#control_grosor::-webkit-slider-runnable-track,
+#control_zoom::-webkit-slider-runnable-track,
+#control_grosor::-webkit-slider-thumb,
+#control_zoom::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+#control_grosor::-webkit-slider-thumb,
+#control_zoom::-webkit-slider-thumb {
+  background-color: #777;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #424242;
+  border-radius: 50%;
+  margin-top: -9px;
+}
+
+#control_grosor::-moz-range-thumb,
+#control_zoom::-moz-range-thumb {
+  background-color: #777;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #333;
+  border-radius: 50%;
+}
+
+#control_grosor::-ms-thumb,
+#control_zoom::-ms-thumb {
+  background-color: #777;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #333;
+  border-radius: 50%;
+}
+
+#control_grosor::-webkit-slider-runnable-track,
+#control_zoom::-webkit-slider-runnable-track {
+  background-color: #777;
+  height: 3px;
+}
+
+#control_grosor:focus::-webkit-slider-runnable-track,
+#control_zoom:focus::-webkit-slider-runnable-track {
+  outline: none;
+}
+
+#control_grosor::-moz-range-track,
+#control_zoom::-moz-range-track {
+  background-color: #777;
+  height: 3px;
+}
+
+#control_grosor::-ms-track,
+#control_zoom::-ms-track {
+  background-color: #777;
+  height: 3px;
+}
+
+#control_grosor::-ms-fill-lower,
+#control_zoom::-ms-fill-lower {
+  background-color: HotPink
+}
+
+#control_grosor::-ms-fill-upper,
+#control_zoom::-ms-fill-upper {
+  background-color: black;
+} 

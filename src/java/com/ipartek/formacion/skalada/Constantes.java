@@ -32,6 +32,7 @@ public final class Constantes {
 
 	// vistas frontoffice
 	public static final String VIEW_FRONT_SECTORESINFO = "/pages/sectoresinfo.jsp";
+	public static final String VIEW_FRONT_HORMASTUDIO = "/skalada//pages/canvas.jsp";
 	
 	// vistas backoffice
 	public static final String ROOT_BACK = ROOT_APP + "backoffice/";

@@ -125,6 +125,8 @@
                                 <h5>Podrás compartir todas tus rutas completas, zonas, sectores o vías con demás gente.</h5>
                             </div>
                         </div>
+                        <br>
+                        <a href="<%=Constantes.VIEW_FRONT_HORMASTUDIO%>">Horma Studio</a>
                     </div>
                 </div>
             </div>
