@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.skalada.Constantes;
-import com.ipartek.formacion.skalada.bean.Sector;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
@@ -72,7 +71,7 @@ public class HomeController extends HttpServlet {
 		ArrayList<Zona> zonas = this.modeloZona.getAll(this.usuario);
 
 		// enviarlas como atributo en la request
-		request.setAttribute("ultimas_zonas", zonas);
+		request.setAttribute("todo_zonas", zonas);
 		// ir a index
 		request.getRequestDispatcher(Constantes.VIEW_PUBLIC_INDEX).forward(request,
 				response);

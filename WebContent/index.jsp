@@ -12,10 +12,12 @@
 <jsp:include page="includes/head.jsp"></jsp:include>
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
-
+	<li class="active"><a href="#">Inicio</a></li> 
+	  </ol>
+    </nav>  
     <!-- Home Page
     ==========================================-->
-    <div id="tf-home" class="text-center">
+    <div id="tf-home" class="text-center">	
         <div class="overlay">
             <div class="content">
                 <h1>Busca lo que quieras</h1>
@@ -50,7 +52,7 @@
                         	<li><a href="#" data-filter="*" class="active">Todas</a></li>
                         	<%
                         	//Recoger todas las zonas de la BBDD (TODO SQL con vias solo publicadas)
-                        	zonas = (ArrayList<Zona>)request.getAttribute("ultimas_zonas");
+                        	zonas = (ArrayList<Zona>)request.getAttribute("todo_zonas");
 	           				Zona z = null;
 	           				for(int i = 0 ; i < zonas.size() ; i++){
 	           					z = zonas.get(i);            
@@ -82,10 +84,10 @@
               <div class="col-sm-6 col-md-3 col-lg-3 <%=z.getId()%>">
                     <div class="portfolio-item">
                         <div class="hover-bg">
-                            <a href="pages/sectoresinfo.jsp">
+                            <a href="geomap?idSector=<%=s.getId()%>">
                                 <div class="hover-text">
                                     <h4><%=s.getNombre() %></h4>
-                                    <small>Branding</small>
+                                    <small><%=z.getNombre() %></small>
                                     <div class="clearfix"></div>
                                     <i class="fa fa-plus"></i>
                                 </div>

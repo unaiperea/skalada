@@ -1,8 +1,16 @@
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 <body>
+
+<%
+            	Usuario user = (Usuario) session.getAttribute("admin");
+            	ArrayList<Zona> zonas = new ArrayList<Zona>();
+%>
     <!-- Navigation
     ==========================================-->
     <nav id="tf-menu" class="navbar navbar-default navbar-inverse navbar-fixed-top">
@@ -21,7 +29,23 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-left">
-         	<li><a href="#tf-about" class="page-scroll">Zonas</a></li>
+         	<li><a href="#tf-about" class="page-scroll">Zonas</a><li>
+			<li>	 
+				  <button type="button" class="btn transparente centrado dropdown-toggle"
+				          data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu izq" role="menu">
+				  <%
+                        	//Recoger todas las zonas de la BBDD (TODO SQL con vias solo publicadas)
+                        	zonas = (ArrayList<Zona>)request.getAttribute("todo_zonas");
+	           				Zona z = null;
+	           				for(int i = 0 ; i < zonas.size() ; i++){
+	           					z = zonas.get(i);            
+                        	%>
+                           	 	<li><a href="geomap?idZona=<%=z.getId() %>" class="blanco"><%=z.getNombre() %></a></li>
+                       	<%} %>
+				  </ul></li>
          	<li><a href="#tf-testimonials" class="page-scroll">Crea tu Ruta</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -37,4 +61,5 @@
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
-    </nav>
+	  <ol class="breadcrumb container transparente">
+	  

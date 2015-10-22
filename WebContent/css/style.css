@@ -591,3 +591,35 @@ nav#footer p{
 .letra_blanca {
 	color: white;
 }
+
+.transparente {
+	background-color: transparent;
+    text-transform: uppercase;
+    color: #FFF;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.centrado {
+	margin-top:20%;
+	margin-left: -50%;
+}
+
+.centrado:hover, .centrado:focus {
+	color: white !important;
+}
+
+.izq {
+	margin-left: -200%;
+	background-color: #FFF;
+	border-top-left-radius: 3% !important;
+    border-top-right-radius: 3% !important;
+	
+}
+
+.blanco {
+	text-transform: uppercase;
+    font-color: #FFF;
+    font-size: 12px;
+    letter-spacing: 1px;
+}

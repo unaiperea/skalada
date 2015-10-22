@@ -9,8 +9,12 @@
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
-<link rel="stylesheet" type="text/css" href="css/sectores.css" media="screen" />
-
+		<li><a href="#">Inicio</a></li>
+		<li class="active"><a href="#">Sectores</a></li>
+	  </ol>
+    </nav>
+    
+  	<link rel="stylesheet" type="text/css" href="css/sectores.css" media="screen" />  
     <!-- Home Page
     ========================================== -->
     <div id="tf-home" class="text-left">
