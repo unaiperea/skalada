@@ -153,8 +153,8 @@
 	                			<td></td> 
 		                		
 		                		<%}%>
-		                <td><%=o.getFecha_alta()%></td>
-		                <td><%=o.getFecha_baja()%></td>
+		                <td type="date"><%=o.getFecha_alta()%></td>
+		                <td type="date"><%=o.getFecha_baja()%></td>
 		            </tr>	            
 	           <%
 	           			} //end del if VISIBLE

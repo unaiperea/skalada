@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.skalada.util.UtilidadesFecha"%>
 <%@page import="com.ipartek.formacion.skalada.bean.UsuarioInscrito"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="java.util.ArrayList"%>
@@ -5,8 +6,12 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <%@page import="com.ipartek.formacion.skalada.bean.Oferta"%>
+
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
+
+
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -76,8 +81,9 @@ if (!usuario.isAdmin()){
 	           		<input type="text" class="form-control" name="precio" value="<%=oferta.getPrecio()%>" <%=modificar%>>
 	          	</div>
 	          				
+	          	<% if (usuario.isAdmin()){%>
 	          	<div class="form-group col-lg-5">
-					<label for="zona">Zona</label> <select class="form-control" name="zona" <%=modificar%>>
+					<label for="zona">Zona</label> <select class="form-control" name="zona" >
 						<%
 							for (int i = 0 ; i < zonas.size() ; i++){
 						%>
@@ -96,6 +102,10 @@ if (!usuario.isAdmin()){
 						%>
 					</select>
 				</div>
+				<%}else{ %>
+					<label for="zona">Zona</label> 
+					<input type="text" class="form-control" name="zona" value="<%=oferta.getZona().getNombre()%>" <%=modificar%>>
+				<%} %>
 				<div class="form-group">
 				 <%
 				 	String visible = "";
@@ -112,6 +122,7 @@ if (!usuario.isAdmin()){
 						<div class='form-group col-lg-8'>
 						<% 
 							boolean encontrado=false;
+							
 							for(int i=0; i<oferta.getUsuariosInscritos().size();i++){
 								if(usuario.getId()==oferta.getUsuariosInscritos().get(i).getId()){
 									encontrado=true;
@@ -123,14 +134,37 @@ if (!usuario.isAdmin()){
 						</div>
 				<% } %>
 				</div>
-	          	<div class="form-group col-lg-6">
-	           		<label for="fecha_alta">Fecha_alta</label>
-	           		<input type="date" class="form-control" name="fecha_alta" value="<%=oferta.getFecha_alta()%>" <%=modificar%>>
-	          	</div>
-	          	<div class="form-group col-lg-6">
-	           		<label for="fecha_baja">Fecha_baja</label>
-	           		<input type="date" class="form-control" name="fecha_baja" value="<%=oferta.getFecha_baja()%>" <%=modificar%>>
-	          	</div>
+				<% if(usuario.isAdmin()){ %>
+				
+		          	<div class="form-group col-lg-6">
+		           		<label for="fecha_alta">Fecha_alta</label>          		
+		           		<input type="date" class="form-control" name="fecha_alta"  value="<%=UtilidadesFecha.convTimestampAFecha(oferta.getFecha_alta())%>"  <%=modificar%>>
+		          	</div>
+		          	<div class="form-group col-lg-6">
+		           		<label for="fecha_baja">Fecha_baja</label>
+		           		<input type="date" class="form-control" name="fecha_baja" value="<%=UtilidadesFecha.convTimestampAFecha(oferta.getFecha_baja())%>" <%=modificar%>>		           		
+		           		
+		          	</div>
+	          	<% }else{ %>
+	          		
+	          	<%
+				ArrayList<UsuarioInscrito> ui1 = oferta.getUsuariosInscritos();
+				UsuarioInscrito usuarioInscrito1 = null;
+				for(int i = 0 ; i < ui1.size() ; i++){
+       				usuarioInscrito1 = ui1.get(i);
+       				if(usuario.getId()==usuarioInscrito1.getId()){
+	           	 	%>	
+		           	 <div class="form-group col-lg-6">
+		           		<label for="fecha_baja">Fecha_inscripcion</label>
+		           		<input type="date" class="form-control" name="fecha_inscripcion" value="<%=UtilidadesFecha.convTimestampAFecha(usuarioInscrito1.getFechaInscripcion())%>" <%=modificar%>>
+		          	</div>
+		          	
+	          		<%}//end if
+				} } //end for y else
+				%> 
+				
+	          	
+	         
 	        </div>
 	        
 	        <% if(usuario.isAdmin()){ %>
@@ -223,7 +257,7 @@ if (!usuario.isAdmin()){
 			
 			<!-- Botonera -->
 			<div class="form-group">
-								
+			<% if(usuario.isAdmin()){ %>					
 				<% if(oferta.getId()!= -1){ %>
 						<input type="submit" class="btn btn-outline btn-primary" value="Modificar / Guardar">
   						<!-- Trigger the modal with a button -->
@@ -271,7 +305,7 @@ if (!usuario.isAdmin()){
 						<input type="submit" class="btn btn-outline btn-primary" value="Crear / Guardar">
 						<button type='reset' class='btn btn-outline btn-warning'>Limpiar</button>
 				<% } %>
-	
+			<%} %>
 				
 			</div>
 			

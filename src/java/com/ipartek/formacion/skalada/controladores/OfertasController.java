@@ -241,7 +241,7 @@ public class OfertasController extends HttpServlet {
 			if (this.modeloOferta.update(this.oferta)) {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
-								+ ")]");
+						+ ")]");
 				LOG.info("Oferta modificada con exito");
 			} else {
 				request.setAttribute("msg-danger",
