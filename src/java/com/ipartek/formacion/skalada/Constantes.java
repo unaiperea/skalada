@@ -30,6 +30,9 @@ public final class Constantes {
 
 	public static final String VIEW_PUBLIC_VIA = "/pages/via_detalle.jsp";
 
+	// vistas frontoffice
+	public static final String VIEW_FRONT_SECTORESINFO = "/pages/sectoresinfo.jsp";
+	
 	// vistas backoffice
 	public static final String ROOT_BACK = ROOT_APP + "backoffice/";
 
@@ -74,6 +77,7 @@ public final class Constantes {
 	public static final String CONTROLLER_SECTORES = ROOT_BACK + "sectores";
 	public static final String CONTROLLER_ROLES = ROOT_BACK + "roles";
 	public static final String CONTROLLER_USUARIOS = ROOT_BACK + "usuarios";
+	public static final String CONTROLLER_GEOMAP = "geomap";
 
 	// acciones
 	public static final int ACCION_NUEVO = 0;

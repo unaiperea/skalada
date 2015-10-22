@@ -26,9 +26,9 @@ public class ModeloZona implements Persistable<Zona> {
 			+ "`) VALUES (?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
 			+ "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM `"
+	private static final String SQL_GETONE = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `latitud`, `longitud`  FROM `"
 			+ TABLA + "` WHERE `" + COL_ID + "`= ?;";
-	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado` FROM "
+	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `latitud`, `longitud` FROM "
 			+ TABLA;
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
@@ -81,8 +81,8 @@ public class ModeloZona implements Persistable<Zona> {
 	}
 
 	@Override()
-	public Object getById(int id) {
-		Object resul = null;
+	public Zona getById(int id) {
+		Zona resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -225,6 +225,8 @@ public class ModeloZona implements Persistable<Zona> {
 		}
 		resul.setFechaCreado(rs.getTimestamp(COL_FECHA_CREADO));
 		resul.setFechaModificado(rs.getTimestamp(COL_FECHA_MODIFICADO));
+		resul.setLatitud(rs.getDouble("latitud"));
+		resul.setLongitud(rs.getDouble("longitud"));
 		return resul;
 	}
 }

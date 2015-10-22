@@ -159,26 +159,24 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
-  
-  <!-- FILTROS -->
-  
   <filter>
     <display-name>FilterBackoffice</display-name>
     <filter-name>FilterBackoffice</filter-name>
     <filter-class>com.ipartek.formacion.skalada.filter.FilterBackoffice</filter-class>
   </filter>
-  
   <filter-mapping>
     <filter-name>FilterBackoffice</filter-name>
     <url-pattern>/backoffice/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
-    <!-- 
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>INCLUDE</dispatcher>
-    <dispatcher>ERROR</dispatcher>
-    -->
   </filter-mapping>
-  
-  
-  
+  <servlet>
+    <description>Controlador de geolocalización de Zonas y Sectores</description>
+    <display-name>GeomapController</display-name>
+    <servlet-name>GeomapController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.GeomapController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GeomapController</servlet-name>
+    <url-pattern>/geomap</url-pattern>
+  </servlet-mapping>
 </web-app>

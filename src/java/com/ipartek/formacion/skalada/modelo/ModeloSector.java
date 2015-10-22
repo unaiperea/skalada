@@ -33,7 +33,7 @@ public class ModeloSector implements Persistable<Sector> {
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_SECTOR
 			+ "` WHERE `" + COL_ID + "`= ?;";
 
-	private static final String SQL_GETALL = "SELECT s.nombre, s.id, s.imagen, s.validado, s.id_zona, z.nombre as zona_nombre, z.id as zona_id, r.nombre as rol_nombre, r.id as rol_id, u.nombre as usuario_nombre, u.password as usuario_pass, u.email as usuario_email, u.id as usuario_id FROM sector as s INNER JOIN zona as z ON s.id_zona = z.id INNER JOIN usuario as u ON s.id_usuario = u.id INNER JOIN rol as r ON u.id_rol = r.id";
+	private static final String SQL_GETALL = "SELECT s.nombre, s.id, s.imagen, s.validado, s.id_zona, s.latitud, s.longitud, z.nombre as zona_nombre, z.id as zona_id, r.nombre as rol_nombre, r.id as rol_id, u.nombre as usuario_nombre, u.password as usuario_pass, u.email as usuario_email, u.id as usuario_id FROM sector as s INNER JOIN zona as z ON s.id_zona = z.id INNER JOIN usuario as u ON s.id_usuario = u.id INNER JOIN rol as r ON u.id_rol = r.id";
 
 	private static final String SQL_GETALL_BY_USER = SQL_GETALL
 			+ " AND s.id_usuario = ? ";
@@ -327,6 +327,8 @@ public class ModeloSector implements Persistable<Sector> {
 			resul.setValidado(true);
 		}
 		resul.setUsuario(user);
+		resul.setLatitud(rs.getDouble("latitud"));
+		resul.setLongitud(rs.getDouble("longitud"));
 
 		return resul;
 	}

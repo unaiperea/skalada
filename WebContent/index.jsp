@@ -57,7 +57,7 @@
 	           				for(int i = 0 ; i < zonas.size() ; i++){
 	           					z = zonas.get(i);            
                         	%>
-                           	 	<li><a href="#" data-filter=".<%=z.getId()%>"><%=z.getNombre() %></a></li>
+                           	 	<li><a href="<%=Constantes.CONTROLLER_GEOMAP%>?idZona=<%=z.getId()%>" data-filter=".<%=z.getId()%>"><%=z.getNombre()%></a></li>
                        	<%} %>
                         </ol>
                     </li>
@@ -84,7 +84,7 @@
               <div class="col-sm-6 col-md-3 col-lg-3 <%=z.getId()%>">
                     <div class="portfolio-item">
                         <div class="hover-bg">
-                            <a href="geomap?idSector=<%=s.getId()%>">
+                            <a href="<%=Constantes.CONTROLLER_GEOMAP%>?idSector=<%=s.getId()%>">
                                 <div class="hover-text">
                                     <h4><%=s.getNombre() %></h4>
                                     <small><%=z.getNombre() %></small>
