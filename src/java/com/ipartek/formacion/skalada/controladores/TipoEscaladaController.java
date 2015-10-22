@@ -94,7 +94,6 @@ public class TipoEscaladaController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("tipo_escalada", this.modelo.getAll(null));
-		request.setAttribute("msg", msg);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_TIPO_ESCALADA_INDEX);
 	}
 
@@ -104,6 +103,7 @@ public class TipoEscaladaController extends HttpServlet {
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
@@ -150,9 +150,11 @@ public class TipoEscaladaController extends HttpServlet {
 			}
 		}
 
-		this.listar(request, response);
-
-		this.dispatcher.forward(request, response);
+//		this.listar(request, response);
+//		this.dispatcher.forward(request, response);
+		
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath() + "/backoffice/tipo-escalada?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 

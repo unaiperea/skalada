@@ -55,6 +55,8 @@ public class SectoresController extends HttpServlet {
 	private double pLongitud;
 	private double pLatitud;
 	
+	private Mensaje msg = null;
+	
 	// Imagen File
 	private File file;
 
@@ -72,11 +74,9 @@ public class SectoresController extends HttpServlet {
 	}
 
 	@Override
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		this.usuario = (Usuario) request.getSession().getAttribute(
-				Constantes.KEY_SESSION_USER);
+		this.usuario = (Usuario) request.getSession().getAttribute( Constantes.KEY_SESSION_USER);
 		super.service(request, response);
 	}
 
@@ -109,14 +109,11 @@ public class SectoresController extends HttpServlet {
 		this.dispatcher.forward(request, response);
 	}
 
-	private void getParameters(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if ((request.getParameter("id") != null)
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if ((request.getParameter("id") != null) && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
 		} catch (Exception e) {
@@ -135,31 +132,22 @@ public class SectoresController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("sectores", this.modeloSector.getAll(this.usuario));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_INDEX);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_INDEX);
 	}
 
-	private void eliminar(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		// Check Autorizacion
-		if (this.usuario.isAdmin()
-				|| (this.sector.getUsuario().getId() == this.usuario.getId())) {
-
+		if (this.usuario.isAdmin() || (this.sector.getUsuario().getId() == this.usuario.getId())) {
 			if (this.modeloSector.delete(this.pID)) {
-				request.setAttribute("msg-danger",
-						"Registro eliminado correctamente");
+				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");			
 			} else {
-				request.setAttribute("msg-warning",
-						"Error al eliminar el registro [id(" + this.pID + ")]");
-			}
-			// Usuario sin autorizacion para este Sector
+				this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
+			}			
+		// Usuario sin autorizacion para este Sector
 		} else {
-			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,
-					"No tienes permisos para ver el detalle");
-			request.setAttribute("msg", msg);
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "No tienes permisos para ver el detalle");
 		}
-
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
@@ -170,32 +158,25 @@ public class SectoresController extends HttpServlet {
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
 		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 
 	}
 
-	private void detalle(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.sector = this.modeloSector.getById(this.pID);
 
 		// check autorizacion
-		if (this.usuario.isAdmin()
-				|| (this.sector.getUsuario().getId() == this.usuario.getId())) {
-
+		if (this.usuario.isAdmin() || (this.sector.getUsuario().getId() == this.usuario.getId())) {
 			request.setAttribute("sector", this.sector);
 			request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
-			request.setAttribute("usuarios",
-					this.modeloUsuario.getAll(this.admin));
+			request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
 
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_FORM);
 
-			// Usuario sin autorizacion
+		// Usuario sin autorizacion
 		} else {
-			Mensaje msg = new Mensaje(Mensaje.MSG_DANGER,
-					"No tienes permisos para ver el detalle");
-			request.setAttribute("msg", msg);
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "No tienes permisos para ver el detalle");
+			request.getSession().setAttribute("msg", this.msg);
 			this.listar(request, response);
 		}
 	}
@@ -205,10 +186,9 @@ public class SectoresController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin identificar");
+		this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin identificar");
 
 		try {
 			// recoger parametros del formulario
@@ -220,41 +200,36 @@ public class SectoresController extends HttpServlet {
 			// Guardar/Modificar Objeto Via
 			if (this.pID == -1) {
 				if (this.modeloSector.save(this.sector) != -1) {
-					msg.setTipo(Mensaje.MSG_SUCCESS);
-					msg.setTexto("Registro creado con exito");
-
+					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
 				} else {
-					msg.setTipo(Mensaje.MSG_DANGER);
-					msg.setTexto("Error al guardar el nuevo registro");
+					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
 				}
 			} else {
 				if (this.modeloSector.update(this.sector, this.usuario)) {
-					msg.setTipo(Mensaje.MSG_SUCCESS);
-					msg.setTexto("Modificado correctamente el registro [id("
-							+ this.pID + ")]");
+					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
 				} else {
-					msg.setTipo(Mensaje.MSG_DANGER);
-					msg.setTexto("Error al modificar el registro [id("
-							+ this.pID + ")]");
+					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
 				}
 			}
 
-			request.setAttribute("msg", msg);
+			request.getSession().setAttribute("msg", this.msg);
 
 		} catch (FileSizeLimitExceededException e) {
 			e.printStackTrace();
-			msg = new Mensaje(Mensaje.MSG_DANGER,
-					"La imagen excede del tama�o maximo permitido "
-							+ Constantes.MAX_FILE_SIZE + " bytes");
-			request.setAttribute("msg", msg);
+			msg = new Mensaje(Mensaje.MSG_DANGER, "La imagen excede del tama�o maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes");
+			request.getSession().setAttribute("msg", this.msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg = new Mensaje(Mensaje.MSG_DANGER, e.getMessage());
-			request.setAttribute("msg", msg);
+			request.getSession().setAttribute("msg", this.msg);
 		}
 
-		this.listar(request, response);
-		this.dispatcher.forward(request, response);
+//		this.listar(request, response);
+//		this.dispatcher.forward(request, response);
+		
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath() + "/backoffice/sectores?accion=" + Constantes.ACCION_LISTAR);
+
 
 	}
 

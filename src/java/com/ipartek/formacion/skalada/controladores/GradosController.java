@@ -99,7 +99,6 @@ public class GradosController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("grados", this.modelo.getAll(null));
-		request.setAttribute("msg", msg);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_GRADOS_INDEX);
 	}
 
@@ -115,7 +114,7 @@ public class GradosController extends HttpServlet {
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
-		
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
@@ -173,9 +172,11 @@ public class GradosController extends HttpServlet {
 			}
 		}
 
-		this.listar(request, response);
-
-		this.dispatcher.forward(request, response);
+//		this.listar(request, response);
+//		this.dispatcher.forward(request, response);
+		
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath() + "/backoffice/grados?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 

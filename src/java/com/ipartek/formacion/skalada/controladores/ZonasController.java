@@ -109,7 +109,6 @@ public class ZonasController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("zonas", this.modelo.getAll(this.usuario));
-		request.setAttribute("msg", msg);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_INDEX);
 	}
 
@@ -119,6 +118,7 @@ public class ZonasController extends HttpServlet {
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
 		}
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
@@ -168,9 +168,11 @@ public class ZonasController extends HttpServlet {
 			}
 		}
 
-		this.listar(request, response);
-
-		this.dispatcher.forward(request, response);
+//		this.listar(request, response);
+//		this.dispatcher.forward(request, response);
+		
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath() + "/backoffice/zonas?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 

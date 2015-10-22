@@ -29,6 +29,9 @@
 	</div> <!-- /.row -->
 <!-- END MUESTRA DE MENSAJE -->
 
+	<% 
+		Usuario usuario = (Usuario)session.getAttribute(Constantes.KEY_SESSION_USER);
+	%>
     <div class="row">
     
     <!-- tabla -->

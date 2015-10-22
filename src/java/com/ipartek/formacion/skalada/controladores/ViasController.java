@@ -116,14 +116,11 @@ public class ViasController extends HttpServlet {
 		this.dispatcher.forward(request, response);
 	}
 
-	private void getParameters(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if ((request.getParameter("id") != null)
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if ((request.getParameter("id") != null) && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
 		} catch (Exception e) {
@@ -230,8 +227,7 @@ public class ViasController extends HttpServlet {
 		// this.listar(request, response);
 
 		request.getSession().setAttribute("msg", this.msg);
-		response.sendRedirect(request.getContextPath()
-				+ "/backoffice/vias?accion=" + Constantes.ACCION_LISTAR);
+		response.sendRedirect(request.getContextPath() + "/backoffice/vias?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 

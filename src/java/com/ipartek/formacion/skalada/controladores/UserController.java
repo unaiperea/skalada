@@ -44,6 +44,9 @@ public class UserController extends HttpServlet {
 	private String pPassword = "";
 	private int pValidado = Constantes.USER_NO_VALIDATE;
 	private int pRolId = -1; // Identificador del Rol
+	
+	private Mensaje msg;
+	
 
 	/**
 	 * Este metodo se ejecuta solo la primera vez que se llama al servlet Se usa
@@ -61,8 +64,7 @@ public class UserController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// recoger parametros
 		this.getParameters(request, response);
 
@@ -91,13 +93,10 @@ public class UserController extends HttpServlet {
 		this.dispatcher.forward(request, response);
 	}
 
-	private void getParameters(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void getParameters(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
-			if ((request.getParameter("id") != null)
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if ((request.getParameter("id") != null) && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
 			}
 		} catch (Exception e) {
@@ -115,55 +114,45 @@ public class UserController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("usuarios", this.modeloUsuario.getAll(null));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
 	}
 
-	private void noValidados(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void noValidados(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("usuarios", this.modeloUsuario.getNoValidados());
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
 	}
 
-	private void conectados(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void conectados(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("usuarios", ListenerSession.session_users);
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_INDEX);
 	}
 
-	private void eliminar(HttpServletRequest request,
-			HttpServletResponse response) {
-		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin determinar");
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
+		this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin determinar");
 		if (this.modeloUsuario.delete(this.pID)) {
-			msg.setTipo(Mensaje.MSG_SUCCESS);
-			msg.setTexto("Registro eliminado correctamente");
+			this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro eliminado correctamente");
 			LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Eliminado");
 		} else {
-			msg.setTexto("Error al eliminar el registro [id(" + this.pID + ")]");
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al eliminar el registro [id(" + this.pID + ")]");
 			LOG.error("Error al eliminar usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "].");
 		}
-		request.setAttribute("msg", msg);
+		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-
 		Rol rol = new Rol(Constantes.ROLE_USER);
 		this.usuario = new Usuario("Crear nuevo Usuario", "", "", rol);
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("roles", this.modeloRol.getAll(null));
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
-
 	}
 
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.usuario = this.modeloUsuario.getById(this.pID);
 		request.setAttribute("usuario", this.usuario);
 		request.setAttribute("roles", this.modeloRol.getAll(null));
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_USUARIOS_FORM);
 	}
 
 	/**
@@ -171,8 +160,7 @@ public class UserController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// recoger parametros del formulario
 		this.getParametersForm(request);
 
@@ -183,29 +171,27 @@ public class UserController extends HttpServlet {
 		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Erro sibn determinar");
 		if (this.pID == -1) {
 			if (this.modeloUsuario.save(this.usuario) != -1) {
-				msg.setTipo(Mensaje.MSG_SUCCESS);
-				msg.setTexto("Registro creado con exito");
+				this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");
 				LOG.info("Registrado nuevo usuario: " + usuario.getNombre() + "[email:" + usuario.getEmail() + "].");
 			} else {
-				msg.setTexto("Error al guardar el nuevo registro");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
 				LOG.error("Error al registrar nuevo usuario: " + usuario.getNombre() + "[email:" + usuario.getEmail() + "].");
 			}
 		} else {
 			if (this.modeloUsuario.update(this.usuario)) {
-				msg.setTipo(Mensaje.MSG_SUCCESS);
-				msg.setTexto("Modificado correctamente el registro [id("
-						+ this.pID + ")]");
+				this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");
 				LOG.info("Usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "]. Modificado");
 			} else {
-				msg.setTexto("Error al modificar el registro [id(" + this.pID
-						+ ")]");
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
 				LOG.error("Error al modificar usuario: " + usuario.getNombre() + "[id:" + usuario.getId() + "].");
 			}
 		}
-		request.setAttribute("msg", msg);
-		this.listar(request, response);
-
-		this.dispatcher.forward(request, response);
+//		request.setAttribute("msg", msg);
+//		this.listar(request, response);
+//		this.dispatcher.forward(request, response);
+		
+		request.getSession().setAttribute("msg", this.msg);
+		response.sendRedirect(request.getContextPath() + "/backoffice/usuarios?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 
