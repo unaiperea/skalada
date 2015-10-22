@@ -161,7 +161,6 @@ public class ViasController extends HttpServlet {
 		this.via.setValidado(false);
 		this.via.setDescripcion("");
 		request.setAttribute("via", this.via);
-		request.setAttribute("metodo", "Guardar");
 		request.setAttribute("grados", this.modeloGrado.getAll(null));
 		request.setAttribute("tipoEscaladas", this.modeloTipoEscalada.getAll(null));
 		request.setAttribute("sectores", this.modeloSector.getAllByZona(1));

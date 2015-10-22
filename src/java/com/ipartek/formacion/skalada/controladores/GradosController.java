@@ -127,7 +127,6 @@ public class GradosController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 		this.grado = new Grado("Crear nuevo Grado");
 		request.setAttribute("grado", this.grado);
-		request.setAttribute("metodo", "Guardar");
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_GRADOS_FORM);
 
 	}
@@ -141,7 +140,6 @@ public class GradosController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.grado = (Grado) this.modelo.getById(this.pID);
 		request.setAttribute("grado", this.grado);
-		request.setAttribute("metodo", "Modificar");
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_GRADOS_FORM);
 	}
 

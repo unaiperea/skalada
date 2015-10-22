@@ -127,7 +127,6 @@ public class ZonasController extends HttpServlet {
 		this.zona.setFechaCreado();
 		this.zona.setFechaModificado();
 		request.setAttribute("zona", this.zona);
-		request.setAttribute("metodo", "Guardar");
 		request.setAttribute("usuarios", this.usuarios);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_FORM);
 
@@ -136,7 +135,6 @@ public class ZonasController extends HttpServlet {
 	private void detalle(HttpServletRequest request, HttpServletResponse response) {
 		this.zona = this.modelo.getById(this.pID);
 		request.setAttribute("zona", this.zona);
-		request.setAttribute("metodo", "Modificar");
 		request.setAttribute("usuarios", this.usuarios);
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_ZONAS_FORM);
 	}

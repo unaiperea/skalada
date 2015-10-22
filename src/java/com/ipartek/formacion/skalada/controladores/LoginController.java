@@ -58,8 +58,7 @@ public class LoginController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doPost(request, response);
 	}
 
@@ -68,19 +67,16 @@ public class LoginController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// recoger la sesion
 		this.session = request.getSession(true);
-		Usuario user_session = (Usuario) this.session
-				.getAttribute(Constantes.KEY_SESSION_USER);
+		Usuario user_session = (Usuario) this.session.getAttribute(Constantes.KEY_SESSION_USER);
 
 		// Usuario logeado
 		if ((user_session != null) && "".equals(user_session.getNombre())) {
 			// Ir a => index_back.jsp
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
 
 			// Usuario No logeado o caducada session
 		} else {
