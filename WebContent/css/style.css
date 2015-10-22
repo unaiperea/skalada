@@ -5,7 +5,7 @@ body, html{
 	font-family: 'Open Sans', sans-serif;
 	text-rendering: optimizeLegibility !important;
 	-webkit-font-smoothing: antialiased !important;
-	color: #5a5a5a;
+	color: #5a5a5e;
 }
 
 h1{
@@ -17,7 +17,7 @@ h1 strong{
 h2{
 	text-transform: uppercase;
 	line-height: 20px;
-	margin:  0;
+	margin: 0;
 }
 h3{
 font-size: 18px;
