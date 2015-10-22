@@ -1,15 +1,18 @@
-<%@include file="includes/head.jsp" %>
 
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
+<jsp:include page="includes/head.jsp"></jsp:include>
+<jsp:include page="includes/nav.jsp"></jsp:include>
 
+<div id="tf-login" class="text-center">
+<div class="overlay">
 <div class="container">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title"><fmt:message key="login.titulo"></fmt:message></h3>
+					<h3 class="panel-title" style="text-align: center;">- Skalada -</h3>
 				</div>
 				<div class="panel-body">
 
@@ -19,7 +22,7 @@
 						method="post">
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="email"
+								<input class="form-control" style="margin-top: 25px;" placeholder="E-mail" name="email"
 									type="email" autofocus>
 							</div>
 							<div class="form-group">
@@ -27,14 +30,17 @@
 									name="password" type="password" value="">
 							</div>
 							<div class="checkbox">
-								<label> <input name="remember" type="checkbox"
-									value="Remember Me">Recordar
-								</label> <a class="btn btn-l btn-info align-right" id="btn-olvidado" data-toggle="modal" data-target="#modal-olvidado">¿Ha
-									olvidado su contraseña?</a>
+								<label style="font-size: 14px;"> <input name="remember" type="checkbox"
+									value="Remember Me" >Recordar mis datos
+								</label> 
+								<br>
 							</div>
-							<input class="btn btn-lg btn-block btn-success" type="submit"
-								value="login">
-							<a href="<%=Constantes.VIEW_SIGNUP%>" class="btn btn-lg btn-block btn-primary">¿No estás registrado?</a>
+							<input class="btn btn-lg btn-block btn-primary-login" type="submit"
+								value="Login" style="border-radius:25px; margin-bottom:10px">
+								<a class="link" href="recupera-pass.jsp" style="margin-left: -125px;">¿Has olvidado tu contraseña?</a>
+								<br>
+								<br>
+							<a href="<%=Constantes.VIEW_SIGNUP%>" class="btn btn-lg btn-block btn-primary-login" style="border-radius:25px;margin-bottom: 25px;">¿Aún no estás registrado?</a>
 						</fieldset>
 					</form>
 				</div>
@@ -72,5 +78,7 @@
     	</div> <!-- END Modal content-->
   	</div>
 </div> <!-- END Ventana Modal -->
+</div>
+</div>
 
 <jsp:include page="includes/foot.jsp"></jsp:include>
