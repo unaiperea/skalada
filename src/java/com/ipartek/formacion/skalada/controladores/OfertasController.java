@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -14,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Oferta;
 import com.ipartek.formacion.skalada.bean.Usuario;
-import com.ipartek.formacion.skalada.bean.UsuarioInscrito;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloOferta;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
@@ -28,13 +28,12 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
  */
 public class OfertasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger LOG = Logger.getLogger(OfertasController.class);
 	private RequestDispatcher dispatcher = null;
 	private ModeloOferta modeloOferta = null;
 	private ModeloUsuario modeloUsuario = null;
 	private ModeloZona modeloZona = null;
 	private Oferta oferta = null;
-	private Zona zona = null;
 	private Usuario usuario = null;
 
 	// parametros
@@ -47,7 +46,6 @@ public class OfertasController extends HttpServlet {
 	private Timestamp pFecha_baja;
 	private int pVisible;
 	private Zona pZona;
-	private ArrayList<UsuarioInscrito> pUsuariosInscritos;
 	private int pOferta;
 	private int pUser;
 
@@ -61,6 +59,7 @@ public class OfertasController extends HttpServlet {
 		this.modeloOferta = new ModeloOferta();
 		this.modeloUsuario = new ModeloUsuario();
 		this.modeloZona = new ModeloZona();
+		LOG.info("Entrando....");
 	}
 
 	@Override
@@ -70,22 +69,14 @@ public class OfertasController extends HttpServlet {
 		this.usuario = (Usuario) request.getSession().getAttribute(
 				Constantes.KEY_SESSION_USER);
 		super.service(request, response);
+		LOG.info("Cogiendo usuario de session...");
 	}
-	/**
-	 * @param request
-	 *            a
-	 * @param response
-	 *            a
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 * @throws ServletException
-	 *             a
-	 * @throws IOException
-	 *             a
-	 */
+	
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		LOG.info("Entrando de doGet");
+		
 		// recoger parametros
 		this.getParameters(request, response);
 
@@ -110,57 +101,66 @@ public class OfertasController extends HttpServlet {
 			this.listar(request, response);
 			break;
 		}
-
+		LOG.info("Saliendo de doGet");
 		this.dispatcher.forward(request, response);
 	}
 
 	private void getParameters(HttpServletRequest request,
 			HttpServletResponse response) {
-
+		LOG.info("Cogiendo parámetros de GET...");
 		try {
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
 			if (request.getParameter("id") != null && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
+				LOG.info("Cogiendo parámetro de GET: id");
 			}
 			if (request.getParameter("oferta") != null ) {
 				this.pOferta = Integer.parseInt(request.getParameter("oferta"));
+				LOG.info("Cogiendo parámetro de GET: oferta");
 			}
 			if (request.getParameter("user") != null ) {
 				this.pUser = Integer.parseInt(request.getParameter("user"));
+				LOG.info("Cogiendo parámetro de GET: user");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error("Cogiendo parámetros de GET "+e.getMessage());
 		}
 
 	}
 
 	/**
-	 * Obtiene todas los grados del modelo y carga dispatch con index.jsp
+	 * Obtiene todas las ofertas del modelo y carga dispatch con index.jsp
 	 *
-	 * @see backoffice/pages/grados/index.jsp
+	 * @see backoffice/pages/ofertas/index.jsp
 	 * @param request
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("ofertas", this.modeloOferta.getAll(usuario));
+		LOG.info("Listando ofertas");
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_OFERTAS_INDEX);
 	}
 
 	private void eliminar(HttpServletRequest request,
 			HttpServletResponse response) {
+		LOG.info("Eliminando oferta");
 		if (this.modeloOferta.delete(this.pID)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
+			LOG.info("Eliminando oferta correctamente");
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Error eliminando oferta");
 		}
 		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
+		LOG.info("Creando oferta");
 		this.oferta = new Oferta("");
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", "Crear nuevo Oferta");
@@ -173,6 +173,7 @@ public class OfertasController extends HttpServlet {
 
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
+		LOG.info("Detalle de oferta");
 		this.oferta = this.modeloOferta.getById(this.pID);
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", this.oferta.getTitulo().toUpperCase());
@@ -184,45 +185,40 @@ public class OfertasController extends HttpServlet {
 	
 	private void inscribir(HttpServletRequest request,
 			HttpServletResponse response) {
+		LOG.info("Inscribiendo usuario en oferta");
 		if (this.modeloOferta.inscribir(pOferta,usuario.getId() )) {
 			request.setAttribute("msg-danger",
 					"Registro insertado correctamente");
+			LOG.info("Inscribiendo usuario en oferta correctamente");
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al insertar el registro [id(" + this.pID + ")]");
+			LOG.error("Error inscribiendo a usuario en oferta");
 		}	
-		//TODO no mandarlo a listar sino dejarle en el form
 		this.listar(request, response);
 	}
 
 	private void desinscribir(HttpServletRequest request,
 			HttpServletResponse response) {
+		LOG.info("Desinscribiendo usuario en oferta");
 		if (this.modeloOferta.desInscribir(pOferta,pUser )) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
+			LOG.info("Desinscribiendo usuario en oferta correctamente");
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Error desinscribiendo a usuario en oferta");
 		}
-		//TODO no mandarlo a listar sino dejarle en el form
 		this.listar(request, response);
 	}
 
-	/**
-	 * @param request
-	 *            a
-	 * @param response
-	 *            a
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 * @throws ServletException
-	 *             a
-	 * @throws IOException
-	 *             a
-	 */
+	
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		LOG.info("Entrando a doPost");
+		
 		// recoger parametros del formulario
 		this.getParametersForm(request);
 
@@ -233,23 +229,27 @@ public class OfertasController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modeloOferta.save(this.oferta) != -1) {
 				request.setAttribute("msg-success", "Registro creado con exito");
+				LOG.info("Oferta salvada con exito");
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al guardar el nuevo registro");
+				LOG.error("Error al salvar oferta");
 			}
 		} else {
 			if (this.modeloOferta.update(this.oferta)) {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
 								+ ")]");
+				LOG.info("Oferta modificada con exito");
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al modificar el registro [id(" + this.pID + ")]");
+				LOG.error("Error al modificar oferta");
 			}
 		}
 
 		this.listar(request, response);
-
+		LOG.info("Saliendo de doPost");
 		this.dispatcher.forward(request, response);
 
 	}
@@ -258,7 +258,7 @@ public class OfertasController extends HttpServlet {
 	 * Crea un Objeto {@code Oferta} Con los parametros recibidos
 	 */
 	private void crearObjeto() {
-		//this.oferta = new Oferta();
+		LOG.info("Entrando a crearObjeto");
 		this.oferta.setId(this.pID);
 		this.oferta.setDescripcion(this.pDescripcion);
 		oferta.setPrecio(pPrecio);
@@ -267,6 +267,7 @@ public class OfertasController extends HttpServlet {
 		oferta.setFecha_alta(pFecha_alta);
 		oferta.setFecha_baja(pFecha_baja);
 		oferta.setTitulo(pTitulo);
+		LOG.info("Saliendo de crearObjeto");
 	}
 
 	/**
@@ -279,6 +280,7 @@ public class OfertasController extends HttpServlet {
 	 */
 	private void getParametersForm(HttpServletRequest request)
 			throws UnsupportedEncodingException {
+		LOG.info("Recogiendo parametros del formulario");
 		request.setCharacterEncoding("UTF-8");
 		this.pID = Integer.parseInt(request.getParameter("id"));
 		this.pTitulo = request.getParameter("titulo");
@@ -297,6 +299,7 @@ public class OfertasController extends HttpServlet {
 	 * @return la fecha en Timestamp
 	 */
 	public Timestamp convFechaATimestamp(String strFecha){
+		LOG.info("Entrando a conversion de fechas");
 		Timestamp resul = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -306,6 +309,7 @@ public class OfertasController extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
+		LOG.info("Saliendo de conversion de fechas");
 		return resul;
 	}
 }

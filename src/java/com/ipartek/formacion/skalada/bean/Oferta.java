@@ -27,9 +27,7 @@ public class Oferta implements Serializable {
 	private ArrayList<UsuarioInscrito> usuariosInscritos;
 
 	
-	/**
-	 *
-	 */
+	
 	public Oferta() {
 		super();
 		this.usuariosInscritos = new ArrayList<UsuarioInscrito>();

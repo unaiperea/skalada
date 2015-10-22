@@ -242,6 +242,10 @@ if (!usuario.isAdmin()){
 						  			<div class="modal-body">
 						    			<div class="row checkbox">
                                         	<div class="form-group col-md-12">
+                                        		<% if(oferta.getUsuariosInscritos().size()>0){ %>
+                                        			<p>Esta oferta tiene usuarios inscritos y por tanto no se puede eliminar</p>
+                                        			<p>Primero desinscribe a todos los usuarios de la oferta para poder eliminarla</p>
+                                        		<% } %>
                                         		<label>
                                             		<input type="checkbox" id="check_eliminar">Marca la casilla para eliminar
                                            		</label>

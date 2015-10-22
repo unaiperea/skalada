@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.bean.Oferta;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
@@ -17,7 +19,8 @@ import com.ipartek.formacion.skalada.bean.Zona;
 
 public class ModeloOferta implements Persistable<Oferta> {
 
-	private static final String TABLA = "oferta";
+	private static final Logger LOG = Logger.getLogger(ModeloOferta.class);
+	
 	private static final String COL_ID = "id";
 	private static final String COL_TITULO = "titulo";
 	private static final String COL_DESCRIPCION = "descripcion";
@@ -59,6 +62,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				pst.setInt(6, oferta.getVisible());
 				pst.setInt(7, oferta.getZona().getId());
 				if (pst.executeUpdate() != 1) {
+					LOG.error("No se ha realizado la insercion");
 					throw new Exception("No se ha realizado la insercion");
 				} else {
 					rsKeys = pst.getGeneratedKeys();
@@ -66,10 +70,12 @@ public class ModeloOferta implements Persistable<Oferta> {
 						resul = rsKeys.getInt(1);
 						oferta.setId(resul);
 					} else {
+						LOG.error("No se ha podido generar ID");
 						throw new Exception("No se ha podido generar ID");
 					}
 				}
 			} catch (Exception e) {
+				LOG.error("Error en INSERT "+e.getMessage());
 				e.printStackTrace();
 			} finally {
 				try {
@@ -81,6 +87,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 					}
 					DataBaseHelper.closeConnection();
 				} catch (Exception e) {
+					LOG.error("Error en INSERT cerrando recursos "+e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -104,6 +111,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				resul = this.mapeo(rs,usuariosInscritos);
 			}
 		} catch (Exception e) {
+			LOG.error("Error en GETBYID "+e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -115,6 +123,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				}
 				DataBaseHelper.closeConnection();
 			} catch (Exception e) {
+				LOG.error("Error en GETBYID cerrando recursos "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -138,6 +147,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 
 			}
 		} catch (Exception e) {
+			LOG.error("Error en GETBALL "+e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -149,6 +159,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				}
 				DataBaseHelper.closeConnection();
 			} catch (Exception e) {
+				LOG.error("Error en GETALL cerrando recursos "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -178,6 +189,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 					resul = true;
 				}
 			} catch (Exception e) {
+				LOG.error("Error en UPDATE");
 				e.printStackTrace();
 			} finally {
 				try {
@@ -186,6 +198,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 					}
 					DataBaseHelper.closeConnection();
 				} catch (Exception e) {
+					LOG.error("Error en UPDATE cerrando recursos "+e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -205,6 +218,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				resul = true;
 			}
 		} catch (Exception e) {
+			LOG.error("Error en DELETE");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -214,44 +228,27 @@ public class ModeloOferta implements Persistable<Oferta> {
 				DataBaseHelper.closeConnection();
 				return resul;
 			} catch (Exception e) {
+				LOG.error("Error en DELETE cerrando recursos "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		return resul;
 	}
 
+	
 	/**
-	 * Mapea un ResultSet a Oferta
+	 * Mapea un ResultSet y en ArrayList a una Oferta
 	 *
-	 * @param rs
-	 * @return
+	 * @param rs: resulset con los datos
+	 * @param listaSuscritos: ArrayList con la lista de usuarios suscritos
+	 * @return resul: Oferta
 	 * @throws SQLException
 	 */
-	private Oferta mapeo(ResultSet rs) throws SQLException {
-		Oferta resul = null;
-
-		resul = new Oferta();
-		resul.setTitulo(rs.getString(COL_TITULO));
-		resul.setId(rs.getInt(COL_ID));
-		resul.setDescripcion(rs.getString(COL_DESCRIPCION));
-		resul.setPrecio(rs.getFloat(COL_PRECIO));
-		resul.setFecha_alta(rs.getTimestamp(COL_FECHA_ALTA));
-		resul.setFecha_baja(rs.getTimestamp(COL_FECHA_BAJA));
-		resul.setVisible(rs.getInt("visible"));
-		
-		//mapeo de la zona
-		Zona z = new Zona(rs.getString("zona_nombre"));
-		z.setId(rs.getInt("zona_id"));
-		resul.setZona(z);
-		
-		return resul;
-		
-		
-	}
-	
 	private Oferta mapeo(ResultSet rs, ArrayList<UsuarioInscrito> listaSuscritos ) throws SQLException {
+		LOG.info("Entrando en mapeo de oferta");
+		
 		Oferta resul = null;
-
+		LOG.info("Creando oferta");
 		resul = new Oferta();
 		resul.setTitulo(rs.getString(COL_TITULO));
 		resul.setId(rs.getInt(COL_ID));
@@ -262,18 +259,27 @@ public class ModeloOferta implements Persistable<Oferta> {
 		resul.setVisible(rs.getInt("visible"));
 		
 		//mapeo de la zona
+		LOG.info("Creando zona para la oferta");
 		Zona z = new Zona(rs.getString("zona_nombre"));
 		z.setId(rs.getInt("zona_id"));
 		resul.setZona(z);
-		
+
+		LOG.info("Metiendo usuarios suscritos en oferta");
 		resul.setUsuariosInscritos(listaSuscritos);
 		
+		LOG.info("Saliendo en mapeo de oferta");
 		return resul;
 		
 		
 	}
 
+	/**
+	 * Busca en una oferta los usuarios suscritos a ella
+	 * @param idOferta: id de la oferta
+	 * @return ArrayList<UsuarioInscrito>
+	 */
 	private ArrayList<UsuarioInscrito> buscarSuscritos(int idOferta){
+		LOG.info("Entrando en buscarSuscritos");
 		ArrayList<UsuarioInscrito> resul = new ArrayList<UsuarioInscrito>();
 		PreparedStatement pst1 = null;
 		ResultSet rs1 = null;
@@ -285,11 +291,11 @@ public class ModeloOferta implements Persistable<Oferta> {
 			pst1.setInt(1, idOferta);
 			
 			rs1 = pst1.executeQuery();
-			System.out.println("Oferta: "+idOferta);
 			while (rs1.next()){				
 				Rol rol = new Rol(rs1.getString("rol_nombre"));
 				rol.setId(rs1.getInt("u.id_rol"));
-		
+				
+				LOG.info("Mapeo de un usuario suscrito");
 				UsuarioInscrito ui = new UsuarioInscrito(
 						rs1.getString("usuario_nombre"),
 						rs1.getString("usuario_email"),
@@ -302,6 +308,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 			
 			
 		} catch (Exception e) {
+			LOG.error("Error en GETALL_LISTAUSUARIO");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -313,9 +320,11 @@ public class ModeloOferta implements Persistable<Oferta> {
 				}
 				DataBaseHelper.closeConnection();
 			} catch (Exception e) {
+				LOG.error("Error en buscarSuscritos cerrando recursos" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
+		LOG.info("Saliendo de buscarSuscritos");
 		return resul;
 	}
 	
@@ -326,6 +335,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * @return true si elimina, false en caso contrario
 	 */
 	public boolean desInscribir(int idOferta, int idUsuario){
+		LOG.info("Entrando en desInscribir");
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
@@ -337,6 +347,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				resul = true;
 			}
 		} catch (Exception e) {
+			LOG.error("Error en SQL_DESINSCRIBIR");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -346,9 +357,11 @@ public class ModeloOferta implements Persistable<Oferta> {
 				DataBaseHelper.closeConnection();
 				return resul;
 			} catch (Exception e) {
+				LOG.error("Error en desInscribir cerrando recursos" + e.getMessage());
 				e.printStackTrace();
 			}
 		}		
+		LOG.info("Saliendo de desInscribir");
 		return resul;
 	}
 		
@@ -356,14 +369,16 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * Inscribe al usuario idUsuario de la oferta idOferta
 	 * @param idOferta
 	 * @param idUsuario: id del usuario inscrito en la oferta
-	 * @return true si elimina, false en caso contrario
+	 * @return true si inserta, false en caso contrario
 	 */
 	public boolean inscribir(int idOferta, int idUsuario){
+		LOG.info("Entrando en inscribir");
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
 			Connection con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_INSCRIBIR);
+			
 			pst.setInt(1, idOferta);
 			pst.setInt(2, idUsuario);
 			Date date = new Date();
@@ -372,6 +387,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				resul = true;
 			}
 		} catch (Exception e) {
+			LOG.error("Error en SQL_INSCRIBIR");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -381,10 +397,11 @@ public class ModeloOferta implements Persistable<Oferta> {
 				DataBaseHelper.closeConnection();
 				return resul;
 			} catch (Exception e) {
+				LOG.error("Error en inscribir cerrando recursos" + e.getMessage());
 				e.printStackTrace();
 			}
 		}	
-		
+		LOG.info("Saliendo de inscribir");
 		return resul;
 	}
 }
