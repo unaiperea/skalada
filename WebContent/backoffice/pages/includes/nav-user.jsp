@@ -24,3 +24,5 @@
 		
 <li><a href="<%=Constantes.CONTROLLER_PERFIL%>"><i
 		class="fa fa-map-o fa-fw"></i> Perfil<span class="badge right">1</span></a></li>
+<li><a href="<%=Constantes.CONTROLLER_OFERTAS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i 
+	class="fa fa-picture-o fa-fw"></i> Ofertas<span class="badge right">2</span></a></li>		

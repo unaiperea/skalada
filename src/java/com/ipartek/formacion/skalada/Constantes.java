@@ -58,6 +58,10 @@ public final class Constantes {
 	public static final String VIEW_BACK_SECTORES_INDEX = "pages/sectores/index.jsp";
 	public static final String VIEW_BACK_SECTORES_FORM = "pages/sectores/form.jsp";
 
+//OFERTAS
+	public static final String VIEW_BACK_OFERTAS_INDEX = "backoffice/pages/ofertas/index.jsp";
+	public static final String VIEW_BACK_OFERTAS_FORM = "backoffice/pages/ofertas/form.jsp";
+	
 	public static final String VIEW_BACK_ROLES_INDEX = "pages/roles/index.jsp";
 	public static final String VIEW_BACK_ROLES_FORM = "pages/roles/form.jsp";
 
@@ -80,6 +84,8 @@ public final class Constantes {
 	public static final String CONTROLLER_ROLES = ROOT_BACK + "roles";
 	public static final String CONTROLLER_USUARIOS = ROOT_BACK + "usuarios";
 	public static final String CONTROLLER_PERFIL = ROOT_BACK + "perfil";
+//Ofertas
+	public static final String CONTROLLER_OFERTAS = ROOT_APP + "ofertas";
 
 	public static final String CONTROLLER_GEOMAP = ROOT_FRONT + "geomap";
 
@@ -90,6 +96,8 @@ public final class Constantes {
 	public static final int ACCION_ELIMINAR = 3;
 	public static final int ACCION_NO_VALIDADOS = 4;
 	public static final int ACCION_CONECTADOS = 5;
+	public static final int ACCION_INSCRIBIR = 6;
+	public static final int ACCION_DESINSCRIBIR = 7;	
 
 	// acciones signup
 	public static final int ACCION_CONFIRM = 1;
@@ -130,5 +138,9 @@ public final class Constantes {
 
 	public static final int VALIDADO = 1;
 	public static final int NO_VALIDADO = 0;
+	
+	//Ofertas
+	public static final int OFERTA_VISIBLE = 1;
+	public static final int OFERTA_NO_VISIBLE = 0;
 
 }

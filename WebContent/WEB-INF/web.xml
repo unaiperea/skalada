@@ -189,4 +189,14 @@
     <servlet-name>PerfilController</servlet-name>
     <url-pattern>/backoffice/perfil</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Controlador para procesar ofertas y ofertasUsuario</description>
+    <display-name>OfertasController</display-name>
+    <servlet-name>OfertasController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.OfertasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OfertasController</servlet-name>
+    <url-pattern>/ofertas</url-pattern>
+  </servlet-mapping>
 </web-app>
