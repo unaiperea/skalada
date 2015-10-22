@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Rol;
@@ -24,6 +26,9 @@ import com.ipartek.formacion.skalada.util.SendMail;
  */
 public class SignupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(SignupController.class);
 
 	private RequestDispatcher dispatcher = null;
 
@@ -58,8 +63,7 @@ public class SignupController extends HttpServlet {
 
 		try {
 			this.msg = null;
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			this.getParameters(request, response);
 
 			switch (this.pAccion) {
@@ -75,8 +79,8 @@ public class SignupController extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.msg = new Mensaje(Mensaje.MSG_WARNING,
-					"Ha habido un error desconocido.");
+			this.msg = new Mensaje(Mensaje.MSG_WARNING, "Ha habido un error desconocido.");
+			LOG.error("Error Desconocido");
 		} finally {
 			request.setAttribute("msg", this.msg);
 			this.dispatcher.forward(request, response);
@@ -88,8 +92,8 @@ public class SignupController extends HttpServlet {
 		this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 		request.setAttribute("email", this.pEmail);
 		request.setAttribute("token", this.usuario.getToken());
-		this.dispatcher = request
-				.getRequestDispatcher(Constantes.VIEW_RECUPERAR_PASS);
+		LOG.info("Usuario: " + usuario.getNombre() + " - Solicita recuperacion de contraseña");
+		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_RECUPERAR_PASS);
 	}
 
 	private void getParameters(HttpServletRequest request,
@@ -118,36 +122,30 @@ public class SignupController extends HttpServlet {
 		this.map = this.modeloUsuario.checkEmail(this.pEmail);
 		if (this.map.get("id") != null) {
 			if (this.map.get("id") != this.pId) {
-				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Ha ocurrido un error al comprobar su correo electronico.");
-				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error al comprobar su correo electronico.");
+				LOG.error("Usuario con id: " + map.get("id") + " - Error al comprobar correo electronico: " + pEmail);
+				this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			} else {
 				if (this.map.get("validado") != 0) {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"Su usuario ya esta validado.");
-					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_LOGIN);
+					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Su usuario ya esta validado.");
+					LOG.warn("Usuario con id: " + map.get("id") + " - Ya esta validado.");
+					this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				} else {
 					if (this.modeloUsuario.validate(this.map.get("id"))) {
-						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-								"Su cuenta ha sido activada. Bienvenid@!");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+						this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Su cuenta ha sido activada. Bienvenid@!");
+						LOG.info("Usuario con id: " + map.get("id") + " - Validado.");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					} else {
-						this.msg = new Mensaje(
-								Mensaje.MSG_WARNING,
-								"Ha ocurrido un error al validar el usuario, contacte con el administrador de la pagina.");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+						this.msg = new Mensaje(Mensaje.MSG_WARNING, "Ha ocurrido un error al validar el usuario, contacte con el administrador de la pagina.");
+						LOG.error("Usuario con id: " + map.get("id") + " - Error al validar");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				}
 			}
 		} else {
-			this.msg = new Mensaje(Mensaje.MSG_DANGER,
-					"Ha ocurrido un error al comprobar su correo electronico.");
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error al comprobar su correo electronico.");
+			LOG.error("Error al comprobar correo electronico: " + pEmail);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 		}
 
 	}
@@ -183,10 +181,9 @@ public class SignupController extends HttpServlet {
 					// Guardar usuario
 					this.crearUsuario(); // Creamos el objeto Usuario
 					if ((this.pId = this.modeloUsuario.save(this.usuario)) == -1) {
-						this.msg = new Mensaje(Mensaje.MSG_DANGER,
-								"Ha habido un error al guardar el usuario");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+						this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha habido un error al guardar el usuario");
+						LOG.error("Usuario: " + usuario.getNombre() + " - Error al registrar.");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 					} else {
 						SendMail mail = new SendMail();
 						mail.setDestinatario(this.usuario.getEmail());
@@ -199,19 +196,15 @@ public class SignupController extends HttpServlet {
 								"{contenido}",
 								"Gracias por registrarte. Para activar el usuario y verificar el email, clica en el enlace de debajo.");
 						params.put("{txt_btn}", "Activa tu cuenta y logeate");
-						mail.setMensaje(mail.generarPlantilla(
-								Constantes.EMAIL_TEMPLATE_REGISTRO, params));
+						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params));
 						mail.enviarMail();
-						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-								"Por favor revise su correo electronico para validar su usuario");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+						this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Por favor revise su correo electronico para validar su usuario");
+						LOG.info("Usuario: " + usuario.getNombre() + " - Registrado, enviado email de confirmación.");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"El usuario ya existe");
-					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+					this.msg = new Mensaje(Mensaje.MSG_DANGER, "El usuario ya existe");
+					this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 				}
 				break;
 			case Constantes.ACCION_PASS_OLVIDADO:

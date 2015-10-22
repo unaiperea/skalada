@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Mensaje;
+import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloGrado;
+import com.ipartek.formacion.skalada.util.Utilidades;
 
 /**
  * Servlet implementation class GradosController
@@ -22,6 +26,10 @@ import com.ipartek.formacion.skalada.modelo.ModeloGrado;
  */
 public class GradosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(GradosController.class);
+	private Usuario usuarioSession = null;
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloGrado modelo = null;
@@ -44,6 +52,14 @@ public class GradosController extends HttpServlet {
 		super.init(config);
 		this.modelo = new ModeloGrado();
 	}
+	
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//recoger usuario de session
+		usuarioSession = Utilidades.getSessionUser(req, resp);
+		super.service(req, resp);
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -51,6 +67,7 @@ public class GradosController extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		// recoger parametros
 		this.getParameters(request, response);
 
@@ -72,7 +89,7 @@ public class GradosController extends HttpServlet {
 
 		this.dispatcher.forward(request, response);
 	}
-
+	
 	/**
 	 * Recupera los parametros
 	 *
@@ -111,8 +128,10 @@ public class GradosController extends HttpServlet {
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modelo.delete(this.pID)) {
 			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");			
+			LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Elimina el Grado con id: " + pID);
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al eliminar el Grado con id: " + pID);
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
@@ -159,14 +178,18 @@ public class GradosController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modelo.save(this.grado) != -1) {
 				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Crea el Grado: " + grado.getNombre() + "[" + grado.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crea el Grado.");
 			}
 		} else {
 			if (this.modelo.update(this.grado)) {
 				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Modifica el Grado: " + grado.getNombre() + "[" + grado.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar el Grado: " + grado.getNombre() + "[" + grado.getId() + "].");
 			}
 		}
 

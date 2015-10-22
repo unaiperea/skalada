@@ -15,7 +15,9 @@ import org.apache.log4j.Logger;
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Rol;
+import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloRol;
+import com.ipartek.formacion.skalada.util.Utilidades;
 
 /**
  * Servlet implementation class RolesController
@@ -27,6 +29,7 @@ public class RolesController extends HttpServlet {
 	
 	//LOGS
 	private static final Logger LOG = Logger.getLogger(RolesController.class);
+	private Usuario usuarioSession = null;
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloRol modelo = null;
@@ -49,6 +52,13 @@ public class RolesController extends HttpServlet {
 		super.init(config);
 		this.modelo = new ModeloRol();
 	}
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//recoger usuario de session
+		usuarioSession = Utilidades.getSessionUser(req, resp);
+		super.service(req, resp);
+	}	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -105,11 +115,11 @@ public class RolesController extends HttpServlet {
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modelo.delete(this.pID)) {
-			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");
-			LOG.info("Rol: " + rol.getNombre() + "[id:" + rol.getId() + "]. Eliminado");
+			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");			
+			LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Elimina el Rol con id: " + pID);
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
-			LOG.error("Error al eliminar Rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
+			LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al eliminar el Rol con id: " + pID);
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
@@ -144,16 +154,18 @@ public class RolesController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modelo.save(this.rol) != -1) {
 				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
-				LOG.info("Registrado nuevo rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Crea el Rol: " + rol.getNombre() + "[" + rol.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
-				LOG.error("Error al registrar nuevo rol: " + rol.getNombre() + "[id:" + rol.getId() + "].");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crea el Rol.");
 			}
 		} else {
 			if (this.modelo.update(this.rol)) {
-				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");
+				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Modifica el Rol: " + rol.getNombre() + "[" + rol.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar el Rol: " + rol.getNombre() + "[" + rol.getId() + "].");
 			}
 		}
 

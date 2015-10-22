@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
 import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
+import com.ipartek.formacion.skalada.util.Utilidades;
 
 /**
  * Servlet implementation class ZonaController
@@ -25,6 +28,10 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
  */
 public class ZonasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(ZonasController.class);
+	private Usuario usuarioSession = null;
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloZona modelo = null;
@@ -57,6 +64,15 @@ public class ZonasController extends HttpServlet {
 		this.admin = this.mu.getById(Constantes.ROLE_ID_ADMIN);
 		this.usuarios = this.mu.getAll(this.admin);
 	}
+	
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//recoger usuario de session
+		usuarioSession = Utilidades.getSessionUser(req, resp);
+		super.service(req, resp);
+	}
+	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -115,8 +131,10 @@ public class ZonasController extends HttpServlet {
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modelo.delete(this.pID)) {
 			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");
+			LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Elimina la Zona con id: " + pID);
 		} else {
 			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al eliminar la Zona con id: " + pID);
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
@@ -155,14 +173,18 @@ public class ZonasController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modelo.save(this.zona) != -1) {
 				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Crea la Zona: " + zona.getNombre() + "[" + zona.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crea la Zona.");
 			}
 		} else {
 			if (this.modelo.update(this.zona)) {
 				this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Modifica la Zona: " + zona.getNombre() + "[" + zona.getId() + "].");
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar la Zona: " + zona.getNombre() + "[" + zona.getId() + "].");
 			}
 		}
 

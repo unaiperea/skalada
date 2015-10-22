@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededExcepti
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Mensaje;
@@ -27,6 +28,7 @@ import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
+import com.ipartek.formacion.skalada.util.Utilidades;
 
 /**
  * Servlet implementation class SectoresController
@@ -35,8 +37,11 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
  */
 public class SectoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(SectoresController.class);
+	private Usuario usuarioSession = null;
 
-	private Usuario usuario = null;
 	private Usuario admin = null;
 	private RequestDispatcher dispatcher = null;
 	private ModeloSector modeloSector = null;
@@ -75,8 +80,8 @@ public class SectoresController extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		this.usuario = (Usuario) request.getSession().getAttribute( Constantes.KEY_SESSION_USER);
+		//recoger usuario de session
+		usuarioSession = Utilidades.getSessionUser(request, response);
 		super.service(request, response);
 	}
 
@@ -85,8 +90,7 @@ public class SectoresController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// recoger parametros
 		this.getParameters(request, response);
 
@@ -131,21 +135,24 @@ public class SectoresController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("sectores", this.modeloSector.getAll(this.usuario));
+		request.setAttribute("sectores", this.modeloSector.getAll(this.usuarioSession));
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_SECTORES_INDEX);
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		// Check Autorizacion
-		if (this.usuario.isAdmin() || (this.sector.getUsuario().getId() == this.usuario.getId())) {
+		if (this.usuarioSession.isAdmin() || (this.sector.getUsuario().getId() == this.usuarioSession.getId())) {
 			if (this.modeloSector.delete(this.pID)) {
 				this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");			
+				LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Elimina el Sector con id: " + pID);
 			} else {
 				this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al eliminar el Sector con id: " + pID);
 			}			
 		// Usuario sin autorizacion para este Sector
 		} else {
 			this.msg = new Mensaje(Mensaje.MSG_DANGER, "No tienes permisos para ver el detalle");
+			LOG.warn("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - No tiene permisos para ver el Sector con id: " + pID);
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
@@ -154,7 +161,7 @@ public class SectoresController extends HttpServlet {
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
 		this.zona = new Zona("");
 		this.sector = new Sector("Crear nuevo Sector", this.zona);
-		this.sector.setUsuario(this.usuario);
+		this.sector.setUsuario(this.usuarioSession);
 		request.setAttribute("sector", this.sector);
 		request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
 		request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
@@ -166,7 +173,7 @@ public class SectoresController extends HttpServlet {
 		this.sector = this.modeloSector.getById(this.pID);
 
 		// check autorizacion
-		if (this.usuario.isAdmin() || (this.sector.getUsuario().getId() == this.usuario.getId())) {
+		if (this.usuarioSession.isAdmin() || (this.sector.getUsuario().getId() == this.usuarioSession.getId())) {
 			request.setAttribute("sector", this.sector);
 			request.setAttribute("zonas", this.modeloZona.getAll(this.admin));
 			request.setAttribute("usuarios", this.modeloUsuario.getAll(this.admin));
@@ -201,14 +208,18 @@ public class SectoresController extends HttpServlet {
 			if (this.pID == -1) {
 				if (this.modeloSector.save(this.sector) != -1) {
 					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
+					LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Crea el Sector: " + sector.getNombre() + "[" + sector.getId() + "].");
 				} else {
 					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+					LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crea el Sector.");
 				}
 			} else {
-				if (this.modeloSector.update(this.sector, this.usuario)) {
+				if (this.modeloSector.update(this.sector, this.usuarioSession)) {
 					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
+					LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Modifica el Sector: " + sector.getNombre() + "[" + sector.getId() + "].");
 				} else {
 					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+					LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar el Sector: " + sector.getNombre() + "[" + sector.getId() + "].");
 				}
 			}
 
@@ -216,7 +227,8 @@ public class SectoresController extends HttpServlet {
 
 		} catch (FileSizeLimitExceededException e) {
 			e.printStackTrace();
-			msg = new Mensaje(Mensaje.MSG_DANGER, "La imagen excede del tama�o maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes");
+			msg = new Mensaje(Mensaje.MSG_DANGER, "La imagen excede del tamaño maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes");
+			LOG.warn("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - La imagen excede el tamaño");
 			request.getSession().setAttribute("msg", this.msg);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -349,7 +361,7 @@ public class SectoresController extends HttpServlet {
 			this.pIDusuario = Integer.parseInt(dataParameters.get("creador"));
 		} else {
 			// Usuario 'normal' coger id de session
-			this.pIDusuario = this.usuario.getId();
+			this.pIDusuario = this.usuarioSession.getId();
 		}
 
 		this.pValidado = (dataParameters.get("validado") != null) ? true: false;

@@ -168,7 +168,7 @@ public class UserController extends HttpServlet {
 		this.crearObjeto();
 
 		// Guardar/Modificar Objeto Via
-		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Erro sibn determinar");
+		Mensaje msg = new Mensaje(Mensaje.MSG_DANGER, "Error sin determinar");
 		if (this.pID == -1) {
 			if (this.modeloUsuario.save(this.usuario) != -1) {
 				this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");

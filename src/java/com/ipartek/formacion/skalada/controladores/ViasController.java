@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Grado;
 import com.ipartek.formacion.skalada.bean.Mensaje;
@@ -23,6 +25,7 @@ import com.ipartek.formacion.skalada.modelo.ModeloTipoEscalada;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloVia;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
+import com.ipartek.formacion.skalada.util.Utilidades;
 
 /**
  * Servlet implementation class ViasController
@@ -31,12 +34,15 @@ import com.ipartek.formacion.skalada.modelo.ModeloZona;
  */
 public class ViasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//LOGS
+	private static final Logger LOG = Logger.getLogger(ViasController.class);
+	private Usuario usuarioSession = null;
 
 	private RequestDispatcher dispatcher = null;
 	private ModeloVia modeloVia = null;
 	private Via via = null;
 	private Usuario admin = null;
-	private Usuario usuario = null;
 
 	private ModeloGrado modeloGrado = null;
 	private Grado grado = null;
@@ -78,12 +84,10 @@ public class ViasController extends HttpServlet {
 	}
 
 	@Override
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-		this.usuario = (Usuario) request.getSession().getAttribute(
-				Constantes.KEY_SESSION_USER);
-		super.service(request, response);
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//recoger usuario de session
+		usuarioSession = Utilidades.getSessionUser(req, resp);
+		super.service(req, resp);
 	}
 
 	/**
@@ -137,15 +141,17 @@ public class ViasController extends HttpServlet {
 	 * @param response
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().setAttribute("vias", this.modeloVia.getAll(this.usuario));
+		request.getSession().setAttribute("vias", this.modeloVia.getAll(this.usuarioSession));
 		this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_BACK_VIAS_INDEX);
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 		if (this.modeloVia.delete(this.pID)) {
-			this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro eliminado correctamente");
+			this.msg = new Mensaje( Mensaje.MSG_DANGER, "Registro eliminado correctamente");
+			LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Elimina la Via con id: " + pID);
 		} else {
-			this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al eliminar el registro [id(" + this.pID + ")]");
+			this.msg = new Mensaje( Mensaje.MSG_WARNING, "Error al eliminar el registro [id(" + this.pID + ")]");
+			LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al eliminar la Via con id: " + pID);
 		}
 		request.getSession().setAttribute("msg", this.msg);
 		this.listar(request, response);
@@ -157,7 +163,7 @@ public class ViasController extends HttpServlet {
 		this.via.setTipoEscalada(new TipoEscalada(""));
 		this.via.setSector(this.modeloSector.getById(1));
 		// Al crear nuevo registro se muestra el primer sector
-		this.via.setUsuario(this.usuario);
+		this.via.setUsuario(this.usuarioSession);
 		this.via.setValidado(false);
 		this.via.setDescripcion("");
 		request.setAttribute("via", this.via);
@@ -196,8 +202,10 @@ public class ViasController extends HttpServlet {
 		if (this.pIDSector == -1) {
 			if (this.pID == -1) {
 				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error: No se puede crear una Via sin un Sector");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crear una Via sin Sector.");
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error: No se puede modificar una Via sin un Sector");
+				LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar una Via sin Sector.");
 			}
 		} else {
 			// si la via tiene un sector, se realiza la creacion o la
@@ -209,15 +217,19 @@ public class ViasController extends HttpServlet {
 			// Guardar/Modificar Objeto Via
 			if (this.pID == -1) {
 				if (this.modeloVia.save(this.via) != -1) {
-					this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Registro creado con exito");
+					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Registro creado con exito");
+					LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Crea la Via: " + via.getNombre() + "[" + via.getId() + "].");
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al guardar el nuevo registro");
+					LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al crea la Via.");
 				}
 			} else {
 				if (this.modeloVia.update(this.via)) {
-					this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");
+					this.msg = new Mensaje( Mensaje.MSG_SUCCESS, "Modificado correctamente el registro [id(" + this.pID + ")]");					
+					LOG.info("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Modifica la Via: " + via.getNombre() + "[" + via.getId() + "].");
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+					this.msg = new Mensaje( Mensaje.MSG_DANGER, "Error al modificar el registro [id(" + this.pID + ")]");
+					LOG.error("Usuario: '" + usuarioSession.getNombre() + "[" + usuarioSession.getId() + "]' - Error al modificar la Via: " + via.getNombre() + "[" + via.getId() + "].");
 				}
 			}
 
@@ -294,7 +306,7 @@ public class ViasController extends HttpServlet {
 					.parseInt(request.getParameter("creador"))));
 		} else {
 			// "usuario" es el user cogido de la sesion
-			this.pUsuario = this.usuario;
+			this.pUsuario = this.usuarioSession;
 		}
 
 		if (request.getParameter("validado") != null) {
