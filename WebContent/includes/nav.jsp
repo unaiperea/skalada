@@ -22,7 +22,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-left">
          	<li><a href="#tf-about" class="page-scroll">Zonas</a></li>
-         	<li><a href="#tf-about" class="page-scroll">Crea tu Ruta</a></li>
+         	<li><a href="#tf-testimonials" class="page-scroll">Crea tu Ruta</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<%=Constantes.VIEW_LOGIN%>">Login</a></li>

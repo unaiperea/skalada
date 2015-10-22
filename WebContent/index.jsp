@@ -47,6 +47,7 @@
                 <ul class="cat">
                     <li class="pull-left">
                         <ol class="type">
+                        	<li><a href="#" data-filter="*" class="active">Todas</a></li>
                         	<%
                         	//Recoger todas las zonas de la BBDD (TODO SQL con vias solo publicadas)
                         	zonas = (ArrayList<Zona>)request.getAttribute("ultimas_zonas");
@@ -54,7 +55,7 @@
 	           				for(int i = 0 ; i < zonas.size() ; i++){
 	           					z = zonas.get(i);            
                         	%>
-                           	 	<li><a href="#" data-filter=".<%=z.getId()%>" class="active"><%=z.getNombre() %></a></li>
+                           	 	<li><a href="#" data-filter=".<%=z.getId()%>"><%=z.getNombre() %></a></li>
                        	<%} %>
                         </ol>
                     </li>
@@ -81,7 +82,7 @@
               <div class="col-sm-6 col-md-3 col-lg-3 <%=z.getId()%>">
                     <div class="portfolio-item">
                         <div class="hover-bg">
-                            <a href="#">
+                            <a href="pages/sectoresinfo.jsp">
                                 <div class="hover-text">
                                     <h4><%=s.getNombre() %></h4>
                                     <small>Branding</small>
@@ -104,7 +105,7 @@
         <div class="overlay">
             <div class="container">
                 <div class="section-title center">
-                    <h2><strong>Our clients’</strong> testimonials</h2>
+                    <h2><strong>CREA TU RUTA</strong></h2>
                     <div class="line">
                         <hr>
                     </div>
@@ -113,18 +114,13 @@
                     <div class="col-md-8 col-md-offset-2">
                         <div id="testimonial" class="owl-carousel owl-theme">
                             <div class="item">
-                                <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-                                <p><strong>Dean Martin</strong>, CEO Acme Inc.</p>
+                                <h5>Puedes crear tu propia ruta de escalada, completa, parcial, como quieras.</h5>
                             </div>
-
                             <div class="item">
-                                <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-                                <p><strong>Dean Martin</strong>, CEO Acme Inc.</p>
+                                <h5>Crea tu zona de escalada, con los sectores que pueda haber, y dibuja tus sectores y vías en ella.</h5>
                             </div>
-
                             <div class="item">
-                                <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-                                <p><strong>Dean Martin</strong>, CEO Acme Inc.</p>
+                                <h5>Podrás compartir todas tus rutas completas, zonas, sectores o vías con demás gente.</h5>
                             </div>
                         </div>
                     </div>
@@ -142,35 +138,35 @@
                 <div class="col-md-8 col-md-offset-2">
 
                     <div class="section-title center">
-                        <h2>Feel free to <strong>contact us</strong></h2>
+                        <h2>Registrate en <strong>SKALADA</strong></h2>
                         <div class="line">
                             <hr>
                         </div>
                         <div class="clearfix"></div>
-                        <small><em>Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</em></small>            
+                        <small><em>En esta seccion podrás crear, actualizar, buscar y borrar tus propias Zonas, Sectores y Vías</em></small>            
                     </div>
 
                     <form>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                    <label for="exampleInputEmail1">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Inserta tu E-Mail">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <label for="exampleInputPassword1">Contraseña</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Números y Letras (Entre 6-16 caracteres)">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Message</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <label for="exampleInputEmail1">Mensaje</label>
+                            <textarea class="form-control" rows="3" placeholder="Introduce tu mensaje (Opcional)"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn tf-btn btn-default">Submit</button>
+                        <button type="submit" class="btn tf-btn btn-default">Registrate</button>
                     </form>
 
                 </div>
@@ -181,7 +177,7 @@
 	<nav id="footer">
         <div class="container">
             <div class="pull-left fnav">
-                <p>ALL RIGHTS RESERVED. COPYRIGHT © 2014. Designed by <a href="https://dribbble.com/shots/1817781--FREEBIE-Spirit8-Digital-agency-one-page-template">Robert Berki</a> and Coded by <a href="https://dribbble.com/jennpereira">Jenn Pereira</a></p>
+                <p>TODOS LOS DERECHOS RESERVADOS. COPYRIGHT © 2015. Diseñado por  <a href="https://dribbble.com/shots/1817781--FREEBIE-Spirit8-Digital-agency-one-page-template">IPARTEK</a> y codeado por <a href="https://dribbble.com/jennpereira">Lara, Mikel y Raul</a></p>
             </div>
         </div>
     </nav>
