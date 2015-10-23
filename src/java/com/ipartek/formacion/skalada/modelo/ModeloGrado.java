@@ -12,6 +12,8 @@ import com.ipartek.formacion.skalada.bean.Usuario;
 
 public class ModeloGrado implements Persistable<Grado> {
 
+	private Connection con = null;
+
 	private static final String TABLA = "grado";
 	private static final String COL_ID = "id";
 	private static final String COL_NOMBRE = "nombre";
@@ -36,8 +38,8 @@ public class ModeloGrado implements Persistable<Grado> {
 		ResultSet rsKeys = null;
 		if (g != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT,
+				this.con = DataBaseHelper.getConnection();
+				pst = this.con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, g.getNombre());
 				pst.setString(2, g.getDescripcion());
@@ -62,7 +64,7 @@ public class ModeloGrado implements Persistable<Grado> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,8 +79,8 @@ public class ModeloGrado implements Persistable<Grado> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETONE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_GETONE);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -94,7 +96,7 @@ public class ModeloGrado implements Persistable<Grado> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -108,8 +110,8 @@ public class ModeloGrado implements Persistable<Grado> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETALL);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_GETALL);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				resul.add(this.mapeo(rs));
@@ -124,7 +126,7 @@ public class ModeloGrado implements Persistable<Grado> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -138,9 +140,9 @@ public class ModeloGrado implements Persistable<Grado> {
 		PreparedStatement pst = null;
 		if (g != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				this.con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
-				pst = con.prepareStatement(sql);
+				pst = this.con.prepareStatement(sql);
 				pst.setString(1, g.getNombre());
 				pst.setString(2, g.getDescripcion());
 				pst.setInt(3, g.getId());
@@ -154,7 +156,7 @@ public class ModeloGrado implements Persistable<Grado> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -168,8 +170,8 @@ public class ModeloGrado implements Persistable<Grado> {
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_DELETE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_DELETE);
 			pst.setInt(1, id);
 			if (pst.executeUpdate() == 1) {
 				resul = true;
@@ -181,7 +183,7 @@ public class ModeloGrado implements Persistable<Grado> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 				return resul;
 			} catch (Exception e) {
 				e.printStackTrace();

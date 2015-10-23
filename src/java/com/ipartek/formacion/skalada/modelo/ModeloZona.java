@@ -13,6 +13,8 @@ import com.ipartek.formacion.skalada.bean.Zona;
 
 public class ModeloZona implements Persistable<Zona> {
 
+	private Connection con = null;
+
 	private static final String TABLA = "zona";
 	private static final String COL_ID = "id";
 	private static final String COL_NOMBRE = "nombre";
@@ -37,6 +39,8 @@ public class ModeloZona implements Persistable<Zona> {
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
 			+ "`=?, `" + COL_FECHA_MODIFICADO
 			+ "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID + "`= ? ;";
+	private static final String SQL_BUSQUEDA = SQL_GETALL
+			+ " WHERE nombre like ?";
 
 	@Override()
 	public int save(Zona z) {
@@ -45,8 +49,8 @@ public class ModeloZona implements Persistable<Zona> {
 		ResultSet rsKeys = null;
 		if (z != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT,
+				this.con = DataBaseHelper.getConnection();
+				pst = this.con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, z.getNombre());
 				pst.setInt(2, z.getUsuario().getId());
@@ -78,7 +82,7 @@ public class ModeloZona implements Persistable<Zona> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -93,8 +97,8 @@ public class ModeloZona implements Persistable<Zona> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETONE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_GETONE);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -110,7 +114,7 @@ public class ModeloZona implements Persistable<Zona> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -124,16 +128,16 @@ public class ModeloZona implements Persistable<Zona> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			this.con = DataBaseHelper.getConnection();
 
 			// si el usuario es admin se recogen todos los registros
 			// si el usuario no es admin solo se recogen sus zonas
 			if (u.getRol().getId() == 1) {
 				// Usuario admin
-				pst = con.prepareStatement(SQL_GETALL);
+				pst = this.con.prepareStatement(SQL_GETALL);
 			} else if (u.getRol().getId() == 2) {
 				// Usuario no admin
-				pst = con.prepareStatement(SQL_ZONAS_USER);
+				pst = this.con.prepareStatement(SQL_ZONAS_USER);
 				pst.setInt(1, u.getId());
 			}
 
@@ -151,7 +155,7 @@ public class ModeloZona implements Persistable<Zona> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -165,9 +169,9 @@ public class ModeloZona implements Persistable<Zona> {
 		PreparedStatement pst = null;
 		if (z != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				this.con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
-				pst = con.prepareStatement(sql);
+				pst = this.con.prepareStatement(sql);
 				pst.setString(1, z.getNombre());
 				pst.setInt(2, z.getUsuario().getId());
 				pst.setBoolean(3, z.isValidado());
@@ -185,7 +189,7 @@ public class ModeloZona implements Persistable<Zona> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -199,8 +203,8 @@ public class ModeloZona implements Persistable<Zona> {
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_DELETE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_DELETE);
 			pst.setInt(1, id);
 			if (pst.executeUpdate() == 1) {
 				resul = true;
@@ -212,7 +216,7 @@ public class ModeloZona implements Persistable<Zona> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 				return resul;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -253,6 +257,38 @@ public class ModeloZona implements Persistable<Zona> {
 	// TODO OBTENER SECTORES DE UNA VIA
 	public ArrayList<Zona> getSectores(int id) {
 		ArrayList<Zona> resul = new ArrayList<Zona>();
+
+		return resul;
+	}
+
+	public ArrayList<Zona> busqueda(String texto) {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
+
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_BUSQUEDA);
+			pst.setString(1, "%" + texto + "%");
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection(this.con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		return resul;
 	}
