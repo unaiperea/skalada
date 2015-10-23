@@ -125,19 +125,8 @@
 				<label for="imagen">Imagen</label> <input type="file" id="imagen"
 					class="form-control" name="imagen" onchange="showFileSize();">
 
-				<%
-					String img_path = Constantes.IMG_DEFAULT_SECTOR;
-	      			//imagen subida al servidor	
-	      			if ( !img_path.equals( sector.getImagen())){
-	      				img_path = Constantes.IMG_WEP_PATH + sector.getImagen();
-	      				
-	      			//imagen por defecto del proyecto	
-	      			}else{
-	      				img_path = "../img/" + img_path;
-	      			}
-				%>
-
-				<img src="<%=img_path%>"
+				
+				<img src="<%=Constantes.IMG_WEP_PATH + sector.getImagen()%>"
 					alt="Imagen del sector <%=sector.getNombre()%>"
 					class="img-responsive img-thumbnail">
 
@@ -149,7 +138,6 @@
 									"The file API isn't supported on this browser yet.");
 							return;
 						}
-
 						input = document.getElementById('imagen');
 						if (input.files[0]) {
 							file = input.files[0];
