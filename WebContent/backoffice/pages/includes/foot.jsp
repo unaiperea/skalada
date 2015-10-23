@@ -21,7 +21,6 @@
     
     <!-- DataTables JavaScript -->
     <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
 	<!--  Toggle Buttons -->
 	<script src="dist/js/bootstrap-toggle.min.js"></script>
@@ -40,7 +39,9 @@
 	    	
 	    	//Habilitar DataTable
 	        $('#tabla').DataTable({
-	                responsive: true
+	                responsive: true,
+	                aLengthMenu: [[10,25,50,-1],[10,25,50,"Todos"]],
+	                iDisplayLength: 25
 	        });
 	    	
 	    	//llamada Controlador Ajax Sectores	 
