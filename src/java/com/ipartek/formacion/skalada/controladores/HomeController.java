@@ -11,17 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Sector;
+import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.modelo.ModeloSector;
+import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 
 /**
  * Servlet implementation class HomeController
- * 
+ *
  * @author Curso
  */
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ModeloSector modeloSector = null;
+	private ModeloUsuario mu = new ModeloUsuario();
+	private Usuario admin = this.mu.getById(Constantes.ROLE_ID_ADMIN);
 
 	/**
 	 * @param config
@@ -35,7 +39,7 @@ public class HomeController extends HttpServlet {
 
 	/**
 	 * Se puentea al doPost()
-	 * 
+	 *
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
@@ -55,7 +59,7 @@ public class HomeController extends HttpServlet {
 
 		// recuperar las ultimas 6 sectores del modelo
 		// TODO usar LIMIT en la select y order bu id desc
-		ArrayList<Sector> sectores = this.modeloSector.getAll(null);
+		ArrayList<Sector> sectores = this.modeloSector.getAll(this.admin);
 		if (sectores.size() > 6) {
 			sectores = new ArrayList<Sector>(sectores.subList(0, 6));
 		}

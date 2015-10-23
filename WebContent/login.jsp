@@ -2,7 +2,11 @@
 
 <%@page import="com.ipartek.formacion.skalada.bean.Mensaje"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
-
+<%
+	if (request.getSession().getAttribute(Constantes.KEY_SESSION_USER)!=null){
+		request.getRequestDispatcher(Constantes.VIEW_BACK_INDEX).forward(request, response);
+	}
+%>
 
 <div class="container">
 	<div class="row">
