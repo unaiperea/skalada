@@ -27,3 +27,6 @@
 <li><a
 	href="<%=Constantes.CONTROLLER_ROLES%>?accion=<%=Constantes.ACCION_LISTAR%>"><i
 		class="fa fa-cogs fa-fw"></i> Roles<span class="badge right">2</span></a></li>
+<li><a 
+	href="<%=Constantes.CONTROLLER_OFERTAS%>?accion=<%=Constantes.ACCION_LISTAR%>"><i 
+		class="fa fa-picture-o fa-fw"></i> Ofertas<span class="badge right">5</span></a></li> 

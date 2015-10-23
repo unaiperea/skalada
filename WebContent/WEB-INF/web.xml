@@ -145,7 +145,7 @@
     <url-pattern>/validar</url-pattern>
   </servlet-mapping>
   <session-config>
-    <session-timeout>5</session-timeout>
+    <session-timeout>30</session-timeout>
   </session-config>
   <listener>
     <listener-class>com.ipartek.formacion.skalada.listener.ListenerInit</listener-class>
@@ -188,5 +188,15 @@
   <servlet-mapping>
     <servlet-name>PerfilController</servlet-name>
     <url-pattern>/backoffice/perfil</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Controlador para procesar ofertas y ofertasUsuario</description>
+    <display-name>OfertasController</display-name>
+    <servlet-name>OfertasController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.OfertasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OfertasController</servlet-name>
+    <url-pattern>/ofertas</url-pattern>
   </servlet-mapping>
 </web-app>
