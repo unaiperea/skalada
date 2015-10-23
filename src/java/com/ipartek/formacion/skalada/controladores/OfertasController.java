@@ -69,7 +69,7 @@ public class OfertasController extends HttpServlet {
 		this.usuario = (Usuario) request.getSession().getAttribute(
 				Constantes.KEY_SESSION_USER);
 		super.service(request, response);
-		LOG.info("Cogiendo usuario de session... (ID)=" + usuario.getId());
+		LOG.trace("Cogiendo usuario de session... (ID)=" + usuario.getId());
 	}
 
 	@Override
@@ -113,20 +113,20 @@ public class OfertasController extends HttpServlet {
 			if (request.getParameter("id") != null
 					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
-				LOG.info("Cogiendo parámetro de GET: id="+pID);
+				LOG.debug("Cogiendo parámetro de GET: id="+pID);
 			}
 			if (request.getParameter("oferta") != null) {
 				this.pOferta = Integer.parseInt(request.getParameter("oferta"));
-				LOG.info("Cogiendo parámetro de GET: oferta="+pOferta);
+				LOG.debug("Cogiendo parámetro de GET: oferta="+pOferta);
 			}
 			if (request.getParameter("user") != null) {
 				this.pUser = Integer.parseInt(request.getParameter("user"));
-				LOG.info("Cogiendo parámetro de GET: user="+pUser);
+				LOG.debug("Cogiendo parámetro de GET: user="+pUser);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("Cogiendo parámetros de GET " + e.getMessage());
+			LOG.warn("Cogiendo parámetros de GET " + e.getMessage());
 		}
 
 	}
@@ -151,11 +151,11 @@ public class OfertasController extends HttpServlet {
 		if (this.modeloOferta.delete(this.pID)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
-			LOG.info("Eliminando oferta correctamente (ID)="+pID);
+			LOG.info("Eliminando oferta correctamente (ID)="+pID + " " + pTitulo);
 		} else {
-			request.setAttribute("msg-warning",
-					"Error al eliminar el registro [id(" + this.pID + ")]");
-			LOG.error("Error eliminando oferta (ID)="+pID);
+			request.setAttribute("msg-warn",
+					"Error al eliminar el registro [id(" + this.pID + ")]" + " " + pTitulo);
+			LOG.warn("Error eliminando oferta (ID)="+pID  + " " + pTitulo);
 		}
 		this.listar(request, response);
 	}
@@ -164,7 +164,7 @@ public class OfertasController extends HttpServlet {
 		LOG.trace("Creando oferta");
 		this.oferta = new Oferta("");
 		request.setAttribute("oferta", this.oferta);
-		request.setAttribute("titulo", "Crear nuevo Oferta");
+		request.setAttribute("titulo", "Crear nueva Oferta");
 		request.setAttribute("usuarios",
 				this.modeloUsuario.getAll(this.usuario));
 		request.setAttribute("zonas", this.modeloZona.getAll(this.usuario));
@@ -192,11 +192,11 @@ public class OfertasController extends HttpServlet {
 		if (this.modeloOferta.inscribir(this.pOferta, this.usuario.getId())) {
 			request.setAttribute("msg-danger",
 					"Registro insertado correctamente");
-			LOG.info("Inscribiendo usuario en oferta correctamente (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
+			LOG.info("Usuario inscrito (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.toString());
 		} else {
-			request.setAttribute("msg-warning",
+			request.setAttribute("msg-warn",
 					"Error al insertar el registro [id(" + this.pID + ")]");
-			LOG.error("Error inscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
+			LOG.warn("Error inscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.toString());
 		}
 		this.listar(request, response);
 	}
@@ -207,11 +207,11 @@ public class OfertasController extends HttpServlet {
 		if (this.modeloOferta.desInscribir(this.pOferta, this.pUser)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
-			LOG.info("Desinscribiendo usuario en oferta correctamente (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
+			LOG.info("Usuario DES-inscrito (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.toString());
 		} else {
-			request.setAttribute("msg-warning",
+			request.setAttribute("msg-warn",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
-			LOG.error("Error desinscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
+			LOG.warn("Error desinscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.toString());
 		}
 		this.listar(request, response);
 	}
@@ -231,22 +231,22 @@ public class OfertasController extends HttpServlet {
 		if (this.pID == -1) {
 			if (this.modeloOferta.save(this.oferta) != -1) {
 				request.setAttribute("msg-success", "Registro creado con exito");
-				LOG.info("Oferta salvada con exito");
+				LOG.info("Oferta salvada con exito " + this.oferta.toString() );
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al guardar el nuevo registro");
-				LOG.error("Error al salvar oferta");
+				LOG.warn("Error al salvar oferta " + this.oferta.toString() );
 			}
 		} else {
 			if (this.modeloOferta.update(this.oferta)) {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
 						+ ")]");
-				LOG.info("Oferta modificada con exito (OFERTA)="+pID);
-			} else {
+				LOG.info("Oferta Modificada " + this.oferta.toString() );
+				} else {
 				request.setAttribute("msg-danger",
 						"Error al modificar el registro [id(" + this.pID + ")]");
-				LOG.error("Error al modificar oferta (OFERTA)="+pID);
+				LOG.warn("Error al modificar " + this.oferta.toString() );
 			}
 		}
 

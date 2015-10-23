@@ -27,6 +27,7 @@ public class UtilidadesFecha {
 			resul = new java.sql.Timestamp(date.getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
+			LOG.warn("Fecha no parseable " + strFecha + " e: " + e.getMessage() );
 		}
 		LOG.trace("Saliendo de conversion de fechas Fecha->Timestamp");
 		return resul;
@@ -47,9 +48,7 @@ public class UtilidadesFecha {
 		
 		if(time!=null){	
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			resul = dateFormat.format(time);
-			System.out.println(resul);
-			
+			resul = dateFormat.format(time);						
 			LOG.trace("Saliendo de conversion de fechas Timestamp->Fecha");
 		}
 		return resul;
