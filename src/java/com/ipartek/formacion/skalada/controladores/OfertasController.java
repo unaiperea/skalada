@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -22,6 +21,7 @@ import com.ipartek.formacion.skalada.bean.Zona;
 import com.ipartek.formacion.skalada.modelo.ModeloOferta;
 import com.ipartek.formacion.skalada.modelo.ModeloUsuario;
 import com.ipartek.formacion.skalada.modelo.ModeloZona;
+import com.ipartek.formacion.skalada.util.UtilidadesFecha;
 
 /**
  * Servlet implementation class OfertasController
@@ -59,7 +59,7 @@ public class OfertasController extends HttpServlet {
 		this.modeloOferta = new ModeloOferta();
 		this.modeloUsuario = new ModeloUsuario();
 		this.modeloZona = new ModeloZona();
-		LOG.info("Entrando....");
+		LOG.trace("Entrando....");
 	}
 
 	@Override
@@ -69,13 +69,13 @@ public class OfertasController extends HttpServlet {
 		this.usuario = (Usuario) request.getSession().getAttribute(
 				Constantes.KEY_SESSION_USER);
 		super.service(request, response);
-		LOG.info("Cogiendo usuario de session...");
+		LOG.info("Cogiendo usuario de session... (ID)=" + usuario.getId());
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		LOG.info("Entrando de doGet");
+		LOG.trace("Entrando de doGet");
 
 		// recoger parametros
 		this.getParameters(request, response);
@@ -101,27 +101,27 @@ public class OfertasController extends HttpServlet {
 			this.listar(request, response);
 			break;
 		}
-		LOG.info("Saliendo de doGet");
+		LOG.trace("Saliendo de doGet");
 		this.dispatcher.forward(request, response);
 	}
 
 	private void getParameters(HttpServletRequest request,
 			HttpServletResponse response) {
-		LOG.info("Cogiendo parámetros de GET...");
+		LOG.trace("Cogiendo parámetros de GET...");
 		try {
 			this.pAccion = Integer.parseInt(request.getParameter("accion"));
 			if (request.getParameter("id") != null
 					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pID = Integer.parseInt(request.getParameter("id"));
-				LOG.info("Cogiendo parámetro de GET: id");
+				LOG.info("Cogiendo parámetro de GET: id="+pID);
 			}
 			if (request.getParameter("oferta") != null) {
 				this.pOferta = Integer.parseInt(request.getParameter("oferta"));
-				LOG.info("Cogiendo parámetro de GET: oferta");
+				LOG.info("Cogiendo parámetro de GET: oferta="+pOferta);
 			}
 			if (request.getParameter("user") != null) {
 				this.pUser = Integer.parseInt(request.getParameter("user"));
-				LOG.info("Cogiendo parámetro de GET: user");
+				LOG.info("Cogiendo parámetro de GET: user="+pUser);
 			}
 
 		} catch (Exception e) {
@@ -140,28 +140,28 @@ public class OfertasController extends HttpServlet {
 	 */
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("ofertas", this.modeloOferta.getAll(this.usuario));
-		LOG.info("Listando ofertas");
+		LOG.trace("Listando ofertas");
 		this.dispatcher = request
 				.getRequestDispatcher(Constantes.VIEW_BACK_OFERTAS_INDEX);
 	}
 
 	private void eliminar(HttpServletRequest request,
 			HttpServletResponse response) {
-		LOG.info("Eliminando oferta");
+		LOG.trace("Eliminando oferta");
 		if (this.modeloOferta.delete(this.pID)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
-			LOG.info("Eliminando oferta correctamente");
+			LOG.info("Eliminando oferta correctamente (ID)="+pID);
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
-			LOG.error("Error eliminando oferta");
+			LOG.error("Error eliminando oferta (ID)="+pID);
 		}
 		this.listar(request, response);
 	}
 
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-		LOG.info("Creando oferta");
+		LOG.trace("Creando oferta");
 		this.oferta = new Oferta("");
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", "Crear nuevo Oferta");
@@ -175,7 +175,7 @@ public class OfertasController extends HttpServlet {
 
 	private void detalle(HttpServletRequest request,
 			HttpServletResponse response) {
-		LOG.info("Detalle de oferta");
+		LOG.trace("Detalle de oferta");
 		this.oferta = this.modeloOferta.getById(this.pID);
 		request.setAttribute("oferta", this.oferta);
 		request.setAttribute("titulo", this.oferta.getTitulo().toUpperCase());
@@ -188,30 +188,30 @@ public class OfertasController extends HttpServlet {
 
 	private void inscribir(HttpServletRequest request,
 			HttpServletResponse response) {
-		LOG.info("Inscribiendo usuario en oferta");
+		LOG.trace("Inscribiendo usuario en oferta");
 		if (this.modeloOferta.inscribir(this.pOferta, this.usuario.getId())) {
 			request.setAttribute("msg-danger",
 					"Registro insertado correctamente");
-			LOG.info("Inscribiendo usuario en oferta correctamente");
+			LOG.info("Inscribiendo usuario en oferta correctamente (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al insertar el registro [id(" + this.pID + ")]");
-			LOG.error("Error inscribiendo a usuario en oferta");
+			LOG.error("Error inscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
 		}
 		this.listar(request, response);
 	}
 
 	private void desinscribir(HttpServletRequest request,
 			HttpServletResponse response) {
-		LOG.info("Desinscribiendo usuario en oferta");
+		LOG.trace("Desinscribiendo usuario en oferta");
 		if (this.modeloOferta.desInscribir(this.pOferta, this.pUser)) {
 			request.setAttribute("msg-danger",
 					"Registro eliminado correctamente");
-			LOG.info("Desinscribiendo usuario en oferta correctamente");
+			LOG.info("Desinscribiendo usuario en oferta correctamente (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
 		} else {
 			request.setAttribute("msg-warning",
 					"Error al eliminar el registro [id(" + this.pID + ")]");
-			LOG.error("Error desinscribiendo a usuario en oferta");
+			LOG.error("Error desinscribiendo a usuario en oferta (OFERTA)="+pOferta+", (USUARIO)="+this.usuario.getId());
 		}
 		this.listar(request, response);
 	}
@@ -219,7 +219,7 @@ public class OfertasController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		LOG.info("Entrando a doPost");
+		LOG.trace("Entrando a doPost");
 
 		// recoger parametros del formulario
 		this.getParametersForm(request);
@@ -242,16 +242,16 @@ public class OfertasController extends HttpServlet {
 				request.setAttribute("msg-success",
 						"Modificado correctamente el registro [id(" + this.pID
 						+ ")]");
-				LOG.info("Oferta modificada con exito");
+				LOG.info("Oferta modificada con exito (OFERTA)="+pID);
 			} else {
 				request.setAttribute("msg-danger",
 						"Error al modificar el registro [id(" + this.pID + ")]");
-				LOG.error("Error al modificar oferta");
+				LOG.error("Error al modificar oferta (OFERTA)="+pID);
 			}
 		}
 
 		this.listar(request, response);
-		LOG.info("Saliendo de doPost");
+		LOG.trace("Saliendo de doPost");
 		this.dispatcher.forward(request, response);
 
 	}
@@ -260,7 +260,7 @@ public class OfertasController extends HttpServlet {
 	 * Crea un Objeto {@code Oferta} Con los parametros recibidos
 	 */
 	private void crearObjeto() {
-		LOG.info("Entrando a crearObjeto");
+		LOG.trace("Entrando a crearObjeto");
 		this.oferta.setId(this.pID);
 		this.oferta.setDescripcion(this.pDescripcion);
 		this.oferta.setPrecio(this.pPrecio);
@@ -269,7 +269,7 @@ public class OfertasController extends HttpServlet {
 		this.oferta.setFecha_alta(this.pFecha_alta);
 		this.oferta.setFecha_baja(this.pFecha_baja);
 		this.oferta.setTitulo(this.pTitulo);
-		LOG.info("Saliendo de crearObjeto");
+		LOG.trace("Saliendo de crearObjeto");
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class OfertasController extends HttpServlet {
 	 */
 	private void getParametersForm(HttpServletRequest request)
 			throws UnsupportedEncodingException {
-		LOG.info("Recogiendo parametros del formulario");
+		LOG.trace("Recogiendo parametros del formulario");
 		request.setCharacterEncoding("UTF-8");
 		this.pID = Integer.parseInt(request.getParameter("id"));
 		this.pTitulo = request.getParameter("titulo");
@@ -292,31 +292,11 @@ public class OfertasController extends HttpServlet {
 				.getParameter("zona")));
 		this.pVisible = (request.getParameter("visible") != null) ? 1 : 0;
 
-		this.pFecha_alta = this.convFechaATimestamp(request
+		this.pFecha_alta = UtilidadesFecha.convFechaATimestamp(request
 				.getParameter("fecha_alta"));
-		this.pFecha_baja = this.convFechaATimestamp(request
+		this.pFecha_baja = UtilidadesFecha.convFechaATimestamp(request
 				.getParameter("fecha_baja"));
 	}
 
-	/**
-	 * Convierte una fecha pasada como argumento en Timestamp
-	 *
-	 * @param strFecha
-	 *            : string con la fecha en formato "yyyy-MM-dd"
-	 * @return la fecha en Timestamp
-	 */
-	public Timestamp convFechaATimestamp(String strFecha) {
-		LOG.info("Entrando a conversion de fechas");
-		Timestamp resul = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			java.util.Date date;
-			date = sdf.parse(strFecha);
-			resul = new java.sql.Timestamp(date.getTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		LOG.info("Saliendo de conversion de fechas");
-		return resul;
-	}
+	
 }

@@ -18,7 +18,7 @@ public class UtilidadesFecha {
 	 */
 	public static Timestamp convFechaATimestamp(String strFecha) {
 
-		LOG.info("Entrando a conversion de fechas");
+		LOG.trace("Entrando a conversion de fechas Fecha->Timestamp");
 		Timestamp resul = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -28,7 +28,7 @@ public class UtilidadesFecha {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		LOG.info("Saliendo de conversion de fechas");
+		LOG.trace("Saliendo de conversion de fechas Fecha->Timestamp");
 		return resul;
 	}
 
@@ -42,12 +42,16 @@ public class UtilidadesFecha {
 	 */
 	public static String convTimestampAFecha(Timestamp time)
 			throws ParseException {
+		LOG.trace("Entrando a conversion de fechas Timestamp->Fecha");
 		String resul = "";
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		resul = dateFormat.format(time);
-		System.out.println(resul);
-
+		
+		if(time!=null){	
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			resul = dateFormat.format(time);
+			System.out.println(resul);
+			
+			LOG.trace("Saliendo de conversion de fechas Timestamp->Fecha");
+		}
 		return resul;
 
 	}

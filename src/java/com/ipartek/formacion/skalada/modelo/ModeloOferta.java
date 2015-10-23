@@ -147,7 +147,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 
 			}
 		} catch (Exception e) {
-			LOG.error("Error en GETBALL "+e.getMessage());
+			LOG.error("Error en GETALL "+e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -245,10 +245,10 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * @throws SQLException
 	 */
 	private Oferta mapeo(ResultSet rs, ArrayList<UsuarioInscrito> listaSuscritos ) throws SQLException {
-		LOG.info("Entrando en mapeo de oferta");
+		LOG.trace("Entrando en mapeo de oferta");
 		
 		Oferta resul = null;
-		LOG.info("Creando oferta");
+		LOG.trace("Creando oferta");
 		resul = new Oferta();
 		resul.setTitulo(rs.getString(COL_TITULO));
 		resul.setId(rs.getInt(COL_ID));
@@ -259,15 +259,15 @@ public class ModeloOferta implements Persistable<Oferta> {
 		resul.setVisible(rs.getInt("visible"));
 		
 		//mapeo de la zona
-		LOG.info("Creando zona para la oferta");
+		LOG.trace("Creando zona para la oferta");
 		Zona z = new Zona(rs.getString("zona_nombre"));
 		z.setId(rs.getInt("zona_id"));
 		resul.setZona(z);
 
-		LOG.info("Metiendo usuarios suscritos en oferta");
+		LOG.trace("Metiendo usuarios suscritos en oferta");
 		resul.setUsuariosInscritos(listaSuscritos);
 		
-		LOG.info("Saliendo en mapeo de oferta");
+		LOG.trace("Saliendo en mapeo de oferta");
 		return resul;
 		
 		
@@ -279,7 +279,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * @return ArrayList<UsuarioInscrito>
 	 */
 	private ArrayList<UsuarioInscrito> buscarSuscritos(int idOferta){
-		LOG.info("Entrando en buscarSuscritos");
+		LOG.trace("Entrando en buscarSuscritos");
 		ArrayList<UsuarioInscrito> resul = new ArrayList<UsuarioInscrito>();
 		PreparedStatement pst1 = null;
 		ResultSet rs1 = null;
@@ -295,7 +295,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				Rol rol = new Rol(rs1.getString("rol_nombre"));
 				rol.setId(rs1.getInt("u.id_rol"));
 				
-				LOG.info("Mapeo de un usuario suscrito");
+				LOG.trace("Mapeo de un usuario suscrito");
 				UsuarioInscrito ui = new UsuarioInscrito(
 						rs1.getString("usuario_nombre"),
 						rs1.getString("usuario_email"),
@@ -324,7 +324,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				e.printStackTrace();
 			}
 		}
-		LOG.info("Saliendo de buscarSuscritos");
+		LOG.trace("Saliendo de buscarSuscritos");
 		return resul;
 	}
 	
@@ -335,7 +335,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * @return true si elimina, false en caso contrario
 	 */
 	public boolean desInscribir(int idOferta, int idUsuario){
-		LOG.info("Entrando en desInscribir");
+		LOG.trace("Entrando en desInscribir");
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
@@ -372,7 +372,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 	 * @return true si inserta, false en caso contrario
 	 */
 	public boolean inscribir(int idOferta, int idUsuario){
-		LOG.info("Entrando en inscribir");
+		LOG.trace("Entrando en inscribir");
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
@@ -401,7 +401,7 @@ public class ModeloOferta implements Persistable<Oferta> {
 				e.printStackTrace();
 			}
 		}	
-		LOG.info("Saliendo de inscribir");
+		LOG.trace("Saliendo de inscribir");
 		return resul;
 	}
 }
