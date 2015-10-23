@@ -66,7 +66,7 @@
                       <p>Longitud: <%=vias.get(i).getLongitud()%> m</p>
                       <p>Grado: <%=vias.get(i).getGrado().getNombre()%> <a href="#"><i class="fa fa-question-circle"></i></a></p>
                       <p>Tipo Escalada: <%=vias.get(i).getTipoEscalada().getNombre()%><a href="#"><i class="fa fa-question-circle"></i></a> </p>
-                      <p><a class="btn btn-default" href="detalle-via?id=<%=vias.get(i).getId() %>" role="button">Leer Más &raquo;</a></p>
+                      <p><a class="btn btn-default" href="pages/viaH.jsp" role="button">Leer Más &raquo;</a></p>
                     </div><!--/.col-xs-6.col-lg-4-->
             <%
           		}
@@ -101,6 +101,7 @@
 	var zoom = 10;
 	var icon = "";
 	var infowindow = null;
+
 		
 	/*	
 		Recibimos un array en Java desde el Controlador y lo queremos utilizar en JavaScript para ello:
@@ -126,6 +127,7 @@
 			         } % >
 	            ];
 	*/
+
 	var sectores = [
 	                <%
 	                for (int z=0; z < sectores.size(); z++){
@@ -136,6 +138,7 @@
 	                }
 	                %>
 	                ];
+
 	function show_map(localizacion) {
 		//Mi Ubicacion
 		miLat = localizacion.coords.latitude;
@@ -219,7 +222,7 @@
 		markerZona = new google.maps.Marker({
 		      position: zonaLatlng,
 		      map: map,
-		      title: "<%=titulo%>"
+		      title: "Atxarte"
 		  });
 		console.debug("Marcador Zona " + markerZona);
 		markerZona.setMap(map);
@@ -249,6 +252,7 @@
 			console.debug("    Creando SECTOR " + sector[1] + "{" + sector[3] + "," + sector[4] +"}");
 			console.debug("    Marcador SECTOR " + markerSector[i]);
 			markerSector[i].setMap(map);
+
 			// Funcion que abre una ventana con el contenido del sector 
 			
 			function setInfoWindow(event, marcador){
@@ -283,6 +287,8 @@
 			console.error('Geolocation NO Soportado');
 		}
 	}
+
+
 	//2.-
 	google.maps.event.addDomListener(window, 'load', geolocalizarme);
 	
