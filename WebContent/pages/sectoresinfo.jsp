@@ -1,15 +1,30 @@
+<%@page import="com.ipartek.formacion.skalada.modelo.ModeloVia"%>
+<%@page import="com.ipartek.formacion.skalada.modelo.ModeloSector"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
-<%@page contentType="text/html"%> 
-<%@page pageEncoding="UTF-8"%> 
-
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
 
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <link rel="stylesheet" type="text/css" href="css/sectores.css" media="screen" />
+
+<%  
+	Usuario user = (Usuario) session.getAttribute("admin");
+	Via via = (Via)request.getAttribute("via");
+	
+	ModeloVia modeloVia = new ModeloVia();
+	
+	ModeloSector modeloSector = new ModeloSector();
+	ArrayList<Zona> zonas = new ArrayList<Zona>();
+	ArrayList<Sector> sectores = new ArrayList<Sector>();
+%>
 
     <!-- Home Page
     ========================================== -->
@@ -36,35 +51,39 @@
 			<p>Zona: Atxarte</p>
 						
 			</div>
-          
+
           <div class="row">
           <br>
             <div class="col-xs-6 col-lg-4">
             <br>
-              <h2>Irentxo<a href="#"><i class="fa fa-question-circle"></i></a></h2>
+              <h2>IRENTXO<a href="#"><i class="fa fa-question-circle"></i></a></h2> 
+              <input type="hidden" name="id" value="1">
               <br>
               <p>Longitud: 30m </p>
               <p>Grado: 6a <a href="#"><i class="fa fa-question-circle"></i></a></p>
               <p>Tipo Escalada: Deportiva <a href="#"><i class="fa fa-question-circle"></i></a> </p>
-              <p><a class="btn btn-default" href="pages/viaH.jsp" role="button">Leer Más &raquo;</a></p>
+              <p><a class="btn btn-default" href="<%=Constantes.CONTROLLER_FRONT_VIAS%>?id=1" role="button">Leer Más &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
+            
             <div class="col-xs-6 col-lg-4">
             <br>
-              <h2>Normal<a href="#"><i class="fa fa-question-circle"></i></a></h2>
+              <h2>BOSQUE DE LOS INURIOS<a href="#"><i class="fa fa-question-circle"></i></a></h2>
+              <input type="hidden" name="id" value="2">
               <br>
               <p>Longitud: 30m </p>
               <p>Grado: 6a <a href="#"><i class="fa fa-question-circle"></i></a></p>
               <p>Tipo Escalada: Deportiva <a href="#"><i class="fa fa-question-circle"></i></a></p>
-              <p><a class="btn btn-default" href="#" role="button">Leer Más &raquo;</a></p>
+              <p><a class="btn btn-default" href="<%=Constantes.CONTROLLER_FRONT_VIAS%>?id=2" role="button">Leer Más &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
             <br>
-              <h2>Oroimen<a href="#"><i class="fa fa-question-circle"></i></a></h2>
+              <h2>NORMAL<a href="#"><i class="fa fa-question-circle"></i></a></h2>
+              <input type="hidden" name="id" value="3">
               <br>
               <p>Longitud: 30m </p>
               <p>Grado: 6a <a href="#"><i class="fa fa-question-circle"></i></a></p>
               <p>Tipo Escalada: Deportiva<a href="#"><i class="fa fa-question-circle"></i></a> </p>
-              <p><a class="btn btn-default" href="#" role="button">Leer Más &raquo;</a></p>
+              <p><a class="btn btn-default" href="<%=Constantes.CONTROLLER_FRONT_VIAS%>?id=3" role="button">Leer Más &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->                  
           </div><!--/row-->
         </div><!--/.col-xs-12.col-sm-9-->
@@ -72,6 +91,7 @@
       </div><!--/row-->
 <br>
 <br>
+		
     </div><!--/.container-->   
                  
 

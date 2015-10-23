@@ -36,7 +36,7 @@
 								<!-- Cambio de color del Checkbox si esta seleccionado -->
 								<script>  
 								function marcar(check) {  
-								    check.parentNode.parentNode.style.color=check.checked?"#13BD4C":"grey"; 
+								    check.parentNode.parentNode.style.color=check.checked?"#21C558":"grey"; 
 								}  
 								</script> 								
 																 

@@ -178,7 +178,16 @@
     <dispatcher>ERROR</dispatcher>
     -->
   </filter-mapping>
-  
+    <servlet>
+    <description>Muestra el detalle de la via en el Frontoffice</description>
+    <display-name>DetalleViaController</display-name>
+    <servlet-name>DetalleViaController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.DetalleViaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DetalleViaController</servlet-name>
+    <url-pattern>/detalle-via</url-pattern>
+  </servlet-mapping>
   
   
 </web-app>
