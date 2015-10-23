@@ -8,13 +8,14 @@
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
 
 <jsp:include page="../includes/head.jsp"></jsp:include>
-
+<jsp:include page="../includes/nav.jsp"></jsp:include>
 
 <%
 	Zona zona = (Zona)request.getAttribute("zona");
 	ArrayList<Sector> sectores = (ArrayList<Sector>)request.getAttribute("sectores");
 	Sector sectorDestacado = (Sector)request.getAttribute("sectorDestacado");
 	ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("vias");
+	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("todo_zonas");
 %>
 
 		<li><a href="#">Inicio</a></li>
@@ -38,7 +39,9 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron">
-			<iframe id="mapa" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+			<!-- <iframe width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen>-->
+				<div id="mapa" style="width:100%;height:100%;" ></div>
+			<!-- </iframe>-->
           </div>
           <br>
           
@@ -52,8 +55,9 @@
           <div class="row">
           <br>
           	<%
-          	
+          		System.out.print(vias.size());
           		for (int i=0;i<vias.size();i++){
+          			System.out.print("Entrando en vias: " + vias.get(i).getNombre());
           	%>
           			<div class="col-xs-6 col-lg-4">
                     <br>
@@ -62,7 +66,7 @@
                       <p>Longitud: <%=vias.get(i).getLongitud()%> m</p>
                       <p>Grado: <%=vias.get(i).getGrado().getNombre()%> <a href="#"><i class="fa fa-question-circle"></i></a></p>
                       <p>Tipo Escalada: <%=vias.get(i).getTipoEscalada().getNombre()%><a href="#"><i class="fa fa-question-circle"></i></a> </p>
-                      <p><a class="btn btn-default" href="pages/viaH.jsp" role="button">Leer Más &raquo;</a></p>
+                      <p><a class="btn btn-default" href="detalle-via?id=<%=vias.get(i).getId() %>" role="button">Leer Más &raquo;</a></p>
                     </div><!--/.col-xs-6.col-lg-4-->
             <%
           		}
@@ -97,11 +101,11 @@
 	var zoom = 10;
 	var icon = "";
 	var infowindow = null;
-	
-	
-        	/*	Recibimos un array en Java desde el Controlador y lo queremos utilizar en JavaScript para ello:
-        		el controlador devuelve el codigo Java traducido a HTML por lo que lo utilizamos para crear el Array en JavaScript  
-        	*/
+		
+	/*	
+		Recibimos un array en Java desde el Controlador y lo queremos utilizar en JavaScript para ello:
+		el controlador devuelve el codigo Java traducido a HTML por lo que lo utilizamos para crear el Array en JavaScript  
+	*/
         	
 	/* Ejemplo datos que necesitamos
 	var zonas =  [
@@ -122,7 +126,6 @@
 			         } % >
 	            ];
 	*/
-	
 	var sectores = [
 	                <%
 	                for (int z=0; z < sectores.size(); z++){
@@ -133,7 +136,6 @@
 	                }
 	                %>
 	                ];
-
 	function show_map(localizacion) {
 		//Mi Ubicacion
 		miLat = localizacion.coords.latitude;
@@ -164,10 +166,10 @@
 		markerUbicacion.setMap(map);
 		
 		//Cargar Zona
-		//loadZona();
+		loadZona();
 		
 		//Cargar Sectores
-		//loadSectores();
+		loadSectores();
 		
 		//circulo
 	    var circuloOptions = {
@@ -178,7 +180,7 @@
 	    	      fillOpacity: 0.1,
 	    	      map: map,
 	    	      center: myLatlng,
-	    	      radius: 50000 
+	    	      radius: 25000 
 	    	    };
 	   // Add the circle for this city to the map.
 	   cityCircle = new google.maps.Circle(circuloOptions);
@@ -210,13 +212,14 @@
 	function loadZona(){
 		console.debug("Zona loading.....");
 		var zonaLatlng;
-		
+		<% double lat = zona.getLatitud(); %>
+		<% double lng = zona.getLongitud(); %>
 		<% String titulo = zona.getNombre(); %>
-		zonaLatlng = new google.maps.LatLng( 43.12049,-2.635543);					
+		zonaLatlng = new google.maps.LatLng( <%=lat%>,<%=lng%>);					
 		markerZona = new google.maps.Marker({
 		      position: zonaLatlng,
 		      map: map,
-		      title: "Atxarte"
+		      title: "<%=titulo%>"
 		  });
 		console.debug("Marcador Zona " + markerZona);
 		markerZona.setMap(map);
@@ -246,8 +249,8 @@
 			console.debug("    Creando SECTOR " + sector[1] + "{" + sector[3] + "," + sector[4] +"}");
 			console.debug("    Marcador SECTOR " + markerSector[i]);
 			markerSector[i].setMap(map);
+			// Funcion que abre una ventana con el contenido del sector 
 			
-			/* Funcion que abre una ventana con el contenido del sector */
 			function setInfoWindow(event, marcador){
 				// Create content  
 				var contentString = "<br /><br /><hr />Coordinate: " + marcador.lng +"," + marcador.lat; 
@@ -258,7 +261,8 @@
 				//infowindow.open(map, markerSector)
 			}
 			
-			/* Funcion que se llama al hacer click sobre un marcador */
+			// Funcion que se llama al hacer click sobre un marcador
+			
 			markerSector[i].addListener('click', function() {
 			   	map.setCenter(new google.maps.LatLng(this.position.lat(), this.position.lng())); 
 			    map.setZoom(15);
@@ -279,7 +283,6 @@
 			console.error('Geolocation NO Soportado');
 		}
 	}
-
 	//2.-
 	google.maps.event.addDomListener(window, 'load', geolocalizarme);
 	

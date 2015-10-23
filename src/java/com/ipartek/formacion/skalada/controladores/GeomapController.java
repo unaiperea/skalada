@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Sector;
@@ -32,12 +33,15 @@ public class GeomapController extends HttpServlet {
 	private ModeloZona modeloZona = null;
 	private ModeloSector modeloSector = null;
 	private ModeloVia modeloVia = null;
-	
+
 	private Usuario usuario = null;
 	private Sector sectorDestacado = null;
 	private Zona zona = null;
 	private ArrayList<Via> vias = null;
 	private ArrayList<Sector> sectores = null;
+
+	private ArrayList<Zona> zonas = null;
+	private HttpSession session = null;
 
 	// AJAX
 	private int pIdZona = 0;
@@ -46,94 +50,114 @@ public class GeomapController extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		modeloZona = new ModeloZona();
-		modeloUsuario = new ModeloUsuario();
-		modeloSector = new ModeloSector();
-		modeloVia = new ModeloVia();
+		this.modeloZona = new ModeloZona();
+		this.modeloUsuario = new ModeloUsuario();
+		this.modeloSector = new ModeloSector();
+		this.modeloVia = new ModeloVia();
 	}
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GeomapController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public GeomapController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
+		/**
+		 * MOSTRAR LA ZONA/SECTOR ENVIADO DESDE LA HOME
+		 */
+		this.usuario = (Usuario) this.modeloUsuario.getByEmail("admin@admin.com");
+		this.session = request.getSession(true);
+		this.session.setAttribute("admin", this.usuario);
+		this.zonas = this.modeloZona.getAll(this.usuario);
+		request.setAttribute("todo_zonas", this.zonas);
 
-			/**
-			 * MOSTRAR LA ZONA/SECTOR ENVIADO DESDE LA HOME
-			 */
+		/*
+		 * // Recuperamos el usuario Administrador para poder recuperar todas las
+		 * Zonas y Sectores usuario =
+		 * modeloUsuario.getById(Constantes.ROLE_ID_ADMIN); ArrayList<Zona> zonas =
+		 * modeloZona.getAll(usuario); ArrayList<Sector> sectores =
+		 * modeloSector.getAll(usuario);
+		 */
 
-			/*
-			 * // Recuperamos el usuario Administrador para poder recuperar todas las Zonas y Sectores usuario =
-			 * modeloUsuario.getById(Constantes.ROLE_ID_ADMIN); ArrayList<Zona> zonas = modeloZona.getAll(usuario); ArrayList<Sector> sectores =
-			 * modeloSector.getAll(usuario);
-			 */
+		// El sector elegido en la pagina principal junto con su zona y todas sus
+		// vias
+		if (request.getParameter("idSector") != null) {
+			this.pIdSector = Integer.parseInt(request.getParameter("idSector"));
 
-			// El sector elegido en la pagina principal junto con su zona y todas sus vias
-			if (request.getParameter("idSector") != null) {
-				pIdSector = Integer.parseInt(request.getParameter("idSector"));
+			this.sectorDestacado = this.modeloSector.getById(this.pIdSector);
+			this.zona = this.modeloZona.getById(this.sectorDestacado.getZona()
+					.getId());
+			// Recogemos todos los sectores de esa zona en un ArrayList
+			this.sectores = this.modeloSector.getAllByZona(this.zona.getId());
+			// Recogemos todas las vias del sector enviado desde la Home
+			this.vias = this.modeloVia.getAllBySector(
+					(Usuario) this.modeloUsuario.getById(Constantes.ROLE_ID_ADMIN),
+					this.pIdSector);
+			// Devolvemos los resultados
+			this.setearAtributos(request);
+		}
+		// La zona elegida en la pagina principal junto con todos sus sectores.
+		if (request.getParameter("idZona") != null) {
+			this.pIdZona = Integer.parseInt(request.getParameter("idZona"));
 
-				sectorDestacado = modeloSector.getById(pIdSector);
-				zona = modeloZona.getById(sectorDestacado.getZona().getId());
-				// Recogemos todos los sectores de esa zona en un ArrayList
-				sectores = modeloSector.getAllByZona(zona.getId());
-				// Recogemos todas las vias del sector enviado desde la Home
-				vias = modeloVia.getAllBySector((Usuario)modeloUsuario.getById(Constantes.ROLE_ID_ADMIN), pIdSector);
-				// Devolvemos los resultados
-				setearAtributos(request);
+			// Recogemos todos los sectores de esa zona en un ArrayList
+			this.sectores = this.modeloSector.getAllByZona(this.pIdZona);
+
+			// Guardamos el sector destacado, por defecto el primero del ArrayList
+			if (this.sectores.get(0) != null) {
+				this.sectorDestacado = this.sectores.get(0);
+				// Recogemos todas las vias del sector destacado
+				this.vias = this.modeloVia.getAllBySector(
+						(Usuario) this.modeloUsuario.getById(Constantes.ROLE_ID_ADMIN),
+						this.sectores.get(0).getId());
+				this.zona = this.modeloZona.getById(this.sectorDestacado.getZona()
+						.getId());
 			}
-			// La zona elegida en la pagina principal junto con todos sus sectores.
-			if (request.getParameter("idZona") != null) {
-				pIdZona = Integer.parseInt(request.getParameter("idZona"));
+			// Devolvemos los resultados
+			this.setearAtributos(request);
 
-				// Recogemos todos los sectores de esa zona en un ArrayList
-				sectores = modeloSector.getAllByZona(pIdZona);
+		}
 
-				// Guardamos el sector destacado, por defecto el primero del ArrayList
-				if (sectores.get(0) != null) {
-					sectorDestacado = sectores.get(0);
-					// Recogemos todas las vias del sector destacado
-					vias = modeloVia.getAllBySector((Usuario)modeloUsuario.getById(Constantes.ROLE_ID_ADMIN), sectores.get(0).getId());
-					zona = modeloZona.getById(sectorDestacado.getZona().getId());
-				}
-				// Devolvemos los resultados
-				setearAtributos(request);
+		// ENVIA TODAS LAS ZONAS Y SECTORES
+		/*
+		 * // Enviamos la informacion a mostrar en Geomap
+		 * request.setAttribute("zonas", zonas); request.setAttribute("sectores",
+		 * sectores);
+		 */
 
-			}
-
-			// ENVIA TODAS LAS ZONAS Y SECTORES
-			/*
-			 * // Enviamos la informacion a mostrar en Geomap request.setAttribute("zonas", zonas); request.setAttribute("sectores", sectores);
-			 */
-
-			dispatcher = request.getRequestDispatcher(Constantes.VIEW_FRONT_SECTORESINFO);
-			dispatcher.forward(request, response);
-			
+		this.dispatcher = request
+				.getRequestDispatcher(Constantes.VIEW_FRONT_SECTORESINFO);
+		this.dispatcher.forward(request, response);
 
 	}
 
-	private void setearAtributos(HttpServletRequest request) throws ServletException, IOException {
+	private void setearAtributos(HttpServletRequest request)
+			throws ServletException, IOException {
 		// Mandamos el detalle
-		request.setAttribute("zona", zona);
-		request.setAttribute("sectores", sectores);
-		request.setAttribute("sectorDestacado", sectorDestacado);
-		request.setAttribute("vias", vias);
+		request.setAttribute("zona", this.zona);
+		request.setAttribute("sectores", this.sectores);
+		request.setAttribute("sectorDestacado", this.sectorDestacado);
+		request.setAttribute("vias", this.vias);
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
