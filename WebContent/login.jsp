@@ -12,7 +12,7 @@
 		<div class="col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title" style="text-align: center;">- Skalada -</h3>
+					<h3 class="panel-title" style="text-align: center;">- Skalada Login -</h3>
 				</div>
 				<div class="panel-body">
 
@@ -31,8 +31,15 @@
 							</div>
 							<div class="checkbox">
 								<label style="font-size: 14px;"> <input name="remember" type="checkbox"
-									value="Remember Me" >Recordar mis datos
-								</label> 
+									value="Remember Me" onClick="marcar(this)" >Recordar mis datos
+								</label>
+								<!-- Cambio de color del Checkbox si esta seleccionado -->
+								<script>  
+								function marcar(check) {  
+								    check.parentNode.parentNode.style.color=check.checked?"#13BD4C":"grey"; 
+								}  
+								</script> 								
+																 
 								<br>
 							</div>
 							<input class="btn btn-lg btn-block btn-primary-login" type="submit"
