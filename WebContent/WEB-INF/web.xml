@@ -179,7 +179,17 @@
     <servlet-name>GeomapController</servlet-name>
     <url-pattern>/frontoffice/geomap</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
+    <description>Controlador para gestionar las busquedas</description>
+    <display-name>SearchController</display-name>
+    <servlet-name>SearchController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.SearchController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchController</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <description></description>
     <display-name>PerfilController</display-name>
     <servlet-name>PerfilController</servlet-name>

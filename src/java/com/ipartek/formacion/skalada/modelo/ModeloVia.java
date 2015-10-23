@@ -55,6 +55,8 @@ public class ModeloVia implements Persistable<Via> {
 	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`=?, `longitud`=?, `descripcion`=?, `id_grado`=?, `id_tipo_escalada`=?, `id_sector`=?, `id_usuario`=?, `validado`=? WHERE  `id`=?;";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_VIA
 			+ "` WHERE `" + COL_ID + "`= ?;";
+	private static final String SQL_BUSQUEDA = SQL_GETALL
+			+ " WHERE v.nombre like ? OR v.longitud like ? OR v.descripcion like ?";
 
 	@Override
 	public int save(Via via) {
@@ -288,6 +290,40 @@ public class ModeloVia implements Persistable<Via> {
 		zona = null;
 		sector = null;
 		nombre = null;
+
+		return resul;
+	}
+
+	public ArrayList<Via> busqueda(String texto) {
+		ArrayList<Via> resul = new ArrayList<Via>();
+
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_BUSQUEDA);
+			pst.setString(1, "%" + texto + "%");
+			pst.setString(2, "%" + texto + "%");
+			pst.setString(3, "%" + texto + "%");
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		return resul;
 	}

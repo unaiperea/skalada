@@ -48,14 +48,16 @@
 		<div class="sidebar-nav navbar-collapse">
 			<ul class="nav" id="side-menu">
 				<li class="sidebar-search">
+				<form action="<%=Constantes.CONTROLLER_SEARCH%>" method="post">
 					<div class="input-group custom-search-form">
-						<input type="text" class="form-control" placeholder="Search...">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button">
-								<i class="fa fa-search"></i>
-							</button>
-						</span>
+							<input type="text" name="search_input" id="search_input" class="form-control" placeholder="Search...">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
 					</div> <!-- /input-group -->
+				</form>
 				</li>
 				<%	if (usuario.isAdmin()) {	%>
 				<%@include file="nav-admin.jsp"%>

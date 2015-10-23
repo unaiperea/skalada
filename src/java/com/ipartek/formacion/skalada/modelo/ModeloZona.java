@@ -37,6 +37,8 @@ public class ModeloZona implements Persistable<Zona> {
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
 			+ "`=?, `" + COL_FECHA_MODIFICADO
 			+ "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID + "`= ? ;";
+	private static final String SQL_BUSQUEDA = SQL_GETALL
+			+ " WHERE nombre like ?";
 
 	@Override()
 	public int save(Zona z) {
@@ -253,6 +255,38 @@ public class ModeloZona implements Persistable<Zona> {
 	// TODO OBTENER SECTORES DE UNA VIA
 	public ArrayList<Zona> getSectores(int id) {
 		ArrayList<Zona> resul = new ArrayList<Zona>();
+
+		return resul;
+	}
+
+	public ArrayList<Zona> busqueda(String texto) {
+		ArrayList<Zona> resul = new ArrayList<Zona>();
+
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_BUSQUEDA);
+			pst.setString(1, "%" + texto + "%");
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		return resul;
 	}
