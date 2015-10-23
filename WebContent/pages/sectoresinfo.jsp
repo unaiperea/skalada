@@ -1,11 +1,14 @@
+<%@page import="com.ipartek.formacion.skalada.modelo.ModeloVia"%>
+<%@page import="com.ipartek.formacion.skalada.modelo.ModeloSector"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Zona"%>
+<%@page import="com.ipartek.formacion.skalada.bean.Usuario"%>
 <%@page import="com.ipartek.formacion.skalada.bean.Sector"%>
-<%@page contentType="text/html"%> 
-<%@page pageEncoding="UTF-8"%> 
-
 <%@page import="com.ipartek.formacion.skalada.bean.Via"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.ipartek.formacion.skalada.Constantes"%>
+
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
 
 <jsp:include page="../includes/head.jsp"></jsp:include>
 <jsp:include page="../includes/nav.jsp"></jsp:include>
@@ -16,6 +19,16 @@
 	Sector sectorDestacado = (Sector)request.getAttribute("sectorDestacado");
 	ArrayList<Via> vias = (ArrayList<Via>)request.getAttribute("vias");
 	ArrayList<Zona> zonas = (ArrayList<Zona>)request.getAttribute("todo_zonas");
+%>
+<link rel="stylesheet" type="text/css" href="css/sectores.css" media="screen" />
+
+<%  
+	Usuario user = (Usuario) session.getAttribute("admin");
+	Via via = (Via)request.getAttribute("via");
+	
+	ModeloVia modeloVia = new ModeloVia();
+	
+	ModeloSector modeloSector = new ModeloSector();
 %>
 
 		<li><a href="#">Inicio</a></li>
@@ -51,7 +64,7 @@
 			<p>Zona: <%=zona.getNombre()%></p>
 						
 			</div>
-          
+
           <div class="row">
           <br>
           	<%
@@ -66,19 +79,16 @@
                       <p>Longitud: <%=vias.get(i).getLongitud()%> m</p>
                       <p>Grado: <%=vias.get(i).getGrado().getNombre()%> <a href="#"><i class="fa fa-question-circle"></i></a></p>
                       <p>Tipo Escalada: <%=vias.get(i).getTipoEscalada().getNombre()%><a href="#"><i class="fa fa-question-circle"></i></a> </p>
-                      <p><a class="btn btn-default" href="pages/viaH.jsp" role="button">Leer Más &raquo;</a></p>
+                      <p><a class="btn btn-default" href="detalle-via?id=<%=vias.get(i).getId() %>" role="button">Leer Más &raquo;</a></p>
                     </div><!--/.col-xs-6.col-lg-4-->
             <%
           		}
           	
           	%>
-     
-          </div><!--/row-->
-        </div><!--/.col-xs-12.col-sm-9-->
-
       </div><!--/row-->
 <br>
 <br>
+		
     </div><!--/.container-->   
                  
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -222,7 +232,7 @@
 		markerZona = new google.maps.Marker({
 		      position: zonaLatlng,
 		      map: map,
-		      title: "Atxarte"
+		      title: "<%=titulo%>"
 		  });
 		console.debug("Marcador Zona " + markerZona);
 		markerZona.setMap(map);
@@ -257,7 +267,7 @@
 			
 			function setInfoWindow(event, marcador){
 				// Create content  
-				var contentString = "<br /><br /><hr />Coordinate: " + marcador.lng +"," + marcador.lat; 
+				var contentString = "<div><div><b>Zona</b><%=zona.getNombre()%></div><br><div><b>Sector: </b>" + marcador.title + "</div><hr><b>Coordinate: </b>" + marcador.position.lat() +"," + marcador.position.lng() + "</div>"; 
 		  		// Replace our Info Window's content and position 
 				infowindow.setContent(contentString);
 				infowindow.setPosition(marcador.position); 

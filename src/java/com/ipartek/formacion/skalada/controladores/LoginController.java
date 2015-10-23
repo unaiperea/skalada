@@ -51,6 +51,7 @@ public class LoginController extends HttpServlet {
 	@Override()
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+
 	}
 
 	/**
@@ -58,8 +59,8 @@ public class LoginController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		this.doPost(request, response);
 	}
 
@@ -68,8 +69,8 @@ public class LoginController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		LOG.info("Entrando....");
 
@@ -98,8 +99,8 @@ public class LoginController extends HttpServlet {
 						&& this.usuario.getPassword().equals(this.pPassword)) {
 					if (this.usuario.getValidado() != 0) {
 						// salvar session
-						this.session.setAttribute(Constantes.KEY_SESSION_USER,
-								this.usuario);
+						this.session
+								.setAttribute(Constantes.KEY_SESSION_USER, this.usuario);
 						// Ir a => index_back.jsp
 						this.dispatcher = request
 								.getRequestDispatcher(Constantes.VIEW_BACK_INDEX);
@@ -114,14 +115,12 @@ public class LoginController extends HttpServlet {
 					// Ir a => login.jsp
 					this.msg = new Mensaje(Mensaje.MSG_WARNING,
 							"El email o la contraseña proporcionados no son validos.");
-					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_LOGIN);
+					this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				}
 			} else {
 				this.msg = new Mensaje(Mensaje.MSG_WARNING,
 						"El usuario no existe, si lo desea registrese.");
-				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+				this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 			}
 
 		}

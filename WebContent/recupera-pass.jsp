@@ -7,13 +7,18 @@
 
 
 <jsp:include page="includes/head.jsp"></jsp:include>
-
+<div id="tf-pass" class="text-center">
+<div class="overlay">
 <div class="container">
+	<ol class="breadcrumb container transparente">
+		<li><a href="#">Inicio</a></li>
+		<li class="active">Recuperar Password</li>
+	</ol>
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Recupera tu password</h3>
+					<h3 class="panel-title">- Recupera tu password -</h3>
 				</div>
 				<div class="panel-body">
 
@@ -100,7 +105,8 @@
 		</div>
 	</div>
 </div>
-
+</div>
+</div>
 
 
 <jsp:include page="includes/foot.jsp"></jsp:include>
