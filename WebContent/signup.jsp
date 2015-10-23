@@ -7,8 +7,7 @@
 
 <jsp:include page="includes/head.jsp"></jsp:include>
 <jsp:include page="includes/nav.jsp"></jsp:include>
-
-<div id="tf-login" class="text-center">
+<div id="tf-signup" class="text-center">
 <div class="overlay">
 <div class="container">
 	<div class="row">
