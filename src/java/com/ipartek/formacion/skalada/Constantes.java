@@ -99,12 +99,13 @@ public final class Constantes {
 	public static final int ACCION_REGENERAR_PASS = 5;
 
 	// Imagenes y Ficheros
-	public static final String IMG_UPLOAD_FOLDER = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\webapps\\uploads";
-	public static final String IMG_UPLOAD_TEMP_FOLDER = "C:\\desarrollo\\java\\apache-tomcat-6.0.43\\temp";
-	public static final String IMG_WEP_PATH = SERVER + "uploads/";
+	public static final String IMG_UPLOAD_FOLDER = "C:\\desarrollo\\apache-tomcat-6.0.44\\webapps\\uploads";
+	public static final String IMG_UPLOAD_TEMP_FOLDER = "C:\\desarrollo\\apache-tomcat-6.0.44\\temp";
+	public static final String IMG_WEP_PATH = SERVER + "/uploads/";
 	public static final int MAX_FILE_SIZE = 1000 * 1024;
 	public static final int MAX_MEM_SIZE = 40 * 1024;
 	public static final String IMG_DEFAULT_SECTOR = "default_sector.jpg";
+
 	public static final ArrayList<String> CONTENT_TYPES = new ArrayList<String>(
 			Arrays.asList("image/jpeg", "image/png"));
 

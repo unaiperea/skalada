@@ -2,6 +2,7 @@ var map;
 var latSector = document.getElementsByName('latitud')[0].value;
 var lngSector = document.getElementsByName('longitud')[0].value;
 var zoom = 14;
+var marker;
 
 function show_map(localizacion) {
 	
@@ -27,7 +28,7 @@ function show_map(localizacion) {
 	});
 	
 	//marcador
-	var marker = new google.maps.Marker({
+	marker = new google.maps.Marker({
 		position: sectorPosition,
 		map: map,
 		draggable: true,
@@ -56,6 +57,8 @@ function changeMapPosition(){
 	var newLatLng = new google.maps.LatLng( lat, lng);
 	map.setZoom(zoom);
 	map.setCenter(newLatLng);
+	
+	marker.setPosition(newLatLng);
 }
 
 function geolocalizarme(){				
