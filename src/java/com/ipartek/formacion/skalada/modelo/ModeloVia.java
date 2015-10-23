@@ -24,6 +24,8 @@ import com.ipartek.formacion.skalada.bean.Zona;
  */
 public class ModeloVia implements Persistable<Via> {
 
+	private Connection con = null;
+
 	private ModeloUsuario modeloUsuario = new ModeloUsuario();
 
 	private static final String TABLA_VIA = "via";
@@ -65,8 +67,8 @@ public class ModeloVia implements Persistable<Via> {
 		ResultSet rsKeys = null;
 		if (via != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT,
+				this.con = DataBaseHelper.getConnection();
+				pst = this.con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, via.getNombre());
 				pst.setInt(2, via.getLongitud());
@@ -101,7 +103,7 @@ public class ModeloVia implements Persistable<Via> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -116,11 +118,11 @@ public class ModeloVia implements Persistable<Via> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			this.con = DataBaseHelper.getConnection();
 			if (usuario.isAdmin()) {
-				pst = con.prepareStatement(SQL_GETALL);
+				pst = this.con.prepareStatement(SQL_GETALL);
 			} else {
-				pst = con.prepareStatement(SQL_GETALL_BY_USER);
+				pst = this.con.prepareStatement(SQL_GETALL_BY_USER);
 				pst.setInt(1, usuario.getId());
 			}
 			rs = pst.executeQuery();
@@ -137,7 +139,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -151,8 +153,8 @@ public class ModeloVia implements Persistable<Via> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETONE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_GETONE);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -168,7 +170,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -182,9 +184,9 @@ public class ModeloVia implements Persistable<Via> {
 		PreparedStatement pst = null;
 		if (via != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				this.con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
-				pst = con.prepareStatement(sql);
+				pst = this.con.prepareStatement(sql);
 				pst.setString(1, via.getNombre());
 				pst.setInt(2, via.getLongitud());
 				pst.setString(3, via.getDescripcion());
@@ -208,7 +210,7 @@ public class ModeloVia implements Persistable<Via> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -222,8 +224,8 @@ public class ModeloVia implements Persistable<Via> {
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_DELETE);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_DELETE);
 			pst.setInt(1, id);
 			if (pst.executeUpdate() == 1) {
 				resul = true;
@@ -235,7 +237,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 				return resul;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -300,8 +302,8 @@ public class ModeloVia implements Persistable<Via> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_BUSQUEDA);
+			this.con = DataBaseHelper.getConnection();
+			pst = this.con.prepareStatement(SQL_BUSQUEDA);
 			pst.setString(1, "%" + texto + "%");
 			pst.setString(2, "%" + texto + "%");
 			pst.setString(3, "%" + texto + "%");
@@ -319,7 +321,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

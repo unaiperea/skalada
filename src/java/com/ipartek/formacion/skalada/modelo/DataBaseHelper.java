@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 /**
  * Clase especializada en trabajar con la Base Datos La usaran los DAOs para
  * abrir y cerrar conexiones
@@ -23,7 +25,10 @@ public class DataBaseHelper {
 	static final public String PASS = "";
 
 	// Conexion
-	private static Connection con;
+	// private Connection con;
+
+	// Logs
+	private static final Logger LOG = Logger.getLogger(DataBaseHelper.class);
 
 	/**
 	 * Metodo para realizar la conexion implementa un patron singleton (solo
@@ -36,25 +41,27 @@ public class DataBaseHelper {
 
 		/*
 		 * Conexion usando DriverManager
-		 *
-		 *
+		 * 
+		 * 
 		 * if ( con == null ){ Class.forName(DRIVER); con =
 		 * DriverManager.getConnection ("jdbc:mysql://" + SERVER + "/" +
 		 * DATA_BASE, USER, PASS); } return con;
 		 */
 
 		/* Conexion usando DataSource y PoolConexiones */
-
+		Connection con = null;
 		InitialContext ctx = new InitialContext();
 		DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/skaladaDB");
 		if (ds == null) {
 			throw new Exception("Data source no encontrado!");
 		} else {
 			con = ds.getConnection();
+			LOG.debug("Obtenemos conexion BBDD.");
 		}
 
 		if (con == null) {
-			throw new Exception("No se ha podido establecer conexion");
+			LOG.debug("Error al establecer conexion.");
+			throw new Exception("No se ha podido establecer conexion BBDD");
 		}
 
 		return con;
@@ -66,15 +73,17 @@ public class DataBaseHelper {
 	 *
 	 * @return
 	 */
-	public static boolean closeConnection() {
+	public static boolean closeConnection(Connection con) {
 		boolean resul = false;
 		try {
 			if (con != null) {
 				con.close();
 				con = null;
+				LOG.debug("Conexion BBDD cerrada.");
 			}
 			resul = true;
 		} catch (SQLException e) {
+			LOG.debug("Error al cerrar conexion BBDD.");
 			con = null;
 			e.printStackTrace();
 			resul = false;

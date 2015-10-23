@@ -8,11 +8,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.skalada.Constantes;
 import com.ipartek.formacion.skalada.bean.Rol;
 import com.ipartek.formacion.skalada.bean.Usuario;
 
 public class ModeloUsuario implements Persistable<Usuario> {
+
+	Connection con = null;
+
+	// Logs
+	private static final Logger LOG = Logger.getLogger(ModeloUsuario.class);
 
 	private static final String SQL_INSERT = "INSERT INTO `usuario` (`email`, `nombre`, `password`, `id_rol`,`token`) VALUES (?, ?, ?, ?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `usuario` WHERE `id`= ? ;";
@@ -41,8 +48,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		ResultSet rsKeys = null;
 		if (u != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
-				pst = con.prepareStatement(SQL_INSERT,
+				this.con = DataBaseHelper.getConnection();
+				// LOG.debug("Obtenemos conexion BBDD.");
+				pst = this.con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, u.getEmail());
 				pst.setString(2, u.getNombre());
@@ -70,7 +78,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -85,8 +93,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETONE);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_GETONE);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -102,7 +111,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -115,8 +124,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GET_BY_EMAIL);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_GET_BY_EMAIL);
 			pst.setString(1, email);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -132,7 +142,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -146,8 +156,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETALL);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_GETALL);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				resul.add(this.mapeo(rs));
@@ -162,7 +173,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -175,8 +186,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_GETNOVALIDADOS);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_GETNOVALIDADOS);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				resul.add(this.mapeo(rs));
@@ -191,7 +203,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -205,9 +217,10 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		if (u != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				this.con = DataBaseHelper.getConnection();
+				// LOG.debug("Obtenemos conexion BBDD.");
 				String sql = SQL_UPDATE;
-				pst = con.prepareStatement(sql);
+				pst = this.con.prepareStatement(sql);
 				pst.setString(1, u.getEmail());
 				pst.setString(2, u.getNombre());
 				pst.setString(3, u.getPassword());
@@ -229,7 +242,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(this.con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -243,8 +256,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		boolean resul = false;
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_DELETE);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_DELETE);
 			pst.setInt(1, id);
 			if (pst.executeUpdate() == 1) {
 				resul = true;
@@ -256,7 +270,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 				return resul;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -306,8 +320,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_CHECK_USER);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_CHECK_USER);
 			pst.setString(1, nombre);
 			pst.setString(2, email);
 			rs = pst.executeQuery();
@@ -324,7 +339,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -348,8 +363,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_CHECK_EMAIL);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_CHECK_EMAIL);
 			pst.setString(1, email);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -366,7 +382,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -380,9 +396,10 @@ public class ModeloUsuario implements Persistable<Usuario> {
 
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
 			String sql = SQL_VALIDATE;
-			pst = con.prepareStatement(sql);
+			pst = this.con.prepareStatement(sql);
 			pst.setInt(1, 1);
 			pst.setInt(2, id);
 			if (pst.executeUpdate() == 1) {
@@ -395,7 +412,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -409,9 +426,10 @@ public class ModeloUsuario implements Persistable<Usuario> {
 
 		PreparedStatement pst = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
 			String sql = SQL_RESET_PASS;
-			pst = con.prepareStatement(sql);
+			pst = this.con.prepareStatement(sql);
 			pst.setString(1, pass);
 			pst.setString(2, email);
 			if (pst.executeUpdate() == 1) {
@@ -424,7 +442,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -437,8 +455,10 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		int resul = 0;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		Connection con = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
 			pst = con.prepareStatement(SQL_USUARIOS_NO_VALIDADOS);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -454,7 +474,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -468,8 +488,9 @@ public class ModeloUsuario implements Persistable<Usuario> {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
-			pst = con.prepareStatement(SQL_BUSQUEDA);
+			this.con = DataBaseHelper.getConnection();
+			// LOG.debug("Obtenemos conexion BBDD.");
+			pst = this.con.prepareStatement(SQL_BUSQUEDA);
 			pst.setString(1, "%" + texto + "%");
 			pst.setString(2, "%" + texto + "%");
 			rs = pst.executeQuery();
@@ -486,7 +507,7 @@ public class ModeloUsuario implements Persistable<Usuario> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(this.con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
