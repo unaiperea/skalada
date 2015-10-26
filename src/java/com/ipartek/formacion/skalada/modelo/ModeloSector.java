@@ -38,7 +38,9 @@ public class ModeloSector implements Persistable<Sector> {
 			+ "`, `validado`, `id_usuario`, `longitud`, `latitud`) VALUES (?,?,?,?,?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA_SECTOR
 			+ "` WHERE `" + COL_ID + "`= ?;";
+
 	private static final String SQL_GETALL = "SELECT s.nombre, s.id, s.imagen, s.validado, s.longitud, s.latitud, z.nombre as zona_nombre, z.id as zona_id, z.latitud as zona_latitud, z.longitud as zona_longitud, r.nombre as rol_nombre, r.id as rol_id, u.nombre as usuario_nombre, u.password as usuario_pass, u.email as usuario_email, u.id as usuario_id FROM sector as s INNER JOIN zona as z ON s.id_zona = z.id INNER JOIN usuario as u ON s.id_usuario = u.id INNER JOIN rol as r ON u.id_rol = r.id";
+
 
 	private static final String SQL_GETALL_BY_USER = SQL_GETALL
 			+ " AND s.id_usuario = ? ";
@@ -58,7 +60,7 @@ public class ModeloSector implements Persistable<Sector> {
 	private static final String SQL_UPDATE_AUTORIZACION = SQL_UPDATE
 			+ " and id_usuario = ?";
 
-	private static final String SQL_GETALL_BY_ZONA = "select `id`,`nombre`,`imagen` from `sector` where `id_zona` = ?";
+	private static final String SQL_GETALL_BY_ZONA = SQL_GETALL + " where s.id_zona = ?";
 
 	private static final String SQL_SECTORES_PUBLICADOS = "SELECT COUNT(`id`) as `sectores` FROM `SECTOR`;";
 
@@ -349,6 +351,8 @@ public class ModeloSector implements Persistable<Sector> {
 			resul.setValidado(true);
 		}
 		resul.setUsuario(user);
+		resul.setLatitud(rs.getDouble("latitud"));
+		resul.setLongitud(rs.getDouble("longitud"));
 
 		return resul;
 	}
@@ -375,11 +379,7 @@ public class ModeloSector implements Persistable<Sector> {
 
 			Sector sector = null;
 			while (rs.next()) {
-				sector = new Sector(rs.getString("nombre"), null);
-				sector.setId(rs.getInt("id"));
-				sector.setImagen(rs.getString("imagen"));
-				resul.add(sector);
-				sector = null;
+				resul.add(this.mapeo(rs));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -463,6 +463,7 @@ public class ModeloSector implements Persistable<Sector> {
 		return resul;
 	}
 
+
 	public ArrayList<Sector> busqueda(String texto) {
 		ArrayList<Sector> resul = new ArrayList<Sector>();
 
@@ -496,3 +497,5 @@ public class ModeloSector implements Persistable<Sector> {
 	}
 
 }
+
+

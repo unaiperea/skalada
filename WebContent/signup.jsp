@@ -6,13 +6,18 @@
 
 
 <jsp:include page="includes/head.jsp"></jsp:include>
-
+<div id="tf-signup" class="text-center">
+<div class="overlay">
 <div class="container">
+	<ol class="breadcrumb container transparente">
+		<li><a href="#">Inicio</a></li>
+		<li class="active">Registrate</li>
+	</ol>
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Registrate</h3>
+					<h3 class="panel-title">- Registrate -</h3>
 				</div>
 				<div class="panel-body">
 
@@ -64,8 +69,8 @@
 									name="password2" id="pw2" type="password" required value=""
 									tabindex="4">
 							</div>
-							<input class="btn btn-lg btn-block btn-primary" type="submit"
-								tabindex="5" value="Registrate">
+							<input class="btn btn-lg btn-block btn-primary login" type="submit"
+								tabindex="5" value="Registrate" style="border-radius: 25px;">
 						</fieldset>
 
 						<script>
@@ -112,6 +117,8 @@
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 </div>
 
 

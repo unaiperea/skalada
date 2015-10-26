@@ -12,7 +12,6 @@ import com.ipartek.formacion.skalada.bean.Usuario;
 import com.ipartek.formacion.skalada.bean.Zona;
 
 public class ModeloZona implements Persistable<Zona> {
-
 	private Connection con = null;
 
 	private static final String TABLA = "zona";
@@ -28,6 +27,7 @@ public class ModeloZona implements Persistable<Zona> {
 			+ "`, `longitud`, `latitud`) VALUES (?,?,?,?,?);";
 	private static final String SQL_DELETE = "DELETE FROM `" + TABLA
 			+ "` WHERE `" + COL_ID + "`= ?;";
+
 	private static final String SQL_GETALL = "SELECT `id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `longitud`, `latitud` FROM "
 			+ TABLA;
 	private static final String SQL_GETONE = SQL_GETALL + " WHERE `" + COL_ID
@@ -37,10 +37,12 @@ public class ModeloZona implements Persistable<Zona> {
 
 	private static final String SQL_UPDATE = "UPDATE `" + TABLA + "` SET `"
 			+ COL_NOMBRE + "`= ?, `" + COL_CREADOR + "`=?, `" + COL_PUBLICADO
+
 			+ "`=?, `" + COL_FECHA_MODIFICADO
 			+ "`=?, `longitud`= ? , `latitud`= ? WHERE `" + COL_ID + "`= ? ;";
 	private static final String SQL_BUSQUEDA = SQL_GETALL
 			+ " WHERE nombre like ?";
+
 
 	@Override()
 	public int save(Zona z) {
@@ -49,9 +51,11 @@ public class ModeloZona implements Persistable<Zona> {
 		ResultSet rsKeys = null;
 		if (z != null) {
 			try {
+
 				this.con = DataBaseHelper.getConnection();
 				pst = this.con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
+
 				pst.setString(1, z.getNombre());
 				pst.setInt(2, z.getUsuario().getId());
 				if (z.isValidado()) {
@@ -123,6 +127,7 @@ public class ModeloZona implements Persistable<Zona> {
 	}
 
 	@Override()
+
 	public ArrayList<Zona> getAll(Usuario u) {
 		ArrayList<Zona> resul = new ArrayList<Zona>();
 		PreparedStatement pst = null;
@@ -251,8 +256,10 @@ public class ModeloZona implements Persistable<Zona> {
 		resul.setFechaModificado(rs.getTimestamp(COL_FECHA_MODIFICADO));
 		resul.setLongitud(rs.getDouble("longitud"));
 		resul.setLatitud(rs.getDouble("latitud"));
+
 		return resul;
 	}
+
 
 	// TODO OBTENER SECTORES DE UNA VIA
 	public ArrayList<Zona> getSectores(int id) {

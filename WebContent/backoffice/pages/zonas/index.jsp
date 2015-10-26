@@ -31,7 +31,7 @@
     <div class="row">
     
     <!-- tabla -->
-    	<table id="tabla" class="display hover stripe" cellspacing="0" width="100%">
+    	<table id="tabla" class="display" cellspacing="0" width="100%">
 	        <thead>
 	            <tr>
 	                <th>ID</th>

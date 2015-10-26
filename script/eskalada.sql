@@ -92,17 +92,23 @@ CREATE TABLE IF NOT EXISTS `sector` (
   `nombre` varchar(45) NOT NULL,
   `id_zona` int(11) NOT NULL,
   `imagen` varchar(250) NOT NULL DEFAULT 'default_sector.jpg',
-  `validado` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Marca para saber si el registro esta validado == 1',
-  `id_usuario` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`id_zona`),
+  `validado` bit(1) NOT NULL DEFAULT b'0',
+  `id_usuario` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`,`id_zona`,`id_usuario`),
   KEY `fk_sector_zona1_idx` (`id_zona`),
-  KEY `FK_usuario_sector1` (`id_usuario`),
-  CONSTRAINT `fk_sector_zona1` FOREIGN KEY (`id_zona`) REFERENCES `zona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_usuario_sector1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  KEY `fk_sector_usuario` (`id_usuario`),
+  CONSTRAINT `fk_sector_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sector_zona1` FOREIGN KEY (`id_zona`) REFERENCES `zona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
 -- Volcando datos para la tabla eskalada.sector: ~11 rows (aproximadamente)
+=======
+-- Volcando datos para la tabla eskalada.sector: ~10 rows (aproximadamente)
+DELETE FROM `sector`;
+>>>>>>> refs/remotes/origin/master-frontoffice-raul2
 /*!40000 ALTER TABLE `sector` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT IGNORE INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
 	(1, 'Alluitz24', 1, 'default_sector.jpg', 0, 4),
 	(2, 'Tercer espolón', 1, 'default_sector.jpg', 1, 1),
@@ -115,6 +121,19 @@ INSERT IGNORE INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `i
 	(9, 'Cara Sur2', 4, 'default_sector.jpg', 1, 1),
 	(10, 'Cara Oeste', 4, 'default_sector.jpg', 1, 1),
 	(12, 'La Ruta del Cares', 7, 'default_sector.jpg', 0, 4);
+=======
+INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
+	(1, 'Primer espolón', 1, 'default_sector.jpg', b'0', 1),
+	(2, 'Tercer espolón', 1, 'default_sector.jpg', b'0', 1),
+	(3, 'Alluitz', 1, 'default_sector.jpg', b'0', 1),
+	(4, 'Labargorri', 1, 'default_sector.jpg', b'0', 1),
+	(5, 'Urrestei', 1, 'default_sector.jpg', b'0', 1),
+	(6, 'Elosuko Harrobia', 2, 'default_sector.jpg', b'0', 1),
+	(7, 'Lauretazpe', 2, 'default_sector.jpg', b'0', 1),
+	(8, 'Ogoño', 3, 'default_sector.jpg', b'0', 1),
+	(9, 'Cara Sur', 4, 'default_sector.jpg', b'0', 1),
+	(10, 'Cara Oeste', 4, 'default_sector.jpg', b'0', 1);
+>>>>>>> refs/remotes/origin/master-frontoffice-raul2
 /*!40000 ALTER TABLE `sector` ENABLE KEYS */;
 
 
@@ -156,15 +175,31 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   UNIQUE KEY `email` (`email`,`nombre`),
   KEY `fk_usuario_rol` (`id_rol`),
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
 -- Volcando datos para la tabla eskalada.usuario: ~5 rows (aproximadamente)
+=======
+-- Volcando datos para la tabla eskalada.usuario: ~10 rows (aproximadamente)
+DELETE FROM `usuario`;
+>>>>>>> refs/remotes/origin/master-frontoffice-raul2
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT IGNORE INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
 	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, '16kluv6gn3h9mptj18f58ieis6'),
 	(2, 'degar00@gmail.com', 'Degar', '456456', 2, 1, '827gb5c31hbg2rt08fkfvj4mai'),
+<<<<<<< HEAD
 	(3, 'juan@juan.juan', 'Juan', '123456', 2, 0, 'dgmtcq96sjjcevunh4c349j2kj'),
 	(4, 'pepe@pepe.com', 'pepe', 'pepe', 2, 1, 'iv60sat58rcs1nbundsdfkgq63');
+=======
+	(5, 'ieltxuorue@gmail.com', 'ieltxu', '123123', 2, 1, 'l7757dpbejjrna663ef4l7f3li'),
+	(6, 'javi70@gmail.com', 'Javi', '000000', 2, 1, 'v2n6m07as8j6g1fh3agmcmuf4l'),
+	(7, 'jaguar.wolf@yahoo.es', 'Aritz', '140686', 2, 1, 'r0iqrhstgiri73sk03n75saurf'),
+	(8, 'ander.rabadan.bilbao@gmail.com', 'ander', '123456', 2, 1, 'g3tg77kocbjef52f8and2sq8rq'),
+	(9, 'unaiperea@gmail.com', 'Unai', 'aaaaaa', 2, 1, 'btagdd4pdu6ledhv0gr5q58ibq'),
+	(10, 'laragonzalez.bm@gmail.com', 'Lara', '123456', 2, 1, 'n45di033k5221f4mkimuobral2'),
+	(11, 'mikelalonsorojo@gmail.com', 'mikel', '1234561', 2, 1, 'j384vkl2tbhe7nq1l7vu3a4nhk'),
+	(12, 'raulgf1992@gmail.com', 'Raul', '123123', 2, 1, '6p3qb9ea1edee22u7smtgqt30e');
+>>>>>>> refs/remotes/origin/master-frontoffice-raul2
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
@@ -214,18 +249,19 @@ INSERT IGNORE INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`,
 CREATE TABLE IF NOT EXISTS `zona` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `validado` bit(1) NOT NULL,
+  `id_usuario` int(11) NOT NULL DEFAULT '1',
+  `validado` bit(1) NOT NULL DEFAULT b'0',
   `fecha_creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`),
   KEY `FK_zona_usuario` (`id_usuario`),
-  CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+  CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.zona: ~8 rows (aproximadamente)
 /*!40000 ALTER TABLE `zona` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT IGNORE INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
 	(1, 'Atxarte', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
 	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
@@ -234,6 +270,16 @@ INSERT IGNORE INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_crea
 	(6, 'vacia', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
 	(7, 'Nueva', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24'),
 	(9, 'gradoMock', 1, b'1', '2015-10-14 12:00:24', '2015-10-14 12:00:24');
+=======
+INSERT INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
+	(1, 'Atxarte', 1, b'1', '2015-10-07 09:47:00', '2015-10-07 09:47:19'),
+	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
+	(3, 'Cabo Ogoño', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
+	(4, 'Naranjo de Bulnes', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
+	(6, 'vacia', 1, b'0', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
+	(7, 'Nueva', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
+	(9, 'gradoMock', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19');
+>>>>>>> refs/remotes/origin/master-frontoffice-raul2
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

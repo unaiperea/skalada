@@ -10,7 +10,7 @@
 				username="root" 
 				password="" 
 				driverClassName="com.mysql.jdbc.Driver"
-				url="jdbc:mysql://localhost:3306/eskalada"
+				url="jdbc:mysql://192.168.1.75:3306/eskalada"
 	/>
 	
 	

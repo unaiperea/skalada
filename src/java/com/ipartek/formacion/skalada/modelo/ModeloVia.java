@@ -39,7 +39,7 @@ public class ModeloVia implements Persistable<Via> {
 	private static final String COL_SECTOR_ID = "id_sector";
 
 	private static final String SQL_INSERT = "INSERT INTO `via` (`nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-	private static final String SQL_GETALL = "SELECT v.id, v.nombre, v.longitud, v.descripcion, v.id_grado, g.nombre AS nombre_grado, "
+	private static final String SQL_GETALL = "SELECT v.id, v.nombre, v.longitud, v.descripcion, v.id_grado, g.nombre AS nombre_grado, g.descripcion as descripcion_grado, "
 			+ "v.id_tipo_escalada, te.nombre AS nombre_tipo_escalada, "
 			+ "v.id_sector, s.nombre AS nombre_sector, "
 			+ "s.id_zona, z.nombre AS nombre_zona, "
@@ -50,8 +50,9 @@ public class ModeloVia implements Persistable<Via> {
 			+ "INNER JOIN sector AS s ON (v.id_sector = s.id) "
 			+ "INNER JOIN zona AS z ON (s.id_zona = z.id) "
 			+ "INNER JOIN usuario as u ON (v.id_usuario = u.id)";
-	private static final String SQL_GETALL_BY_USER = SQL_GETALL
-			+ " WHERE v.id_usuario = ?";
+
+	private static final String SQL_GETALL_BY_SECTOR = SQL_GETALL + " WHERE s.`id` = ?";
+	private static final String SQL_GETALL_BY_USER = SQL_GETALL + " WHERE v.id_usuario = ?";
 
 	private static final String SQL_GETONE = SQL_GETALL + "WHERE v.id = ?";
 	private static final String SQL_UPDATE = "UPDATE `via` SET `nombre`=?, `longitud`=?, `descripcion`=?, `id_grado`=?, `id_tipo_escalada`=?, `id_sector`=?, `id_usuario`=?, `validado`=? WHERE  `id`=?;";
@@ -178,6 +179,45 @@ public class ModeloVia implements Persistable<Via> {
 		return resul;
 	}
 
+	/**
+	 * Devuelve todas las vias del sector dado
+	 * 
+	 * @param usuario
+	 *            {@code Usuario} Objeto Usuario
+	 * @param sectorId
+	 *            {@code int} Id del sector
+	 * @return ArrayList<Via>
+	 */
+	public ArrayList<Via> getAllBySector(Usuario usuario, int sectorId) {
+		ArrayList<Via> resul = new ArrayList<Via>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			Connection con = DataBaseHelper.getConnection();
+			pst = con.prepareStatement(SQL_GETALL_BY_SECTOR);
+			pst.setInt(1, sectorId);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resul.add(this.mapeo(rs));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pst != null) {
+					pst.close();
+				}
+				DataBaseHelper.closeConnection(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return resul;
+	}
+	
 	@Override
 	public boolean update(Via via) {
 		boolean resul = false;
@@ -263,6 +303,7 @@ public class ModeloVia implements Persistable<Via> {
 
 		Grado grado = new Grado(rs.getString("nombre_grado"));
 		grado.setId(rs.getInt(COL_GRADO_ID));
+		grado.setDescripcion(rs.getString("descripcion_grado"));
 
 		TipoEscalada tipoEscalada = new TipoEscalada(
 				rs.getString("nombre_tipo_escalada"));

@@ -170,14 +170,14 @@
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
   <servlet>
-    <description>Controlador de la geolocalizacion de zonas y sectores en Google Maps</description>
+    <description>Controlador de geolocalización de Zonas y Sectores</description>
     <display-name>GeomapController</display-name>
     <servlet-name>GeomapController</servlet-name>
     <servlet-class>com.ipartek.formacion.skalada.controladores.GeomapController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GeomapController</servlet-name>
-    <url-pattern>/frontoffice/geomap</url-pattern>
+    <url-pattern>/geomap</url-pattern>
   </servlet-mapping>
   <servlet>
     <description>Controlador para gestionar las busquedas</description>
@@ -208,5 +208,15 @@
   <servlet-mapping>
     <servlet-name>OfertasController</servlet-name>
     <url-pattern>/ofertas</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Muestra el detalle de la via en el Frontoffice</description>
+    <display-name>DetalleViaController</display-name>
+    <servlet-name>DetalleViaController</servlet-name>
+    <servlet-class>com.ipartek.formacion.skalada.controladores.DetalleViaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DetalleViaController</servlet-name>
+    <url-pattern>/detalle-via</url-pattern>
   </servlet-mapping>
 </web-app>

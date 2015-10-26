@@ -27,6 +27,7 @@ public final class Constantes {
 	public static final String VIEW_LOGIN = "login.jsp";
 	public static final String VIEW_SIGNUP = "signup.jsp";
 	public static final String VIEW_RECUPERAR_PASS = "recupera-pass.jsp";
+	public static final String VIEW_FRONT_VIAS_DETALLE = "pages/via.jsp";
 
 	public static final String VIEW_PUBLIC_VIA = "/pages/via_detalle.jsp";
 
@@ -34,6 +35,10 @@ public final class Constantes {
 	public static final String ROOT_FRONT = ROOT_APP + "frontoffice/";
 	public static final String FRONT_MAPA = ROOT_FRONT + "pages/geomap.jsp";
 
+	// vistas frontoffice
+	public static final String VIEW_FRONT_SECTORESINFO = "/pages/sectoresinfo.jsp";
+	public static final String VIEW_FRONT_HORMASTUDIO = "/skalada//pages/canvas.jsp";
+	
 	// vistas backoffice
 	public static final String ROOT_BACK = ROOT_APP + "backoffice/";
 
@@ -76,6 +81,7 @@ public final class Constantes {
 	public static final String CONTROLLER_SIGNUP = ROOT_APP + "signup";
 	public static final String CONTROLLER_LOGOUT = ROOT_APP + "logout";
 	public static final String CONTROLLER_VIAS = ROOT_BACK + "vias";
+	public static final String CONTROLLER_FRONT_VIAS = ROOT_APP + "detalle-via";
 	public static final String CONTROLLER_HOME = ROOT_APP + "home";
 	public static final String CONTROLLER_GRADOS = ROOT_BACK + "grados";
 	public static final String CONTROLLER_TIPO_ESCALADA = ROOT_BACK
@@ -88,8 +94,8 @@ public final class Constantes {
 	public static final String CONTROLLER_PERFIL = ROOT_BACK + "perfil";
 //Ofertas
 	public static final String CONTROLLER_OFERTAS = ROOT_APP + "ofertas";
+	public static final String CONTROLLER_GEOMAP = "geomap";
 
-	public static final String CONTROLLER_GEOMAP = ROOT_FRONT + "geomap";
 	public static final String CONTROLLER_SEARCH = ROOT_APP + "search";
 
 	// acciones

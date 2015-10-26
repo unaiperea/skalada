@@ -21,7 +21,6 @@ public class Zona implements Serializable {
 	private boolean validado;
 	private Timestamp fechaCreado;
 	private Timestamp fechaModificado;
-	
 	private double latitud;
 	private double longitud;
 
@@ -37,10 +36,10 @@ public class Zona implements Serializable {
 		ModeloUsuario mu = new ModeloUsuario();
 		Usuario admin = (Usuario) mu.getById(1);
 		this.setUsuario(admin);
-		
-		this.setLatitud(0);
-		this.setLongitud(0);	
-		
+
+		this.setLatitud(0.0);
+		this.setLongitud(0.0);
+
 	}
 
 	public Zona(String nombre, Usuario creador) {
@@ -174,8 +173,6 @@ public class Zona implements Serializable {
 	public void setLongitud(double longitud) {
 		this.longitud = longitud;
 	}
-	
-	
 
 	/*
 	 * (non-Javadoc)

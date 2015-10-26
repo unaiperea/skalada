@@ -16,7 +16,6 @@ public class Sector implements Serializable {
 	private String imagen; // path + nombre de la imagen a mostrar
 	private boolean validado;
 	private Usuario usuario;
-	
 	private double latitud;
 	private double longitud;
 
@@ -33,9 +32,11 @@ public class Sector implements Serializable {
 		this.setZona(zona);
 		this.setImagen(Constantes.IMG_DEFAULT_SECTOR);
 		this.setValidado(false);
+
 		this.setUsuario(null);
 		this.setLatitud(0);
 		this.setLongitud(0);		
+
 	}
 
 	/**
@@ -88,6 +89,8 @@ public class Sector implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
+	
 
 	public double getLatitud() {
 		return latitud;
@@ -107,9 +110,8 @@ public class Sector implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Sector [id=" + this.id + ", nombre=" + this.nombre + ", zona="
-				+ this.zona + ", imagen=" + this.imagen + ", validado="
-				+ this.validado + ", usuario=" + this.usuario + "]";
+		return "Sector [id=" + id + ", nombre=" + nombre + ", zona=" + zona + ", imagen=" + imagen + ", validado=" + validado + ", usuario="
+				+ usuario + ", latitud=" + latitud + ", longitud=" + longitud + "]";
 	}
 
 }
