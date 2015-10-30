@@ -58,6 +58,15 @@
           </div>
           <br>
           
+          <div class="row">
+          		<p>Temperatura: </p>
+          		<span id="temperatura"></span>
+          		<p>Humedad: </p>
+          		<span id="humedad"></span>
+          		<img id="imagen-meteo"></span>
+          </div>
+          
+          
           <%
          	 for(int j=0; j<sectores.size(); j++){
           %>
@@ -268,12 +277,12 @@
 			console.debug("    Creando SECTOR " + sector[1] + "{" + sector[3] + "," + sector[4] +"}");
 			console.debug("    Marcador SECTOR " + markerSector[i]);
 			markerSector[i].setMap(map);
-
-			// Funcion que abre una ventana con el contenido del sector 
 			
+			// Funcion que abre una ventana con el contenido del sector 
 			function setInfoWindow(event, marcador){
+
 				// Create content  
-				var contentString = "<div><div><b>Zona</b><%=zona.getNombre()%></div><br><div><b>Sector: </b>" + marcador.title + "</div><hr><b>Coordinate: </b>" + marcador.position.lat() +"," + marcador.position.lng() + "</div>"; 
+				var contentString = "<div><div><b>Zona</b><%=zona.getNombre()%></div><br><div><b>Sector: </b>" + marcador.title + "</div><div><img src=" + "var meteoImagen" + "></img><div>humedad: " + "var humedad" + "temperatura: " + "var temp" + "</div></div><hr><b>Coordinate: </b>" + marcador.position.lat() +"," + marcador.position.lng() + "</div>"; 
 		  		// Replace our Info Window's content and position 
 				infowindow.setContent(contentString);
 				infowindow.setPosition(marcador.position); 
@@ -284,6 +293,7 @@
 			// Funcion que se llama al hacer click sobre un marcador
 			
 			markerSector[i].addListener('click', function() {
+				
 			   	map.setCenter(new google.maps.LatLng(this.position.lat(), this.position.lng())); 
 			    map.setZoom(15);
 			    setInfoWindow(event, this);
@@ -310,4 +320,63 @@
 	
 </script>
 		
-<jsp:include page="../includes/foot.jsp"></jsp:include>    
+<jsp:include page="../includes/foot.jsp"></jsp:include>
+
+<script>
+
+//Cargarlas todas a la vez??
+
+	//Cargar el tiempo de Yahoo para nuestras coordenadas (lat,lng)
+	$(document).ready(function() {
+		
+		//Meteo
+		var temp;
+		var humedad;
+		var meteoImagen;
+		
+ 		//Mete la informacion meteorologica en el sector
+		//Cargar el tiempo de Yahoo para nuestras coordenadas (lat,lng)
+		console.debug("Cargar tiempo Yahoo");
+   		//llamada Ajax al controlador
+   		var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(SELECT%20woeid%20FROM%20geo.placefinder%20WHERE%20text%3D%22<%=lat%>%2C<%=lng%>%22%20and%20gflags%3D%22R%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys)";	    		
+   		$.ajax( url , {
+   			"type": "GET", 
+   			"success": function(result){
+   				console.info("consulta con exito" + result);
+   				ObtenerInfo(result);
+   			},
+   			"error": function(result) {
+   				console.error("Error ajax", result);
+   			},
+   		});
+	
+		function ObtenerInfo(result){
+			humedad = result.query.results.channel.atmosphere.humidity;
+			meteoImagen = result.query.results.channel.image.url;
+			temp = result.query.results.channel.item.condition.temp;
+			document.getElementById("temperatura").innerHTML = temp;
+			document.getElementById("humedad").innerHTML = humedad;
+			document.getElementById("imagen-meteo").src = meteoImagen;
+		}
+
+	});
+	
+	/*$(document).ready(function() {
+		console.debug("Cargar tiempo Yahoo");
+    		
+    		//llamada Ajax al controlador
+    		var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(SELECT%20woeid%20FROM%20geo.placefinder%20WHERE%20text%3D%2234.0485508%2C-84.22675029999999%22%20and%20gflags%3D%22R%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys)";	    		
+    		$.ajax( url , {
+    			"type": "GET", 
+    			"success": function(result){
+    				console.info("consulta con exito" + result);
+
+    			},
+    			"error": function(result) {
+    				console.error("Error ajax", result);
+    			},
+    		});	    		
+
+	});*/
+
+</script>    
