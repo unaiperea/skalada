@@ -3,6 +3,8 @@ package com.ipartek.formacion.skalada.controladores;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,8 +41,7 @@ public class SectoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	// LOGS
-	private static final Logger LOG = Logger
-			.getLogger(SectoresController.class);
+	private static final Logger LOG = Logger.getLogger(SectoresController.class);
 	private Usuario usuarioSession = null;
 
 	private Usuario admin = null;
@@ -275,12 +276,8 @@ public class SectoresController extends HttpServlet {
 
 		} catch (FileSizeLimitExceededException e) {
 			e.printStackTrace();
-			this.msg = new Mensaje(Mensaje.MSG_DANGER,
-					"La imagen excede del tamaño maximo permitido "
-							+ Constantes.MAX_FILE_SIZE + " bytes");
-			LOG.warn("Usuario: '" + this.usuarioSession.getNombre() + "["
-					+ this.usuarioSession.getId()
-					+ "]' - La imagen excede el tamaño");
+			this.msg = new Mensaje(Mensaje.MSG_DANGER, "La imagen excede del tamaño maximo permitido " + Constantes.MAX_FILE_SIZE + " bytes");
+			LOG.warn("Usuario: '" + this.usuarioSession.getNombre() + "[" + this.usuarioSession.getId() + "]' - La imagen excede el tamaño");
 			request.getSession().setAttribute("msg", this.msg);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -292,8 +289,7 @@ public class SectoresController extends HttpServlet {
 		// this.dispatcher.forward(request, response);
 
 		request.getSession().setAttribute("msg", this.msg);
-		response.sendRedirect(request.getContextPath()
-				+ "/backoffice/sectores?accion=" + Constantes.ACCION_LISTAR);
+		response.sendRedirect(request.getContextPath() + "/backoffice/sectores?accion=" + Constantes.ACCION_LISTAR);
 
 	}
 
@@ -375,8 +371,7 @@ public class SectoresController extends HttpServlet {
 		for (FileItem item : items) {
 			// parametro formulario
 			if (item.isFormField()) {
-				dataParameters
-						.put(item.getFieldName(), item.getString("UTF-8"));
+				dataParameters.put(item.getFieldName(), item.getString("UTF-8"));
 				// Imagen
 			} else {
 				String fileName = item.getName();
@@ -385,22 +380,36 @@ public class SectoresController extends HttpServlet {
 
 					if (Constantes.CONTENT_TYPES.contains(fileContentType)) {
 
-						item.getSize();
+						//TODO borrar del servidor la imagen en el caso de que ya tuviera
 
-						// TODO No repetir nombres imagenes
+						//No repetir nombre imagenes
+		            	File carpetaUploads = new File(Constantes.IMG_UPLOAD_FOLDER);
+		            	if (carpetaUploads.exists()){
 
-						this.file = new File(Constantes.IMG_UPLOAD_FOLDER
-								+ "\\" + fileName);
-						item.write(this.file);
+		            		//Añadimos la fecha
+                			Date fecha = new Date();
+                			SimpleDateFormat formato = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+                			
+                			int indicePunto = fileName.indexOf(".");
+                			if (indicePunto != -1){
+                				String nombre = fileName.substring(0, indicePunto);
+                				String extension = fileName.substring(indicePunto + 1);
+                				fileName =  nombre + "_" + formato.format(fecha).toString().replace(" ", "-").replace(":", "_") + "." + extension;
+                			}
+			                			
+		                file = new File(Constantes.IMG_UPLOAD_FOLDER + "\\" + fileName);
+				        item.write( file );
+					        
+		            	} //End: exists()
+						
 					} else {
-						throw new Exception("[" + fileContentType
-								+ "] extensi�n de imagen no permitida");
+						throw new Exception("[" + fileContentType + "] extension de imagen no permitida");
 					}// end: content-type no permitido
 				} else {
 					this.file = null;
 				}
-			}
-		}// End: for List<FileItem>
+			} //End: if isFormField
+		} //End: for List<FileItem>
 
 		this.pID = Integer.parseInt(dataParameters.get("id"));
 		this.pNombre = dataParameters.get("nombre");

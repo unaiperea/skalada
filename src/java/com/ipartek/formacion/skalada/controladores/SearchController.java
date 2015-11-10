@@ -66,15 +66,12 @@ public class SearchController extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Comprobar sesion
 		if (!request.isRequestedSessionIdValid()) {
-			Mensaje msg = new Mensaje(Mensaje.MSG_WARNING,
-					"La sesion del usuario ha caducado");
+			Mensaje msg = new Mensaje(Mensaje.MSG_WARNING, "La sesion del usuario ha caducado");
 			request.setAttribute("msg", msg);
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_LOGIN);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 		} else {
 			// Recoger parametros
 			request.setCharacterEncoding("UTF-8");
@@ -95,8 +92,7 @@ public class SearchController extends HttpServlet {
 			request.setAttribute("usuarios_busqueda", this.usuarios_busqueda);
 
 			// TODO Lanzar el forward a la pagina de resultados
-			this.dispatcher = request
-					.getRequestDispatcher(Constantes.VIEW_SEARCH);
+			this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SEARCH);
 		}
 		this.dispatcher.forward(request, response);
 

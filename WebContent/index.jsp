@@ -21,7 +21,7 @@
         <div class="overlay">
             <div class="content">
                 <h1>Busca lo que quieras</h1>
-                <form class="form-horizontal" action="#" method="post" onsubmit="return false();">
+                <form class="form-horizontal" action="<%=Constantes.VIEW_SEARCH%>" method="post" onsubmit="return false();">
                 	<input type="text" class="form-control form-centrado" placeholder="Busca tu zona, vía, sector..." name="buscador">
                 	<input type="submit" class="btn btn-outline btn-primary btn-dch" value="Buscar">
                 </form>
@@ -181,7 +181,7 @@
 	<nav id="footer">
         <div class="container">
             <div class="pull-left fnav">
-                <p>TODOS LOS DERECHOS RESERVADOS. COPYRIGHT © 2015. Diseñado por  <a href="https://dribbble.com/shots/1817781--FREEBIE-Spirit8-Digital-agency-one-page-template">IPARTEK</a> y codeado por <a href="https://dribbble.com/jennpereira">Lara, Mikel y Raul</a></p>
+                <p>TODOS LOS DERECHOS RESERVADOS. COPYRIGHT © 2015. Diseñado y codeado por <a href="https://plus.google.com/u/0/102797013868480815021/posts" target="_blank">Unai Perea</a></p>
             </div>
         </div>
     </nav>

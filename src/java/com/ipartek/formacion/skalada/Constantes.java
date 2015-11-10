@@ -18,7 +18,7 @@ public final class Constantes {
 		super();
 	}
 
-	public static final String SERVER = "http://192.168.1.75:8080";
+	public static final String SERVER = "http://localhost:8080";
 	public static final String ROOT_APP = "/skalada/";
 	public static final String APP_NAME = "skalada";
 
@@ -116,15 +116,14 @@ public final class Constantes {
 	public static final int ACCION_REGENERAR_PASS = 5;
 
 	// Imagenes y Ficheros
-	public static final String IMG_UPLOAD_FOLDER = "C:\\desarrollo\\apache-tomcat-6.0.44\\webapps\\uploads";
-	public static final String IMG_UPLOAD_TEMP_FOLDER = "C:\\desarrollo\\apache-tomcat-6.0.44\\temp";
+	public static final String IMG_UPLOAD_FOLDER = "D:\\desarrollo\\apache-tomcat-6.0.44\\webapps\\uploads";
+	public static final String IMG_UPLOAD_TEMP_FOLDER = "D:\\desarrollo\\apache-tomcat-6.0.44\\temp";
 	public static final String IMG_WEP_PATH = SERVER + "/uploads/";
 	public static final int MAX_FILE_SIZE = 1000 * 1024;
 	public static final int MAX_MEM_SIZE = 40 * 1024;
 	public static final String IMG_DEFAULT_SECTOR = "default_sector.jpg";
 
-	public static final ArrayList<String> CONTENT_TYPES = new ArrayList<String>(
-			Arrays.asList("image/jpeg", "image/png"));
+	public static final ArrayList<String> CONTENT_TYPES = new ArrayList<String>(Arrays.asList("image/jpeg", "image/png"));
 
 	// ROLES
 	public static final String ROLE_USER = "usuario";
@@ -136,10 +135,8 @@ public final class Constantes {
 	public static final int USER_VALIDATE = 1;
 	public static final int USER_NO_VALIDATE = 0;
 	public static final String EMAIL_TEMPLATE_REGISTRO = "file/plantilla-mail.html";
-	public static final String URL_VALIDATE = SERVER
-			+ "/skalada/signup?action=1&id=";
-	public static final String URL_PASS_OLVIDADO = SERVER
-			+ "/skalada/signup?action=2&email=";
+	public static final String URL_VALIDATE = SERVER + "/skalada/signup?action=1&id=";
+	public static final String URL_PASS_OLVIDADO = SERVER + "/skalada/signup?action=2&email=";
 
 	public static final String VALIDACION = "validacion";
 	public static final String RECUPERACION = "recuperacion";

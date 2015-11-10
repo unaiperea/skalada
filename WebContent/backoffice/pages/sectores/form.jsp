@@ -133,22 +133,18 @@
 					function showFileSize() {
 						var input, file;
 						if (!window.FileReader) {
-							bodyAppend("p",
-									"The file API isn't supported on this browser yet.");
+							bodyAppend("p","The file API isn't supported on this browser yet.");
 							return;
 						}
 						input = document.getElementById('imagen');
 						if (input.files[0]) {
 							file = input.files[0];
-							if (file.size >
-				<%=Constantes.MAX_FILE_SIZE%>
-					) {
+							if (file.size >	<%=Constantes.MAX_FILE_SIZE%>)
+							{
 								alert("Demasiado grande la imagen");
-								document.getElementById('btn_submit').classList
-										.toggle("disabled");
+								document.getElementById('btn_submit').classList.toggle("disabled");
 							} else {
-								document.getElementById('btn_submit').classList
-										.remove("disabled");
+								document.getElementById('btn_submit').classList.remove("disabled");
 							}
 						}
 					}//end showFileSize

@@ -37,8 +37,7 @@
     </nav>
     
   	<link rel="stylesheet" type="text/css" href="css/sectores.css" media="screen" />  
-    <!-- Home Page
-    ========================================== -->
+    <!-- Sectores Page -->
     <div id="tf-home" class="text-left">
         <div class="overlay">
             <div class="content">
@@ -59,11 +58,16 @@
           <br>
           
           <div class="row">
-          		<p>Temperatura: </p>
-          		<span id="temperatura"></span>
-          		<p>Humedad: </p>
-          		<span id="humedad"></span>
-          		<img id="imagen-meteo"></span>
+          	<div>
+          		<img id="imagen-meteo" width="100" height="auto"></img>
+          	</div>
+       		<div class="pull-left">
+       			<img src="" id="imagen-tiempo"></img>
+       		</div>
+       		<div>
+				<p id="temperatura" title="temperatura"></p>
+	       		<p id="humedad" title="humedad relativa"></p>
+       		</div>
           </div>
           
           
@@ -280,9 +284,26 @@
 			
 			// Funcion que abre una ventana con el contenido del sector 
 			function setInfoWindow(event, marcador){
-
+				
+				WebServiceCall(marcador.position.lat(), marcador.position.lat());
+				
 				// Create content  
-				var contentString = "<div><div><b>Zona</b><%=zona.getNombre()%></div><br><div><b>Sector: </b>" + marcador.title + "</div><div><img src=" + "var meteoImagen" + "></img><div>humedad: " + "var humedad" + "temperatura: " + "var temp" + "</div></div><hr><b>Coordinate: </b>" + marcador.position.lat() +"," + marcador.position.lng() + "</div>"; 
+				var contentString = "<div id='info-window'>"+
+										"<div id='info-window-zona'>"+
+											"<p><b>Zona: </b><%=zona.getNombre()%></p>"+
+											"<p><b>Sector: </b>" + marcador.title + "</p>"+
+										"<div>"+
+										"<div>"+
+								       		"<div class='pull-left'>"+
+								       			"<img src='' id='imagen-tiempo-info'></img>"+
+								       		"</div>"+
+								       		"<div>"+
+												"<p id='temperatura-info' title='temperatura'></p>"+
+									      		"<p id='humedad-info' title='humedad relativa'></p>"+
+								       		"</div>"+
+							          	"</div>"+
+							          	"<hr>" + marcador.position.lat() + ", " + marcador.position.lng() +
+						          	"</div>";
 		  		// Replace our Info Window's content and position 
 				infowindow.setContent(contentString);
 				infowindow.setPosition(marcador.position); 
@@ -333,6 +354,7 @@
 		var temp;
 		var humedad;
 		var meteoImagen;
+		var tiempoImagen;
 		
  		//Mete la informacion meteorologica en el sector
 		//Cargar el tiempo de Yahoo para nuestras coordenadas (lat,lng)
@@ -354,12 +376,59 @@
 			humedad = result.query.results.channel.atmosphere.humidity;
 			meteoImagen = result.query.results.channel.image.url;
 			temp = result.query.results.channel.item.condition.temp;
-			document.getElementById("temperatura").innerHTML = temp;
-			document.getElementById("humedad").innerHTML = humedad;
+			var indiceBajo;
+			var indiceAlto;
+			indiceBajo = result.query.results.channel.item.description.indexOf('<img src=') + 10;
+			indiceAlto = result.query.results.channel.item.description.indexOf('/>') - 1;
+			tiempoImagen = result.query.results.channel.item.description.substring(indiceBajo,indiceAlto);
 			document.getElementById("imagen-meteo").src = meteoImagen;
+			document.getElementById("temperatura").innerHTML = Math.round( ( (((temp -32) * 0.5) * 0.05) + ((temp -32) * 0.5) ), 2) + "ºC";
+			document.getElementById("humedad").innerHTML = humedad + "%";
+			document.getElementById("imagen-tiempo").src = tiempoImagen;
+			
 		}
 
 	});
+	
+	
+	
+	function WebServiceCall(lat, lng){
+		//Meteo
+		var tempInfo;
+		var humedadInfo;
+		var tiempoImagenInfo;
+		
+ 		//Mete la informacion meteorologica en el sector
+		//Cargar el tiempo de Yahoo para nuestras coordenadas (lat,lng)
+		console.debug("Cargar tiempo Yahoo en el propio mapa");
+   		//llamada Ajax al controlador
+   		var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(SELECT%20woeid%20FROM%20geo.placefinder%20WHERE%20text%3D%22" + lat + "%2C" + lng + "%22%20and%20gflags%3D%22R%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys)";	    		
+   		$.ajax( url , {
+   			"type": "GET", 
+   			"success": function(result){
+   				console.info("consulta con exito" + result);
+   				ObtenerInfo(result);
+   			},
+   			"error": function(result) {
+   				console.error("Error ajax", result);
+   			},
+   		});
+	
+		function ObtenerInfo(result){
+			humedadInfo = result.query.results.channel.atmosphere.humidity;
+			tempInfo = result.query.results.channel.item.condition.temp;
+			var indiceBajo;
+			var indiceAlto;
+			indiceBajo = result.query.results.channel.item.description.indexOf('<img src=') + 10;
+			indiceAlto = result.query.results.channel.item.description.indexOf('/>') - 1;
+			tiempoImagenInfo = result.query.results.channel.item.description.substring(indiceBajo,indiceAlto);
+			document.getElementById("temperatura-info").innerHTML = Math.round( ( (((tempInfo -32) * 0.5) * 0.05) + ((tempInfo -32) * 0.5) ), 2) + "ºC";
+			document.getElementById("humedad-info").innerHTML = humedadInfo + "%";
+			document.getElementById("imagen-tiempo-info").src = tiempoImagenInfo;
+			
+		}
+
+	}
 	
 	/*$(document).ready(function() {
 		console.debug("Cargar tiempo Yahoo");

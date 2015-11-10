@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Versión del servidor:         5.6.17 - MySQL Community Server (GPL)
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             9.3.0.4984
+-- HeidiSQL Versión:             9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -11,11 +11,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Volcando estructura de base de datos para eskalada
+DROP DATABASE IF EXISTS `eskalada`;
 CREATE DATABASE IF NOT EXISTS `eskalada` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `eskalada`;
 
 
 -- Volcando estructura para tabla eskalada.grado
+DROP TABLE IF EXISTS `grado`;
 CREATE TABLE IF NOT EXISTS `grado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(10) NOT NULL COMMENT 'Grado de dificultad de la via de escalada, por ejemplo: ',
@@ -24,8 +26,9 @@ CREATE TABLE IF NOT EXISTS `grado` (
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.grado: ~41 rows (aproximadamente)
+DELETE FROM `grado`;
 /*!40000 ALTER TABLE `grado` DISABLE KEYS */;
-INSERT IGNORE INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
+INSERT INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'I', 'Trepada sencilla'),
 	(2, 'II', 'Trepada fácil'),
 	(3, 'II+', 'Trepada'),
@@ -70,7 +73,58 @@ INSERT IGNORE INTO `grado` (`id`, `nombre`, `descripcion`) VALUES
 /*!40000 ALTER TABLE `grado` ENABLE KEYS */;
 
 
+-- Volcando estructura para tabla eskalada.oferta
+DROP TABLE IF EXISTS `oferta`;
+CREATE TABLE IF NOT EXISTS `oferta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificador de las ofertas',
+  `titulo` varchar(255) NOT NULL COMMENT 'titulo de las ofertas',
+  `descripcion` varchar(255) DEFAULT NULL COMMENT 'descripcion de las ofertas',
+  `precio` float NOT NULL COMMENT 'precio de las ofertas',
+  `fecha_alta` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'fecha de inicio de la oferta',
+  `fecha_baja` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'fecha de fin de oferta',
+  `visible` tinyint(4) DEFAULT NULL COMMENT 'si la oferta es visible o no',
+  `zona_id` int(11) DEFAULT NULL COMMENT 'clave foranea de la zona',
+  PRIMARY KEY (`id`),
+  KEY `FK_oferta_zona` (`zona_id`),
+  CONSTRAINT `FK_oferta_zona` FOREIGN KEY (`zona_id`) REFERENCES `zona` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla eskalada.oferta: ~4 rows (aproximadamente)
+DELETE FROM `oferta`;
+/*!40000 ALTER TABLE `oferta` DISABLE KEYS */;
+INSERT INTO `oferta` (`id`, `titulo`, `descripcion`, `precio`, `fecha_alta`, `fecha_baja`, `visible`, `zona_id`) VALUES
+	(1, 'Noche de Hotel', 'Habitación doble', 100, '2015-10-20 11:27:21', '2015-11-20 11:27:22', 1, 1),
+	(2, 'Clases de escalada', 'Clases particulares para principiantes', 250, '2015-10-20 11:27:50', '2015-12-20 11:27:51', 0, 3),
+	(3, 'Materiales ', 'Materiales exclusivos', 50, '2015-10-20 11:28:41', '2015-11-20 11:28:42', 1, 1),
+	(4, 'Transporte', 'Transporte a la zona de escalada', 20, '2015-10-20 11:29:32', '2015-12-20 11:29:34', 0, 3);
+/*!40000 ALTER TABLE `oferta` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla eskalada.ofertausuario
+DROP TABLE IF EXISTS `ofertausuario`;
+CREATE TABLE IF NOT EXISTS `ofertausuario` (
+  `oferta_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `fecha_inscripcion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`oferta_id`,`usuario_id`),
+  KEY `FK_ofertausuario_usuario` (`usuario_id`),
+  CONSTRAINT `FK_ofertausuario_oferta` FOREIGN KEY (`oferta_id`) REFERENCES `oferta` (`id`),
+  CONSTRAINT `FK_ofertausuario_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla eskalada.ofertausuario: ~4 rows (aproximadamente)
+DELETE FROM `ofertausuario`;
+/*!40000 ALTER TABLE `ofertausuario` DISABLE KEYS */;
+INSERT INTO `ofertausuario` (`oferta_id`, `usuario_id`, `fecha_inscripcion`) VALUES
+	(1, 1, '2015-10-20 11:30:07'),
+	(1, 3, '2015-10-20 11:30:38'),
+	(2, 1, '2015-10-20 11:31:45'),
+	(3, 3, '2015-10-20 11:31:20');
+/*!40000 ALTER TABLE `ofertausuario` ENABLE KEYS */;
+
+
 -- Volcando estructura para tabla eskalada.rol
+DROP TABLE IF EXISTS `rol`;
 CREATE TABLE IF NOT EXISTS `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL DEFAULT '0',
@@ -79,14 +133,16 @@ CREATE TABLE IF NOT EXISTS `rol` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.rol: ~2 rows (aproximadamente)
+DELETE FROM `rol`;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT IGNORE INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
+INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'Administrador', 'Administrador del sistema'),
 	(2, 'Usuario', 'Usuario estandar');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 
 
 -- Volcando estructura para tabla eskalada.sector
+DROP TABLE IF EXISTS `sector`;
 CREATE TABLE IF NOT EXISTS `sector` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -94,6 +150,8 @@ CREATE TABLE IF NOT EXISTS `sector` (
   `imagen` varchar(250) NOT NULL DEFAULT 'default_sector.jpg',
   `validado` bit(1) NOT NULL DEFAULT b'0',
   `id_usuario` int(11) NOT NULL DEFAULT '1',
+  `latitud` double DEFAULT '0',
+  `longitud` double DEFAULT '0',
   PRIMARY KEY (`id`,`id_zona`,`id_usuario`),
   KEY `fk_sector_zona1_idx` (`id_zona`),
   KEY `fk_sector_usuario` (`id_usuario`),
@@ -103,21 +161,23 @@ CREATE TABLE IF NOT EXISTS `sector` (
 
 -- Volcando datos para la tabla eskalada.sector: ~10 rows (aproximadamente)
 DELETE FROM `sector`;
-
-INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`) VALUES
-	(1, 'Primer espolón', 1, 'default_sector.jpg', b'0', 1),
-	(2, 'Tercer espolón', 1, 'default_sector.jpg', b'0', 1),
-	(3, 'Alluitz', 1, 'default_sector.jpg', b'0', 1),
-	(4, 'Labargorri', 1, 'default_sector.jpg', b'0', 1),
-	(5, 'Urrestei', 1, 'default_sector.jpg', b'0', 1),
-	(6, 'Elosuko Harrobia', 2, 'default_sector.jpg', b'0', 1),
-	(7, 'Lauretazpe', 2, 'default_sector.jpg', b'0', 1),
-	(8, 'Ogoño', 3, 'default_sector.jpg', b'0', 1),
-	(9, 'Cara Sur', 4, 'default_sector.jpg', b'0', 1),
-	(10, 'Cara Oeste', 4, 'default_sector.jpg', b'0', 1);
+/*!40000 ALTER TABLE `sector` DISABLE KEYS */;
+INSERT INTO `sector` (`id`, `nombre`, `id_zona`, `imagen`, `validado`, `id_usuario`, `latitud`, `longitud`) VALUES
+	(1, 'Primer espolón', 1, 'default_sector.jpg', b'0', 1, 43.116746, -2.63202),
+	(2, 'Tercer espolón', 1, 'default_sector.jpg', b'0', 1, 43.117354, -2.630779),
+	(3, 'Alluitz', 1, 'default_sector.jpg', b'0', 1, 43.113365, -2.62747),
+	(4, 'Labargorri', 1, 'default_sector.jpg', b'0', 1, 43.126461, -2.635936),
+	(5, 'Urrestei', 1, 'default_sector.jpg', b'0', 1, 43.123304, -2.642924),
+	(6, 'Elosuko Harrobia', 2, 'default_sector.jpg', b'0', 1, 43.121576, -2.642462),
+	(7, 'Lauretazpe', 2, 'default_sector.jpg', b'0', 1, 43.124322, -2.647225),
+	(8, 'Ogoño', 3, 'default_sector.jpg', b'0', 1, 43.413532, -2.64874),
+	(9, 'Cara Sur', 4, 'default_sector.jpg', b'0', 1, 43.200072, -4.816643),
+	(10, 'Cara Oeste', 4, 'default_sector.jpg', b'0', 1, 43.201269, -4.81938);
 /*!40000 ALTER TABLE `sector` ENABLE KEYS */;
 
+
 -- Volcando estructura para tabla eskalada.tipo_escalada
+DROP TABLE IF EXISTS `tipo_escalada`;
 CREATE TABLE IF NOT EXISTS `tipo_escalada` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -126,8 +186,9 @@ CREATE TABLE IF NOT EXISTS `tipo_escalada` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.tipo_escalada: ~11 rows (aproximadamente)
+DELETE FROM `tipo_escalada`;
 /*!40000 ALTER TABLE `tipo_escalada` DISABLE KEYS */;
-INSERT IGNORE INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
+INSERT INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 	(1, 'Libre, solo integral o natural', 'En este tipo de escalada sólo se utilizan los pies y las manos para progresar, sin fijar ningún medio de seguridad para evitar accidentes. Se suelen usar pies de gato para una mayor fijación.'),
 	(2, 'Clásica', 'Aquí el escalador va metiendo sus propios seguros en la pared para hacer una escalada más segura. Se pueden introducir los seguro en anclajes naturales (árboles, puentes de roca, puntas de roca, etc.) o en anclajes artificiales recuperables (fisureros, friends, clavos, nudos empotrados, etc.).'),
 	(3, 'Alpina', 'Cuando la escalada clásica se realiza en una montaña de gran altura, conllevando riesgos de nevadas, avalanchas, falta de oxígeno, etc, y con el fin de alcanzar la cima.'),
@@ -143,6 +204,7 @@ INSERT IGNORE INTO `tipo_escalada` (`id`, `nombre`, `descripcion`) VALUES
 
 
 -- Volcando estructura para tabla eskalada.usuario
+DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL DEFAULT '0',
@@ -157,10 +219,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada.usuario: ~10 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.usuario: ~12 rows (aproximadamente)
 DELETE FROM `usuario`;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT IGNORE INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
+INSERT INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `validado`, `token`) VALUES
 	(1, 'admin@admin.com', 'admin', 'admin', 1, 1, '16kluv6gn3h9mptj18f58ieis6'),
 	(2, 'degar00@gmail.com', 'Degar', '456456', 2, 1, '827gb5c31hbg2rt08fkfvj4mai'),
 	(3, 'juan@juan.juan', 'Juan', '123456', 2, 0, 'dgmtcq96sjjcevunh4c349j2kj'),
@@ -175,7 +237,9 @@ INSERT IGNORE INTO `usuario` (`id`, `email`, `nombre`, `password`, `id_rol`, `va
 	(12, 'raulgf1992@gmail.com', 'Raul', '123123', 2, 1, '6p3qb9ea1edee22u7smtgqt30e');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
+
 -- Volcando estructura para tabla eskalada.via
+DROP TABLE IF EXISTS `via`;
 CREATE TABLE IF NOT EXISTS `via` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
@@ -198,8 +262,9 @@ CREATE TABLE IF NOT EXISTS `via` (
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla eskalada.via: ~14 rows (aproximadamente)
+DELETE FROM `via`;
 /*!40000 ALTER TABLE `via` DISABLE KEYS */;
-INSERT IGNORE INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES
+INSERT INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`, `id_tipo_escalada`, `id_sector`, `id_usuario`, `validado`) VALUES
 	(1, 'Irentxo', 30, 'Mantenida', 10, 8, 1, 1, b'0'),
 	(2, 'Bosque de los Inurios\r\n', 18, 'Vía con 5 movimientos muy duros', 12, 8, 1, 1, b'0'),
 	(3, 'Normal', 120, 'Larga y bonita vía con pasos de todo tipo. Reequipada con químicos en su totalidad', 8, 8, 2, 1, b'0'),
@@ -216,7 +281,9 @@ INSERT IGNORE INTO `via` (`id`, `nombre`, `longitud`, `descripcion`, `id_grado`,
 	(14, 'Murciana 78\r\n', 600, 'Dominar el 6b+ a vista. Pasos difíciles: A1\r\n', 21, 8, 10, 1, b'0');
 /*!40000 ALTER TABLE `via` ENABLE KEYS */;
 
+
 -- Volcando estructura para tabla eskalada.zona
+DROP TABLE IF EXISTS `zona`;
 CREATE TABLE IF NOT EXISTS `zona` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -224,22 +291,25 @@ CREATE TABLE IF NOT EXISTS `zona` (
   `validado` bit(1) NOT NULL DEFAULT b'0',
   `fecha_creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `latitud` double DEFAULT '0',
+  `longitud` double DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`),
   KEY `FK_zona_usuario` (`id_usuario`),
   CONSTRAINT `FK_zona_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla eskalada.zona: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla eskalada.zona: ~7 rows (aproximadamente)
+DELETE FROM `zona`;
 /*!40000 ALTER TABLE `zona` DISABLE KEYS */;
-INSERT INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`) VALUES
-	(1, 'Atxarte', 1, b'1', '2015-10-07 09:47:00', '2015-10-07 09:47:19'),
-	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(3, 'Cabo Ogoño', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(4, 'Naranjo de Bulnes', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(6, 'vacia', 1, b'0', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(7, 'Nueva', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19'),
-	(9, 'gradoMock', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19');
+INSERT INTO `zona` (`id`, `nombre`, `id_usuario`, `validado`, `fecha_creado`, `fecha_modificado`, `latitud`, `longitud`) VALUES
+	(1, 'Atxarte', 1, b'1', '2015-10-07 09:47:00', '2015-10-07 09:47:19', 43.122656, -2.634835),
+	(2, 'Untzillaitz Sur', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19', 43.124276, -2.64583),
+	(3, 'Cabo Ogoño', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19', 43.413531, -2.648629),
+	(4, 'Naranjo de Bulnes', 1, b'1', '2015-10-07 09:47:19', '2015-11-06 23:00:33', 43.199937461436924, -4.819337378828777),
+	(6, 'vacia', 1, b'0', '2015-10-07 09:47:19', '2015-10-07 09:47:19', 0, 0),
+	(7, 'Nueva', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19', 0, 0),
+	(9, 'gradoMock', 1, b'1', '2015-10-07 09:47:19', '2015-10-07 09:47:19', 0, 0);
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

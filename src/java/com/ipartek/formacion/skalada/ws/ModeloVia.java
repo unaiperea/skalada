@@ -54,9 +54,10 @@ public class ModeloVia implements Persistable<Via> {
 		int resul = -1;
 		PreparedStatement pst = null;
 		ResultSet rsKeys = null;
+		Connection con = null;
 		if (via != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				con = DataBaseHelper.getConnection();
 				pst = con.prepareStatement(SQL_INSERT,
 						Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, via.getNombre());
@@ -86,7 +87,7 @@ public class ModeloVia implements Persistable<Via> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -100,8 +101,9 @@ public class ModeloVia implements Persistable<Via> {
 		Via resul = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		Connection con = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETONE);
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
@@ -118,7 +120,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -131,8 +133,9 @@ public class ModeloVia implements Persistable<Via> {
 		ArrayList<Via> resul = new ArrayList<Via>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		Connection con = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETALL);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -148,7 +151,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -169,8 +172,9 @@ public class ModeloVia implements Persistable<Via> {
 		ArrayList<Via> resul = new ArrayList<Via>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		Connection con = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_GETALL_BY_SECTOR);
 			pst.setInt(1, sectorId);
 			rs = pst.executeQuery();
@@ -187,7 +191,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(con);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -199,9 +203,10 @@ public class ModeloVia implements Persistable<Via> {
 	public boolean update(Via via) {
 		boolean resul = false;
 		PreparedStatement pst = null;
+		Connection con = null;
 		if (via != null) {
 			try {
-				Connection con = DataBaseHelper.getConnection();
+				con = DataBaseHelper.getConnection();
 				String sql = SQL_UPDATE;
 				pst = con.prepareStatement(sql);
 				pst.setString(1, via.getNombre());
@@ -221,7 +226,7 @@ public class ModeloVia implements Persistable<Via> {
 					if (pst != null) {
 						pst.close();
 					}
-					DataBaseHelper.closeConnection();
+					DataBaseHelper.closeConnection(con);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -234,8 +239,9 @@ public class ModeloVia implements Persistable<Via> {
 	public boolean delete(int id) {
 		boolean resul = false;
 		PreparedStatement pst = null;
+		Connection con = null;
 		try {
-			Connection con = DataBaseHelper.getConnection();
+			con = DataBaseHelper.getConnection();
 			pst = con.prepareStatement(SQL_DELETE);
 			pst.setInt(1, id);
 			if (pst.executeUpdate() == 1) {
@@ -248,7 +254,7 @@ public class ModeloVia implements Persistable<Via> {
 				if (pst != null) {
 					pst.close();
 				}
-				DataBaseHelper.closeConnection();
+				DataBaseHelper.closeConnection(con);
 				return resul;
 			} catch (Exception e) {
 				e.printStackTrace();
