@@ -6,7 +6,7 @@
   <artifactId>skalada</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
-  <name>skalada</name>
+  <name>proyecto</name>
   <description>Proyecto de escalada para dibujar tus propias vías y visitar con detalle las zonas de escalada</description>
 
   <repositories>
