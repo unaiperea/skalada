@@ -18,7 +18,7 @@ public final class Constantes {
 		super();
 	}
 
-	public static final String SERVER = "http://localhost:8080";
+	public static final String SERVER = "http://project-eskalada.rhcloud.com:8080";
 	public static final String ROOT_APP = "/skalada/";
 	public static final String APP_NAME = "skalada";
 
