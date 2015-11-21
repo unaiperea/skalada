@@ -20,7 +20,7 @@ public final class Constantes {
 
 	public static final String SERVER =  "http://proyecto-eskalada.rhcloud.com"; //"http://localhost:8080";
 	public static final String ROOT_APP = "/"; //"/skalada/";
-	public static final String APP_NAME = "skalada";
+	public static final String APP_NAME = "skalada"; //sss
 
 	// vistas publicas
 	public static final String VIEW_PUBLIC_INDEX = "index.jsp";
