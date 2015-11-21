@@ -18,9 +18,9 @@ public final class Constantes {
 		super();
 	}
 
-	public static final String SERVER =  "http://proyecto-eskalada.rhcloud.com"; //"http://localhost:8080";
-	public static final String ROOT_APP = "/"; //"/skalada/";
-	public static final String APP_NAME = "skalada"; //sss
+	public static final String SERVER =  "http://proyecto-eskalada.rhcloud.com"; //"http://proyecto-eskalada.rhcloud.com"; //"http://localhost:8080";
+	public static final String ROOT_APP = "/"; //"/"; //"/skalada/";
+	public static final String APP_NAME = "proyecto"; //"skalada";
 
 	// vistas publicas
 	public static final String VIEW_PUBLIC_INDEX = "index.jsp";
