@@ -20,6 +20,10 @@
 			  <enabled>true</enabled>
 		  </snapshots>
    	  </repository>
+   	  <repository>
+	  	  <id>Java.Net</id>
+	  	  <url>http://download.java.net/maven/2/</url>
+      </repository>
   </repositories>
   <pluginRepositories>
 	  <pluginRepository>
@@ -274,6 +278,14 @@
 		<artifactId>xml-apis</artifactId>
 		<version>2.0.2</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.sun.mail</groupId>
+		<artifactId>javax.mail</artifactId>
+		<version>1.5.4</version>
+	</dependency>
+
+	
   </dependencies>
   
   

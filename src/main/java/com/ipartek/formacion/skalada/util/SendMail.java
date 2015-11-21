@@ -6,6 +6,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+
+
+
+
+
+
+
+
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -22,23 +31,20 @@ public class SendMail {
 	private String mensaje = null;
 	private String asunto = "";
 	private String destinatario = "";
-	private String emisor = "skalada.ipartek@gmail.com";
+	private String emisor = "unaiperea@gmail.com"; //"skalada.ipartek@gmail.com";
 	private Session session = null;
 
 	public SendMail() {
 		super();
 		this.props.put("mail.smtp.host", "smtp.gmail.com");
 		this.props.put("mail.smtp.socketFactory.port", "465");
-		this.props.put("mail.smtp.socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
+		this.props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		this.props.put("mail.smtp.auth", "true");
 		this.props.put("mail.smtp.port", "465");
-		this.session = Session.getDefaultInstance(this.props,
-				new javax.mail.Authenticator() {
+		this.session = Session.getDefaultInstance(this.props, new javax.mail.Authenticator() {
 					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(
-								"skalada.ipartek@gmail.com", "123ABC123");
+						return new PasswordAuthentication("unaiperea@gmail.com", "akertxuri9"); //"skalada.ipartek@gmail.com", "123ABC123");
 					}
 				});
 
@@ -57,16 +63,13 @@ public class SendMail {
 		super();
 		this.props.put("mail.smtp.host", "smtp.gmail.com");
 		this.props.put("mail.smtp.socketFactory.port", "465");
-		this.props.put("mail.smtp.socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
+		this.props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		this.props.put("mail.smtp.auth", "true");
 		this.props.put("mail.smtp.port", "465");
-		this.session = Session.getDefaultInstance(this.props,
-				new javax.mail.Authenticator() {
+		this.session = Session.getDefaultInstance(this.props, new javax.mail.Authenticator() {
 					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(
-								"skalada.ipartek@gmail.com", "123ABC123");
+						return new PasswordAuthentication("unaiperea@gmail.com", "akertxuri9"); //"skalada.ipartek@gmail.com", "123ABC123");
 					}
 				});
 
@@ -152,8 +155,7 @@ public class SendMail {
 			}
 			Message message = new MimeMessage(this.session);
 			message.setFrom(new InternetAddress(this.getEmisor()));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(this.getDestinatario()));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.getDestinatario()));
 			message.setSubject(this.getAsunto());
 			message.setContent(this.getMensaje(), "text/html");
 
@@ -170,11 +172,9 @@ public class SendMail {
 		String resul = "";
 
 		ClassLoader classLoader = this.getClass().getClassLoader();
-		resul = (IOUtils.toString(classLoader.getResourceAsStream(plantilla),
-				"UTF-8"));
+		resul = (IOUtils.toString(classLoader.getResourceAsStream(plantilla), "UTF-8"));
 
-		Iterator<Map.Entry<String, String>> it = parametros.entrySet()
-				.iterator();
+		Iterator<Map.Entry<String, String>> it = parametros.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, String> e = it.next();
 			resul = resul.replace(e.getKey(), e.getValue());

@@ -87,8 +87,7 @@ public class SignupController extends HttpServlet {
 		}
 	}
 
-	private void mostrarRecuperarPass(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void mostrarRecuperarPass(HttpServletRequest request, HttpServletResponse response) {
 		this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 		request.setAttribute("email", this.pEmail);
 		request.setAttribute("token", this.usuario.getToken());
@@ -105,8 +104,7 @@ public class SignupController extends HttpServlet {
 			if (accion != null) {
 				this.pAccion = Integer.parseInt(accion);
 			}
-			if ((request.getParameter("id") != null)
-					&& !"".equalsIgnoreCase(request.getParameter("id"))) {
+			if ((request.getParameter("id") != null) && !"".equalsIgnoreCase(request.getParameter("id"))) {
 				this.pId = Integer.parseInt(request.getParameter("id"));
 			}
 			this.pEmail = request.getParameter("email");
@@ -174,11 +172,7 @@ public class SignupController extends HttpServlet {
 				this.pId = -1;
 
 				if (!this.modeloUsuario.checkUser(this.pNombre, this.pEmail)) { // Comprobamos
-					// si
-					// existe
-					// el
-					// usuario
-					// Guardar usuario
+					// si existe el usuario Guardar usuario
 					this.crearUsuario(); // Creamos el objeto Usuario
 					if ((this.pId = this.modeloUsuario.save(this.usuario)) == -1) {
 						this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha habido un error al guardar el usuario");
@@ -190,11 +184,8 @@ public class SignupController extends HttpServlet {
 						mail.setAsunto("Confirmacion de registro");
 						HashMap<String, String> params = new HashMap<String, String>();
 						params.put("{usuario}", this.usuario.getNombre());
-						params.put("{url}", Constantes.URL_VALIDATE + this.pId
-								+ "&email=" + this.pEmail);
-						params.put(
-								"{contenido}",
-								"Gracias por registrarte. Para activar el usuario y verificar el email, clica en el enlace de debajo.");
+						params.put("{url}", Constantes.URL_VALIDATE + this.pId + "&email=" + this.pEmail);
+						params.put("{contenido}", "Gracias por registrarte. Para activar el usuario y verificar el email, clica en el enlace de debajo.");
 						params.put("{txt_btn}", "Activa tu cuenta y logeate");
 						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params));
 						mail.enviarMail();
@@ -219,32 +210,20 @@ public class SignupController extends HttpServlet {
 						mail.setAsunto("Recuperacion de password");
 						HashMap<String, String> params = new HashMap<String, String>();
 						params.put("{usuario}", this.pEmail);
-						params.put("{url}",
-								Constantes.URL_PASS_OLVIDADO + this.pEmail
-										+ "&tkn=" + this.usuario.getToken());
-						params.put(
-								"{contenido}",
-								"Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
+						params.put("{url}", Constantes.URL_PASS_OLVIDADO + this.pEmail + "&tkn=" + this.usuario.getToken());
+						params.put("{contenido}", "Si has olvidado tu contraseña haz click en el enlace de debajo para cambiarla.");
 						params.put("{txt_btn}", "Recupera tu contraseña");
-						mail.setMensaje(mail.generarPlantilla(
-								Constantes.EMAIL_TEMPLATE_REGISTRO, params));
+						mail.setMensaje(mail.generarPlantilla(Constantes.EMAIL_TEMPLATE_REGISTRO, params));
 						mail.enviarMail();
-						this.msg = new Mensaje(
-								Mensaje.MSG_INFO,
-								"Se ha enviado un mensaje a su cuenta de correo electronico en el que puede recuperar su contraseña");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+						this.msg = new Mensaje(Mensaje.MSG_INFO, "Se ha enviado un mensaje a su cuenta de correo electronico en el que puede recuperar su contraseña");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					} else {
-						this.msg = new Mensaje(Mensaje.MSG_DANGER,
-								"El usuario no esta validado");
-						this.dispatcher = request
-								.getRequestDispatcher(Constantes.VIEW_LOGIN);
+						this.msg = new Mensaje(Mensaje.MSG_DANGER,"El usuario no esta validado");
+						this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 					}
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"El usuario no existe");
-					this.dispatcher = request
-							.getRequestDispatcher(Constantes.VIEW_SIGNUP);
+					this.msg = new Mensaje(Mensaje.MSG_DANGER,"El usuario no existe");
+					this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_SIGNUP);
 				}
 				this.dispatcher = request
 						.getRequestDispatcher(Constantes.VIEW_LOGIN);
@@ -257,24 +236,18 @@ public class SignupController extends HttpServlet {
 				this.usuario = this.modeloUsuario.getByEmail(this.pEmail);
 				if (this.usuario.getToken().equals(this.pToken)) {
 					if (this.modeloUsuario.resetPass(this.pEmail, this.pPass)) {
-						this.msg = new Mensaje(Mensaje.MSG_SUCCESS,
-								"Se ha cambiado su contraseña");
+						this.msg = new Mensaje(Mensaje.MSG_SUCCESS, "Se ha cambiado su contraseña");
 					} else {
-						this.msg = new Mensaje(Mensaje.MSG_DANGER,
-								"Ha ocurrido un error al cambiar su contraseña, contacte con el administrador");
+						this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error al cambiar su contraseña, contacte con el administrador");
 					}
 				} else {
-					this.msg = new Mensaje(Mensaje.MSG_DANGER,
-							"Ha ocurrido un error.");
+					this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error.");
 				}
-				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_LOGIN);
+				this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 				break;
 			default:
-				this.msg = new Mensaje(Mensaje.MSG_DANGER,
-						"Ha ocurrido un error desconocido");
-				this.dispatcher = request
-						.getRequestDispatcher(Constantes.VIEW_LOGIN);
+				this.msg = new Mensaje(Mensaje.MSG_DANGER, "Ha ocurrido un error desconocido");
+				this.dispatcher = request.getRequestDispatcher(Constantes.VIEW_LOGIN);
 			}
 
 		} catch (Exception e) {
@@ -293,8 +266,7 @@ public class SignupController extends HttpServlet {
 	private void crearUsuario() {
 		this.rol = new Rol("Usuario");
 		this.rol.setId(2);
-		this.usuario = new Usuario(this.pNombre, this.pEmail, this.pPass,
-				this.rol);
+		this.usuario = new Usuario(this.pNombre, this.pEmail, this.pPass, this.rol);
 	}
 
 }
